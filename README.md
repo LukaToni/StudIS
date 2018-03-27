@@ -7,3 +7,5 @@ On Windows, use this command:
 `> set DEBUG=tpoapp:* & npm start`
 
 Then load [http://localhost:3000/](http://localhost:3000/) in your browser to access the app.
+
+If you get errors try npm install.
