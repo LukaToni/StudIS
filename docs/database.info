@@ -1,0 +1,9 @@
+Podatki ki jih rabite za povezavo na bazo. 
+
+Host: poljch.home.kg
+Port: 30307
+Database: tpo_studis_db
+User: tpo-studis
+Password: v__nm__c (ime in primek profesorja z večimi glasovi)
+
+URL: jdbc:postgresql://poljch.home.kg:30307/tpo_studis_db
