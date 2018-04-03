@@ -1,3 +1,14 @@
+const { Client } = require('pg')
+
+const client = new Client({
+  user: 'tpo-studis',
+  host: 'poljch.home.kg',
+  database: 'tpo_studis_db',
+  password: 'viljanmahnic',
+  port: 30307,
+})
+client.connect()
+
 var users = [
   {
     'id': 1,
@@ -7,13 +18,17 @@ var users = [
   }
 ]
 
-function getUser(username) {
-  for(var i = 0; i < users.length; i ++) {
-    if(users[i].username === username) {
-      return users[i];
+function getUser(username, callback) {
+  const query = 'SELECT * FROM public."user" WHERE username = $1';
+  const params = [username];
+  
+  client.query(query, params, (err, res) => {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      callback(res.rows[0]);
     }
-  }
-  return null;
+  })
 }
 
 module.exports = {'getUser': getUser};

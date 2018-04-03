@@ -34,17 +34,18 @@ function login(req, res, next) {
     res.render('login' , { message: "Wrong username or password." });
   } 
 	
-  var user = db.getUser(req.body.username);
-  if(user && req.body.password && bcrypt.compareSync(req.body.password, user.password)) {
+  db.getUser(req.body.username, (user) => {
+    if(user && req.body.password && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.authenticated = true;
-	req.session.userId = user.id;
-	req.session.type = user.type;
-	req.session.username = user.username;
+    req.session.userId = user.id;
+    req.session.type = user.type;
+    req.session.username = user.username;
     res.redirect('/');
-  } else {
-    logFailedLogin(userIp);
-    res.render('login' , { message: "Wrong username or password."});
-  }
+    } else {
+      logFailedLogin(userIp);
+      res.render('login' , { message: "Wrong username or password."});
+    }
+  });
 }
 
 exports.authenticate = authenticate;
