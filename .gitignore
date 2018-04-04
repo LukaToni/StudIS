@@ -116,3 +116,7 @@ fabric.properties
 *.iml
 *.iws
 *.ipr
+
+
+dataSources
+.ideaDataSources

@@ -1,0 +1,103 @@
+CREATE TABLE clear
+(
+    name VARCHAR(128),
+    surname VARCHAR(128),
+    working VARCHAR(2)
+);
+CREATE TABLE country
+(
+    name_iso VARCHAR(128) NOT NULL,
+    name_len2 VARCHAR(2),
+    name_len3 VARCHAR(3),
+    num_len3 INTEGER NOT NULL,
+    name_slo VARCHAR(128) PRIMARY KEY NOT NULL,
+    new_column INTEGER
+);
+CREATE UNIQUE INDEX country_num_len3_uindex ON country (num_len3);
+CREATE UNIQUE INDEX country_name_slo_uindex ON country (name_slo);
+CREATE TABLE county
+(
+    name VARCHAR(128) PRIMARY KEY NOT NULL,
+    code INTEGER
+);
+CREATE TABLE courses
+(
+    name VARCHAR(128),
+    number VARCHAR(15)
+);
+CREATE TABLE enrol_type
+(
+    name VARCHAR(64),
+    code INTEGER PRIMARY KEY NOT NULL
+);
+CREATE TABLE faculty
+(
+    number INTEGER,
+    title VARCHAR(256)
+);
+CREATE TABLE post_office
+(
+    number INTEGER PRIMARY KEY NOT NULL,
+    name VARCHAR(256)
+);
+CREATE UNIQUE INDEX post_office_number_uindex ON post_office (number);
+CREATE TABLE professor
+(
+    name VARCHAR(128),
+    surname VARCHAR(128),
+    key INTEGER PRIMARY KEY NOT NULL
+);
+CREATE UNIQUE INDEX professor_key_uindex ON professor (key);
+CREATE TABLE student
+(
+    emso VARCHAR(13),
+    name VARCHAR(128),
+    surname VARCHAR(128),
+    email VARCHAR(64),
+    registration_number VARCHAR(8) PRIMARY KEY NOT NULL,
+    street VARCHAR(128),
+    telephone_number VARCHAR(15),
+    country VARCHAR(255),
+    county VARCHAR(255),
+    post_office_number INTEGER,
+    CONSTRAINT student_country_name_slo_fk FOREIGN KEY (country) REFERENCES country (name_slo),
+    CONSTRAINT student_county_name_fk FOREIGN KEY (county) REFERENCES county (name),
+    CONSTRAINT student_post_office_number_fk FOREIGN KEY (post_office_number) REFERENCES post_office (number)
+);
+CREATE UNIQUE INDEX student_registration_number_uindex ON student (registration_number);
+CREATE TABLE student_enrols
+(
+    student_registration_number VARCHAR(8),
+    year INTEGER,
+    study_year INTEGER,
+    study_programme VARCHAR(64),
+    study_type INTEGER,
+    enrol_type INTEGER,
+    key INTEGER PRIMARY KEY NOT NULL,
+    CONSTRAINT student_enrols_student_registration_number_fk FOREIGN KEY (student_registration_number) REFERENCES student (registration_number),
+    CONSTRAINT student_enrols_study_type_key_fk FOREIGN KEY (study_type) REFERENCES study_type (key),
+    CONSTRAINT student_enrols_enrol_type_code_fk FOREIGN KEY (enrol_type) REFERENCES enrol_type (code)
+);
+CREATE UNIQUE INDEX student_enrols_key_uindex ON student_enrols (key);
+CREATE TABLE study_programme
+(
+    name VARCHAR(128),
+    level VARCHAR(128),
+    semesters INTEGER,
+    evs_code INTEGER PRIMARY KEY NOT NULL,
+    code INTEGER NOT NULL
+);
+CREATE UNIQUE INDEX study_programme_evs_code_uindex ON study_programme (evs_code);
+CREATE TABLE study_type
+(
+    key INTEGER PRIMARY KEY NOT NULL,
+    name VARCHAR(64)
+);
+CREATE TABLE "user"
+(
+    username VARCHAR(127) NOT NULL,
+    password VARCHAR(127) NOT NULL,
+    id NUMERIC NOT NULL,
+    type VARCHAR,
+    CONSTRAINT user_pk PRIMARY KEY (id, username)
+);

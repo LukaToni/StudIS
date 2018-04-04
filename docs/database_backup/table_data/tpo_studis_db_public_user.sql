@@ -1,0 +1,1 @@
+UPDATE public."user" SET password = '$2a$10$h6EJCiaOI9Rgfskt/7sO3uubF1uwgj1VwdYTP.A65nHqp2VtS/e/W', type = 'student' WHERE id = 1 AND username = 'user';

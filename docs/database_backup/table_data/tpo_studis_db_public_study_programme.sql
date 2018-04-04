@@ -1,0 +1,1 @@
+UPDATE public.study_programme SET name = 'To bom guni za tajnistvo nesu nej ona v tabelo prepise ce nezna drgac poslt stvari kokr da jih pa naprinta ', level = 'nasa', semesters = 69, code = 69 WHERE evs_code = 69;
