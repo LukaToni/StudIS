@@ -442,7 +442,7 @@ label.anim span,
 	font-size: 13px;
 	letter-spacing: 0.5px;
 	display: inline;
-	text-transform: capitalize;
+	/*text-transform: capitalize;*/
 }
 
 .remember-section-wthree a {

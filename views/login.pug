@@ -16,7 +16,7 @@ html
 
     body.login
         // background
-        h1 Študijski informacijski sistem
+        h1 StudIS
         // Main-Content
         .main-form
             h2 Študijski informacijski sistem
@@ -29,8 +29,16 @@ html
                 .fields-form
                     span.fa.fa-key(aria-hidden='true')
                     input(type='password', name='password', required='', placeholder='Geslo')
-                br
-                input(type='submit', value='Login')
+                .remember-section-wthree
+                    ul
+                        li
+                            label.anim
+                                input.checkbox(type='checkbox')
+                                span  Zapomni se? 
+                        li
+                            a(href='#')  Ste pozabili geslo? 
+                    .clear  
+                input(type='submit', value='Prijava')
             // // main-form
             // p=message
         // // Main-Content
