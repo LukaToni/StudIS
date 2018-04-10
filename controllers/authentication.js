@@ -34,7 +34,7 @@ function login(req, res, next) {
     res.render('login' , { message: "Wrong username or password." });
   } 
 	
-  db.getUser(req.body.username, (user) => {
+  db.getUserByUsername(req.body.username, (user) => {
     if(user && req.body.password && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.authenticated = true;
     req.session.userId = user.id;
@@ -48,5 +48,53 @@ function login(req, res, next) {
   });
 }
 
+function forgot(req, res) {
+  if(req.body.email) {
+    db.getUserByEmail(req.body.email, (user) => {
+      if(user) {
+        generateToken( (token) => {
+          if(token) {
+            user.resetToken = token;
+            db.updateUser(user, () => {
+              var smtpTransport = nodemailer.createTransport('SMTP', {
+                service: 'Gmail',
+                auth: {
+                  user: 'studis.tpo.2018',
+                  pass: 'secretpass1'
+                }
+              });
+              var mailOptions = {
+                to: user.email,
+                from: 'passwordreset@demo.com',
+                subject: 'Node.js Password Reset',
+                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                  'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+              };
+              smtpTransport.sendMail(mailOptions, function(err) {
+                redirect('/');
+              });
+            })
+          } else {
+            res.redirect('forgot');
+          }
+        });
+      } else {
+        res.redirect('forgot');
+      }
+    });
+  }
+  res.redirect('login');
+}
+
+function generateToken(callback) {
+  crypto.randomBytes(20, function(err, buf) {
+    var token = buf.toString('hex');
+    callback(token);
+  });
+}
+
 exports.authenticate = authenticate;
 exports.login = login;
+exports.forgot = forgot;

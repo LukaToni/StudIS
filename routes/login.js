@@ -16,4 +16,17 @@ router.get('/logout', function(req, res, next) {
   res.redirect('/login');
 })
 
+router.get('/forgot', function(req, res, next) {
+  res.render('forgot');
+});
+
+router.post('/forgot', auth.forgot);
+
+router.get('/reset/:token', function(req, res, next) {
+  res.render('reset');
+});
+
+router.post('/reset/:token', auth.reset);
+
+
 module.exports = router;
