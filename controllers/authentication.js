@@ -36,11 +36,12 @@ function login(req, res, next) {
     res.render('login' , { message: "Wrong username or password." });
   } 
 	
-  db.getStudent({ email: req.body.username}, (student) => {
-    if(student && req.body.password && bcrypt.compareSync(req.body.password, student.password)) {
+  db.getUser({ email: req.body.username}, (user) => {
+    if(user && req.body.password && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.authenticated = true;
-    req.session.registrationNumber = student.registrationNumber;
-    req.session.email = student.email;
+    req.session.id = user.id;
+    req.session.email = user.email;
+    req.session.type = user.type;
     res.redirect('/');
     } else {
       logFailedLogin(userIp);
@@ -51,21 +52,21 @@ function login(req, res, next) {
 
 function forgot(req, res) {
   if(req.body.email) {
-    db.getStudent({ email: req.body.email}, (student) => {
-      if(student) {
+    db.getUser({ email: req.body.email}, (user) => {
+      if(user) {
         generateToken( (token) => {
           if(token) {
-            student.resetToken = token;
-            db.updateUser(student, () => {
+            user.resetToken = token;
+            db.updateUser(user, () => {
               var smtpTransport = nodemailer.createTransport('smtps://studis.tpo.2018%40gmail.com:secretpass1@smtp.gmail.com');
               var mailOptions = {
-                to: student.email,
+                to: user.email,
                 from: 'studis.tpo.2018@gmail.com',
-                subject: 'TPO Studis Password Reset',
-                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                subject: 'TPO Studis Ponastavitev Gesla',
+                text: 'To pošto ste prejeli ker ste zahtevali ponovno nastavitev gesla (vi ali kdo drug).\n\n' +
+                  'Prosim kliknite na naslednjo povezavo da si nastavite novo geslo:\n\n' +
                   'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-                  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                  'Če tega niste zahtevali to sporočilo spreglejte.\n'
               };
               smtpTransport.sendMail(mailOptions, function(err) {
                 if(err) {
@@ -97,14 +98,14 @@ function generateToken(callback) {
 }
 
 function reset(req, res) {
-  db.getStudent({ resetToken: req.params.token}, (student) => {
-    if(!student || req.body.password != req.body.confirm) {
+  db.getUser({ resetToken: req.params.token}, (user) => {
+    if(!user || req.body.password != req.body.confirm) {
       res.redirect('/');
     } else {
-      student.password = bcrypt.hashSync(req.body.password, saltRounds);
-      student.resetToken = undefined;
+      user.password = bcrypt.hashSync(req.body.password, saltRounds);
+      user.resetToken = undefined;
       
-      db.updateUser(student, () => {
+      db.updateUser(user, () => {
         res.redirect('/');
       })
     }

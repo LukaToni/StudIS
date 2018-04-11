@@ -28,5 +28,4 @@ router.get('/reset/:token', function(req, res, next) {
 
 router.post('/reset/:token', auth.reset);
 
-
 module.exports = router;
