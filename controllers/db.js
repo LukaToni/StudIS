@@ -43,7 +43,7 @@ function getUser(user, callback) {
 
 function updateUser(user, callback) {
   const query = 'UPDATE public."user" SET (password, email, reset_token) = ($1, $2, $3) WHERE id = $4';
-  const params = [user.password, user.email, user.resetToken, user.registrationNumber];
+  const params = [user.password, user.email, user.resetToken, user.id];
 
   
   client.query(query, params, (err, res) => {
