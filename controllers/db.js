@@ -9,63 +9,26 @@ const client = new Client({
 })
 client.connect()
 
-var users = [
-  {
-    'id': 1,
-    'username': 'user',
-	'type': 'student',
-    'password': '$2a$10$h6EJCiaOI9Rgfskt/7sO3uubF1uwgj1VwdYTP.A65nHqp2VtS/e/W'
-  }
-]
-
-function getUserByUsername(username, callback) {
-  const query = 'SELECT * FROM public."user" WHERE username = $1';
-  const params = [username];
-  
-  client.query(query, params, (err, res) => {
-    if (err) {
-      console.log(err.stack);
-      callback();
-    } else {
-      callback(res.rows[0]);
-    }
-  })
-}
-
-function getUserByEmail(email, callback) {
-  const query = 'SELECT * FROM public."user" WHERE email = $1';
-  const params = [email];
-  
-  client.query(query, params, (err, res) => {
-    if (err) {
-      console.log(err.stack)
-      callback();
-    } else {
-      callback(res.rows[0]);
-    }
-  })
-}
-
-function getUser(user, callback) {
-  var query = 'SELECT * FROM public."user" WHERE ';
+function getStudent(student, callback) {
+  var query = 'SELECT * FROM public."student" WHERE ';
   var params = [];
   
   var paramCount = 0;
   
-  if(user.username) {
+  if(student.registrationNumber) {
     paramCount++;
-    query = query + 'username = $' + paramCount;
-    params.push(user.username);
+    query = query + 'registration_number = $' + paramCount;
+    params.push(student.registrationNumber);
   }
-  if(user.email) {
+  if(student.email) {
     paramCount++;
     query = query + 'email = $' + paramCount;
-    params.push(user.email);
+    params.push(student.email);
   }
-  if(user.resetToken) {
+  if(student.resetToken) {
     paramCount++;
     query = query + 'reset_token = $' + paramCount;
-    params.push(user.resetToken);
+    params.push(student.resetToken);
   }
   
   client.query(query, params, (err, res) => {
@@ -78,9 +41,9 @@ function getUser(user, callback) {
   })
 }
 
-function updateUser(user, callback) {
-  const query = 'UPDATE public."user" SET (username ,password, type, email, reset_token) = ($1, $2, $3, $4, $5) WHERE id = $6';
-  const params = [user.username, user.password, user.type, user.email, user.resetToken, user.id];
+function updateStudent(student, callback) {
+  const query = 'UPDATE public."student" SET password, email, registration_number) = ($1, $2, $3) WHERE id = $4';
+  const params = [student.password, student.email, student.resetToken, student.registrationNumber];
 
   
   client.query(query, params, (err, res) => {
@@ -93,8 +56,6 @@ function updateUser(user, callback) {
 }
 
 module.exports = {
-  'getUserByUsername': getUserByUsername,
-  'getUserByEmail': getUserByEmail,
-  'updateUser': updateUser,
-  'getUser': getUser
+  'updateStudent': updateStudent,
+  'getStudent': getStudent
 };

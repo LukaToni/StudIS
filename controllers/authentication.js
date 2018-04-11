@@ -36,12 +36,11 @@ function login(req, res, next) {
     res.render('login' , { message: "Wrong username or password." });
   } 
 	
-  db.getUserByUsername(req.body.username, (user) => {
-    if(user && req.body.password && bcrypt.compareSync(req.body.password, user.password)) {
+  db.getStudent({ email: req.body.username}, (student) => {
+    if(student && req.body.password && bcrypt.compareSync(req.body.password, student.password)) {
     req.session.authenticated = true;
-    req.session.userId = user.id;
-    req.session.type = user.type;
-    req.session.username = user.username;
+    req.session.registrationNumber = student.registrationNumber;
+    req.session.email = student.email;
     res.redirect('/');
     } else {
       logFailedLogin(userIp);
@@ -52,15 +51,15 @@ function login(req, res, next) {
 
 function forgot(req, res) {
   if(req.body.email) {
-    db.getUserByEmail(req.body.email, (user) => {
-      if(user) {
+    db.getStudent({ email: req.body.email}, (student) => {
+      if(student) {
         generateToken( (token) => {
           if(token) {
-            user.resetToken = token;
-            db.updateUser(user, () => {
+            student.resetToken = token;
+            db.updateUser(student, () => {
               var smtpTransport = nodemailer.createTransport('smtps://studis.tpo.2018%40gmail.com:secretpass1@smtp.gmail.com');
               var mailOptions = {
-                to: user.email,
+                to: student.email,
                 from: 'studis.tpo.2018@gmail.com',
                 subject: 'TPO Studis Password Reset',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
@@ -98,14 +97,14 @@ function generateToken(callback) {
 }
 
 function reset(req, res) {
-  db.getUser({ resetToken: req.params.token}, (user) => {
-    if(!user || req.body.password != req.body.confirm) {
+  db.getStudent({ resetToken: req.params.token}, (student) => {
+    if(!student || req.body.password != req.body.confirm) {
       res.redirect('/');
     } else {
-      user.password = bcrypt.hashSync(req.body.password, saltRounds);
-      user.resetToken = undefined;
+      student.password = bcrypt.hashSync(req.body.password, saltRounds);
+      student.resetToken = undefined;
       
-      db.updateUser(user, () => {
+      db.updateUser(student, () => {
         res.redirect('/');
       })
     }
