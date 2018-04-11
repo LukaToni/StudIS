@@ -9,26 +9,53 @@ const client = new Client({
 })
 client.connect()
 
-var users = [
-  {
-    'id': 1,
-    'username': 'user',
-	'type': 'student',
-    'password': '$2a$10$h6EJCiaOI9Rgfskt/7sO3uubF1uwgj1VwdYTP.A65nHqp2VtS/e/W'
+function getStudent(student, callback) {
+  var query = 'SELECT * FROM public."student" WHERE ';
+  var params = [];
+  
+  var paramCount = 0;
+  
+  if(student.registrationNumber) {
+    paramCount++;
+    query = query + 'registration_number = $' + paramCount;
+    params.push(student.registrationNumber);
   }
-]
-
-function getUser(username, callback) {
-  const query = 'SELECT * FROM public."user" WHERE username = $1';
-  const params = [username];
+  if(student.email) {
+    paramCount++;
+    query = query + 'email = $' + paramCount;
+    params.push(student.email);
+  }
+  if(student.resetToken) {
+    paramCount++;
+    query = query + 'reset_token = $' + paramCount;
+    params.push(student.resetToken);
+  }
   
   client.query(query, params, (err, res) => {
     if (err) {
-      console.log(err.stack)
+      console.log(err.stack);
+      callback();
     } else {
       callback(res.rows[0]);
     }
   })
 }
 
-module.exports = {'getUser': getUser};
+function updateStudent(student, callback) {
+  const query = 'UPDATE public."student" SET password, email, registration_number) = ($1, $2, $3) WHERE id = $4';
+  const params = [student.password, student.email, student.resetToken, student.registrationNumber];
+
+  
+  client.query(query, params, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+    } else {
+      callback();
+    }
+  })
+}
+
+module.exports = {
+  'updateStudent': updateStudent,
+  'getStudent': getStudent
+};

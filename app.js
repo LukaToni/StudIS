@@ -4,6 +4,8 @@ var path = require('path');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var nodemailer = require('nodemailer');
+var crypto = require('crypto');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
