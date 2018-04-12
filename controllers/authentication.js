@@ -42,7 +42,7 @@ function login(req, res, next) {
     req.session.id = user.id;
     req.session.email = user.email;
     req.session.type = user.type;
-    res.redirect('/');
+    res.redirect('/personal');
     } else {
       logFailedLogin(userIp);
       res.render('login' , { message: "Wrong username or password."});

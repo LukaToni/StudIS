@@ -26,6 +26,7 @@ router.get('/', auth.authenticate, function(req, res, next) {
         res.render('personal_data', { 
           title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
           type: req.session.type,
+          email: req.session.email,
           student: {},
           enrols: []
          });
@@ -63,6 +64,7 @@ router.get('/:studentId', auth.authenticate, function(req, res, next) {
           res.render('personal_data', { 
             title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
             type: req.session.type,
+            email: req.session.email,
             student:data.student,
             enrols:data.enrols
           });
