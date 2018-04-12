@@ -1,3 +1,4 @@
+
 const { Client } = require('pg')
 
 const client = new Client({
@@ -55,7 +56,46 @@ function updateUser(user, callback) {
   })
 }
 
+
 module.exports = {
   'updateUser': updateUser,
   'getUser': getUser
 };
+
+//STUDENTS
+module.exports.getStudentById = function(id){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."student" WHERE registration_number=$1';
+    let params = [id];
+
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows[0]);
+    })
+  })
+}
+module.exports.findStudent = function(queryData){
+  return new Promise((resolve, reject)=>{
+    queryData = queryData +'%';
+    let query = 'SELECT * FROM public."student" WHERE registration_number LIKE $1 OR name LIKE $1 OR surname LIKE $1'
+    let params = [queryData];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+
+//STUDENT ENROLS
+module.exports.getStudentEnrols = function(studentId){
+  return new Promise((resolve, reject) =>{
+    let query = 'SELECT s.year as year, s.study_year as study_year, s.study_programme as s_programme, t.name as s_type, e.name as e_type FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code' ;
+    let params =[studentId];
+
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}

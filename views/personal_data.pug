@@ -15,6 +15,7 @@ html(lang='en')
         link(href='../stylesheets/style.css', rel='stylesheet')
         // Font awesome
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(href='../stylesheets/personal.css', rel='stylesheet')
     body
         // Main Navigation
         header
@@ -37,11 +38,63 @@ html(lang='en')
         // Main Navigation
         .wrapper
             .container
-                .row.mt-5.pt-5
+                .row.mt-5.pt-5=JSON.stringify(enrols)
+                    .container=JSON.stringify(student)
+                        if type == 'professor' || type == 'clerk'
+                                .input-group
+                                    input.form-control(type="text" placeholder="Search for..." aria-label="Search for...")#searchField
+                                    span.input-group-btn
+                                        button.btn.btn-secondary(type="button")#searchButton Go!
+                                    .search-panel(style="display:none")#searchPanel
+                                        .close-button#closeSearchButton='x'
+                                        // Table
+                                        table.table.table-sm
+                                            // Table head
+                                            thead
+                                                tr
+                                                    th Ime
+                                                    th Priimek
+                                                    th Vpisna števlka
+                                            tbody#searchTable
+                                                tr.table-item
+                                                    td Mark
+                                                    td Otto
+                                                    td @mdo
+
+
+                        form.form-horizontal
+                            fieldset
+                                h2 Osebni podatki študenta
+                                form
+                                    .form-group.row
+                                        label.col-sm-2.col-form-label(for="staticEmail") Vpisna številka
+                                        .col-sm-10
+                                            input#staticEmail.form-control(type="text"  readonly="" value=student.registration_number)
+                                    .form-group.row
+                                        label.col-sm-2.col-form-label(for="inputPassword") Priimek
+                                        .col-sm-10
+                                            input#inputPassword.form-control(type="text" readonly="" value=student.surname)
+                                    .form-group.row
+                                        label.col-sm-2.col-form-label(for="inputPassword") Ime
+                                        .col-sm-10
+                                            input#inputPassword.form-control(type="text" readonly="" value=student.name)
+                                    .form-group.row
+                                        label.col-sm-2.col-form-label(for="inputPassword") Ulica
+                                        .col-sm-10
+                                            input#inputPassword.form-control(type="text" readonly="" value=student.street)
+                                    .form-group.row
+                                        label.col-sm-2.col-form-label(for="inputPassword") Naslov za prejemanje pošte
+                                        .col-sm-10
+                                            input#inputPassword.form-control(type="text" readonly="" value="Password")
+                                    .form-group.row
+                                        label.col-sm-2.col-form-label(for="inputPassword") Telefonska številka
+                                        .col-sm-10
+                                            input#inputPassword.form-control(type="text" readonly="" value="Password")
+                                    .form-group.row
+                                        label.col-sm-2.col-form-label(for="inputPassword") Email
+                                        .col-sm-10
+                                            input#inputPassword.form-control(type="text" readonly="" value=student.email)
                     .col.text-center
-                        .form-group.row
-                            .col-12
-                                input.form-control(type='search', placeholder='Poišči študenta po imenu, priimku, vpisni številki')
                         .container
                             // Table
                             table.table.table-sm
@@ -56,32 +109,13 @@ html(lang='en')
                                 // Table head
                                 // Table body
                                 tbody
-                                    tr
-                                        th(scope='row') 1.
-                                        td 2013/14
-                                        td FRI-BUNI
-                                        td redni
-                                        td prvi vpis
-                                    tr
-                                        th(scope='row') 2.
-                                        td 2014/15
-                                        td FRI-BUNI
-                                        td redni
-                                        td prvi vpis
-                                    tr
-                                        th(scope='row') 2.
-                                        td 2015/16
-                                        td FRI-BUNI
-                                        td redni
-                                        td ponovni vpis
-                                    tr
-                                        th(scope='row') 3.
-                                        td 2016/17
-                                        td FRI-BUNI
-                                        td redni
-                                        td prvi vpis
-                                // Table body
-                            // Table
+                                    each enrol in enrols
+                                        tr
+                                            th(scope='row')=enrol.year
+                                            td=enrol.study_year+'/'+(parseInt(enrol.study_year)+1)
+                                            td=enrol.s_programme
+                                            td=enrol.s_type
+                                            td=enrol.e_type
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
@@ -91,3 +125,5 @@ html(lang='en')
         script(type='text/javascript', src='../js/bootstrap.min.js')
         // MDB core JavaScript
         script(type='text/javascript', src='../js/mdb.min.js')
+        //search
+        script(type='text/javascript', src='../js/personal/search.js')
