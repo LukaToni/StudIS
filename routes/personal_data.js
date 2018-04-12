@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
+var auth = require('../controllers/authentication');
 
 /* GET personal data. */
-router.get('/', function(req, res, next) {
-  res.render('personal_data', { title: 'Express' });
+router.get('/', auth.authenticate, function(req, res, next) {
+  res.render('personal_data', { title: 'Welcome: ' + req.session.type + ' ' + req.session.username });
 });
 
 
