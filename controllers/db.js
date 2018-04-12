@@ -1,5 +1,8 @@
 const { Client } = require('pg')
 
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 const client = new Client({
   user: 'tpo-studis',
   host: 'poljch.home.kg',
@@ -7,7 +10,15 @@ const client = new Client({
   password: 'viljanmahnic',
   port: 30307,
 })
-client.connect()
+client.connect();
+
+var facultyNumber;
+client.query('SELECT * FROM public."faculty" WHERE title = \'FRI\'', (err, res) => {
+  if (err) {
+    console.log(err.stack);
+  }
+  facultyNumber = res.rows[0].number;
+});
 
 function getUser(user, callback) {
   var query = 'SELECT * FROM public."user" WHERE ';
@@ -18,7 +29,7 @@ function getUser(user, callback) {
   if(user.id) {
     paramCount++;
     query = query + 'id = $' + paramCount;
-    params.push(user.registrationNumber);
+    params.push(user.id);
   }
   if(user.email) {
     paramCount++;
@@ -34,9 +45,46 @@ function getUser(user, callback) {
   client.query(query, params, (err, res) => {
     if (err) {
       console.log(err.stack);
-      callback();
+      callback(err);
     } else {
-      callback(res.rows[0]);
+      callback(null, res.rows[0]);
+    }
+  })
+}
+
+function getStudent(student, callback) {
+  var query = 'SELECT * FROM public."student" WHERE ';
+  var params = [];
+  
+  var paramCount = 0;
+  
+  if(student.name) {
+    paramCount++;
+    query = query + 'name = $' + paramCount;
+    params.push(student.name);
+  }
+  if(student.lastName) {
+    paramCount++;
+    query = query + 'surname = $' + paramCount;
+    params.push(student.lastName);
+  }
+  if(student.email) {
+    paramCount++;
+    query = query + 'email = $' + paramCount;
+    params.push(student.email);
+  }
+  if(student.registrationNumber) {
+    paramCount++;
+    query = query + 'registration_number = $' + paramCount;
+    params.push(student.registrationNumber);
+  }
+  
+  client.query(query, params, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+      callback(err);
+    } else {
+      callback(null, res.rows[0]);
     }
   })
 }
@@ -49,13 +97,82 @@ function updateUser(user, callback) {
   client.query(query, params, (err, res) => {
     if (err) {
       console.log(err.stack);
+      callback(err);
     } else {
-      callback();
+      callback(null);
     }
   })
 }
 
+function studentImport(students, callback) {
+  const beginQuery = 'BEGIN';
+  const commitQuery = 'COMMIT';
+  const rollbackQuery = 'ROLLBACK';
+  
+  client.query(beginQuery, (err1) => {
+    if(err1) {
+      return callback(err1);
+    }
+        
+    doImport(students, 0, (err2) => {
+      if(err2) {
+        client.query(rollbackQuery, () => {
+          return callback(err2);
+        })
+      }
+      client.query(commitQuery, () => {
+        return callback(null);
+      });
+    });
+  });
+}
+
+function doImport(students, index, endCallback) {
+  if(index >= students.length) {
+    return endCallback(null);
+  }
+    
+  var student = students[index];
+  
+  client.query("SELECT nextval('public.registration_number_seq')", (err, res) => {
+    if(err) {
+      return endCallback(err);
+    }
+    var nextNumber = res.rows[0].nextval;
+    
+    var registrationNumber = '' + facultyNumber + currentYear() + nextNumber;
+    console.log(registrationNumber);
+    
+    const insertStudentQuery = 'INSERT INTO public."student"(name, surname, email, registration_number) VALUES ($1, $2, $3, $4)';
+    var params = [student.name, student.lastName, student.email, registrationNumber];
+
+    client.query(insertStudentQuery, params, (err) => {
+      if(err) {
+        return endCallback(err);
+      }
+      
+      students[index].registrationNumber = registrationNumber;
+      
+      insertUserQuery = 'INSERT INTO public."user"(password, type, email, student_id) VALUES ($1, $2, $3, $4)';
+      params = [bcrypt.hashSync('student', saltRounds), 'student', student.email, registrationNumber];
+      
+      client.query(insertUserQuery, params, (err) => {
+        if(err) {
+          return endCallback(err);
+        }
+        
+        return doImport(students, index + 1, endCallback);
+      });
+    });
+  });
+}
+
+function currentYear() {
+  return new Date().getFullYear().toString().substr(-2);
+}
+
 module.exports = {
   'updateUser': updateUser,
-  'getUser': getUser
+  'getUser': getUser,
+  'studentImport': studentImport
 };

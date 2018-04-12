@@ -1,8 +1,13 @@
-form(method='post')
-    .fields-form
-        span.fa.fa-user(aria-hidden='true')
-        input(type='password', name='password', required='', placeholder='password')
-    .fields-form
-        span.fa.fa-user(aria-hidden='true')
-        input(type='password', name='confirm', required='', placeholder='confirm')
-    input(type='submit', value='Update password')
+extends layout
+
+block content
+  .main-form
+    p= message
+    form(method='post')
+        .fields-form
+            span.fa.fa-user(aria-hidden='true')
+            input(type='password', name='password', required='', placeholder='geslo')
+        .fields-form
+            span.fa.fa-user(aria-hidden='true')
+            input(type='password', name='confirm', required='', placeholder='potrdi')
+        input(type='submit', value='Posodobi geslo')
