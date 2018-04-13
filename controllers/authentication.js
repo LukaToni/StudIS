@@ -116,7 +116,7 @@ function reset(req, res) {
       if(err) {
         return res.render('forgot' , { message: "Napaka na strežniku."});
       }
-      return res.render('login' , { message: "Uspešno ste spremenili geslo."});
+      return res.redirect('/login');
     });
   });
 }
