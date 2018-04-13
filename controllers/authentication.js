@@ -7,12 +7,17 @@ const saltRounds = 10;
 var db = require('../controllers/db');
 
 var invalidLogins = [];
+const timeToKeepIp = 30 * 1000;
 
 function logFailedLogin(userIp) {
-  if(invalidLogins[userIp]) {
-    invalidLogins[userIp] = invalidLogins[userIp] + 1;
+  console.log(userIp);
+  if(invalidLogins[userIp] && invalidLogins[userIp].counter) {
+    invalidLogins[userIp].counter = invalidLogins[userIp].counter + 1;
   } else {
-    invalidLogins[userIp] = 1;
+    invalidLogins[userIp] = {
+      'counter': 1,
+      'date': new Date()
+    }
   }
 }
 
@@ -25,8 +30,14 @@ function authenticate(req, res, next) {
 
 function login(req, res, next) {
   userIp = req.connection.remoteAddress;
-  if(invalidLogins[userIp] && invalidLogins[userIp] >= 3) {
-    return res.render('login' , { message: "Too many bad logins." });
+  if(invalidLogins[userIp]) {
+    if(new Date().getTime() - invalidLogins[userIp].date.getTime() > timeToKeepIp) {
+      invalidLogins[userIp] = undefined;
+    } else {
+      if(invalidLogins[userIp].counter >= 3) {
+        return res.render('login' , { message: "Too many bad logins." });
+      }
+    }
   }
   
   if(!req.body.username) {
