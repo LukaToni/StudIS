@@ -13,34 +13,37 @@ function doImport(req, res) {
     }
     
     var lines = data.split(/\r?\n/);
-    
+        
     var students = [];
     
-    if(lines.length%4 != 0) {
-      return res.render('student_import', { message: 'Format datoteke ni skladen z zahtevami.' });
-    }
+    
     
     while(lines.length > 0) {
+      var studentData = lines[0].split(' ');
       
-      var existLines = lines[0] && lines[1] && lines[2] && lines[3];
+      if(studentData.length != 4) {
+        return res.render('student_import', { message: 'Format datoteke ni skladen z zahtevami.' });
+      }
+      
+      var existLines = studentData[0] && studentData[1] && studentData[2] && studentData[3];
       var correctFormat =
-        lines[0].length < 31 &&
-        lines[1].length < 31 && 
-        lines[2].length < 8 && 
-        lines[3].length < 61 && validateEmail(lines[3]);
+        studentData[0].length < 31 &&
+        studentData[1].length < 31 && 
+        studentData[2].length < 8 && 
+        studentData[3].length < 61 && validateEmail(studentData[3]);
         
       if(!existLines || !correctFormat) {
         return res.render('student_import', { message: 'Format datoteke ni skladen z zahtevami.' });
       }
       
       var student = {
-        name: lines[0],
-        lastName: lines[1],
-        program: lines[2],
-        email: lines[3]
+        name: studentData[0],
+        lastName: studentData[1],
+        program: studentData[2],
+        email: studentData[3]
       }
       students.push(student);
-      lines.shift();lines.shift();lines.shift();lines.shift();
+      lines.shift();
     }
         
     db.studentImport(students, (err) => {
