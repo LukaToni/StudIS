@@ -23,6 +23,7 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(session({
   secret: '53336a676c64c1396553b2b7c92f38126768827c93b64d9142069c10eda7a721',
   resave: false,

@@ -6,7 +6,7 @@ let db = require('../controllers/db');
 
 /* GET personal data. */
 router.get('/', auth.authenticate, function(req, res, next) {
-  db.getUser({email: req.session.email}, (user)=>{
+  db.getUser({email: req.session.email}, (err, user)=>{
     if(user){
       if(user.type == 'student'){
         db.getStudentById(user.student_id)
@@ -26,6 +26,7 @@ router.get('/', auth.authenticate, function(req, res, next) {
         res.render('personal_data', { 
           title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
           type: req.session.type,
+          email: req.session.email,
           student: {},
           enrols: []
          });
@@ -53,7 +54,7 @@ router.get('/query', auth.authenticate, function(req, res, next){
 
 router.get('/:studentId', auth.authenticate, function(req, res, next) {
   let studentId = req.params.studentId;
-  db.getUser({email: req.session.email}, (user)=>{
+  db.getUser({email: req.session.email}, (err, user)=>{
     db.getStudentById(studentId)
         .then(student => {
           return db.getStudentEnrols(studentId)
@@ -63,6 +64,7 @@ router.get('/:studentId', auth.authenticate, function(req, res, next) {
           res.render('personal_data', { 
             title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
             type: req.session.type,
+            email: req.session.email,
             student:data.student,
             enrols:data.enrols
           });
