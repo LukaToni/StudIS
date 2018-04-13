@@ -40,6 +40,8 @@ html(lang='en')
             .container
                 .row.mt-5.pt-5=JSON.stringify(enrols)
                     .container=JSON.stringify(student)
+                        
+
                         if type == 'professor' || type == 'clerk'
                                 .input-group
                                     input.form-control(type="text" placeholder="Search for..." aria-label="Search for...")#searchField
@@ -47,8 +49,10 @@ html(lang='en')
                                         button.btn.btn-secondary(type="button")#searchButton Go!
                                     .search-panel(style="display:none")#searchPanel
                                         .close-button#closeSearchButton='x'
+                                        button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2csv('students');") Export CSV
+                                        button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2pdf('students');") Export PDF
                                         // Table
-                                        table.table.table-sm
+                                        table#tableSearch.table.table-sm
                                             // Table head
                                             thead
                                                 tr
@@ -96,8 +100,10 @@ html(lang='en')
                                             input#inputPassword.form-control(type="text" readonly="" value=student.email)
                     .col.text-center
                         .container
+                            button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2csv('students');") Export CSV
+                            button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2pdf('students');") Export PDF
                             // Table
-                            table.table.table-sm
+                            table#tableBottom.table.table-sm
                                 // Table head
                                 thead
                                     tr
@@ -116,9 +122,18 @@ html(lang='en')
                                             td=enrol.s_programme
                                             td=enrol.s_type
                                             td=enrol.e_type
+                                            
+
+
+
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
+        // for generating export tables csv, pdf
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.min.js")
+        script(type='text/javascript', src='../js/personal/table2pdf.js')
+        script(type='text/javascript', src='../js/table2csv.js')
         // Bootstrap tooltips
         script(type='text/javascript', src='../js/popper.min.js')
         // Bootstrap core JavaScript
