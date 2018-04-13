@@ -166,7 +166,7 @@ function studentImport(students, callback) {
         })
       }
       client.query(commitQuery, () => {
-        return callback(null);
+        return callback(null, students);
       });
     });
   });
@@ -183,7 +183,10 @@ function doImport(students, index, endCallback) {
     if(err) {
       return endCallback(err);
     }
-    var nextNumber = res.rows[0].nextval;
+    var nextNumber = res.rows[0].nextval + '';
+    while(nextNumber.length < 4) {
+      nextNumber = '0' + nextNumber;
+    }
     
     var registrationNumber = '' + facultyNumber + currentYear() + nextNumber;
     console.log(registrationNumber);

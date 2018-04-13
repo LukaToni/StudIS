@@ -45,10 +45,19 @@ function doImport(req, res) {
         
     db.studentImport(students, (err) => {
       if(err) {
-        console.log(err.stack);
+        console.log(err);
+        if(err.stack) {
+          console.log(err.stack);
+        }
         return res.render('student_import', { message: 'Napaka med uvozom, uvoz ni uspešen.' });
       } else {
-        return res.render('student_import', { message: 'Uvoz uspešen.' });
+        var studentsMessage = '';
+        for(var i = 0; i < students.length; i++) {
+          var s = students[i];
+          studentsMessage = studentsMessage + '\n{ vpisna stevilka: ' + s.registrationNumber + ' ime: ' + s.name + ' priimek: ' + s.lastName + ' uporabnisko ime/email: ' + s.email + ' geslo: student }'
+        }
+        
+        return res.render('student_import', { message: 'Uvoz uspešen.\nStudenti:' + studentsMessage });
       }
     });      
   });
