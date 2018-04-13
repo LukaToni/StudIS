@@ -109,8 +109,9 @@ html(lang='en')
                     .col.text-center
                         if student.name
                             .container
-                                button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2csv('students');") Export CSV
-                                button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2pdf('students');") Export PDF
+                                if type == 'professor' || type == 'clerk'
+                                  button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2csv('students');") Export CSV
+                                  button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2pdf('students');") Export PDF
                                 // Table
                                 table#tableBottom.table.table-sm
                                 // Table
