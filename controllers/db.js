@@ -179,40 +179,50 @@ function doImport(students, index, endCallback) {
     
   var student = students[index];
   
-  client.query("SELECT nextval('public.registration_number_seq')", (err, res) => {
-    if(err) {
-      return endCallback(err);
+  getStudent(student, (getStudentErr, foundStudent) => {
+    if(getStudentErr) {
+      return endCallback(getStudentErr);
     }
-    var nextNumber = res.rows[0].nextval + '';
-    while(nextNumber.length < 4) {
-      nextNumber = '0' + nextNumber;
+    if(foundStudent) {
+      //TODO update student :)
+      return endCallback();
     }
-    
-    var registrationNumber = '' + facultyNumber + currentYear() + nextNumber;
-    console.log(registrationNumber);
-    
-    const insertStudentQuery = 'INSERT INTO public."student"(name, surname, email, registration_number) VALUES ($1, $2, $3, $4)';
-    var params = [student.name, student.lastName, student.email, registrationNumber];
-
-    client.query(insertStudentQuery, params, (err) => {
+  
+    client.query("SELECT nextval('public.registration_number_seq')", (err, res) => {
       if(err) {
         return endCallback(err);
       }
+      var nextNumber = res.rows[0].nextval + '';
+      while(nextNumber.length < 4) {
+        nextNumber = '0' + nextNumber;
+      }
       
-      students[index].registrationNumber = registrationNumber;
+      var registrationNumber = '' + facultyNumber + currentYear() + nextNumber;
+      console.log(registrationNumber);
       
-      insertUserQuery = 'INSERT INTO public."user"(password, type, email, student_id) VALUES ($1, $2, $3, $4)';
-      params = [bcrypt.hashSync('student', saltRounds), 'student', student.email, registrationNumber];
-      
-      client.query(insertUserQuery, params, (err) => {
+      const insertStudentQuery = 'INSERT INTO public."student"(name, surname, email, registration_number) VALUES ($1, $2, $3, $4)';
+      var params = [student.name, student.lastName, student.email, registrationNumber];
+
+      client.query(insertStudentQuery, params, (err) => {
         if(err) {
           return endCallback(err);
         }
         
-        return doImport(students, index + 1, endCallback);
+        students[index].registrationNumber = registrationNumber;
+        
+        insertUserQuery = 'INSERT INTO public."user"(password, type, email, student_id) VALUES ($1, $2, $3, $4)';
+        params = [bcrypt.hashSync('student', saltRounds), 'student', student.email, registrationNumber];
+        
+        client.query(insertUserQuery, params, (err) => {
+          if(err) {
+            return endCallback(err);
+          }
+          
+          return doImport(students, index + 1, endCallback);
+        });
       });
     });
-  });
+  }};
 }
 
 function currentYear() {

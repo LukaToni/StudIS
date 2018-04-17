@@ -46,7 +46,7 @@ function doImport(req, res) {
       lines.shift();
     }
         
-    db.studentImport(students, (err) => {
+    db.studentImport(students, (err, studentsNew) => {
       if(err) {
         console.log(err);
         if(err.stack) {
@@ -60,7 +60,7 @@ function doImport(req, res) {
           studentsMessage = studentsMessage + '\n{ vpisna stevilka: ' + s.registrationNumber + ' ime: ' + s.name + ' priimek: ' + s.lastName + ' uporabnisko ime/email: ' + s.email + ' geslo: student }'
         }
         
-        return res.render('student_import', { message: 'Uvoz uspešen.\nStudenti:' + studentsMessage });
+        return res.render('student_import', { message: 'Uvoz uspešen.', students: studentsNew});
       }
     });      
   });

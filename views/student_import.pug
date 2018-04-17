@@ -10,3 +10,21 @@ block content
                 span.fa.fa-user(aria-hidden='true')
                 input(type='file', name='import_file', required='')
         input(type='submit', value='Naloži datoteko')
+    if students
+      table.table.table-sm
+        thead
+          tr
+            th Ime
+            th Priimek
+            th Email
+            th Vpisna
+            th Geslo
+        tbody
+          each student in students
+            tr
+              td=student.name
+              td=student.lastName
+              td=student.email
+              td=student.registrationNumber
+              td
+                student
