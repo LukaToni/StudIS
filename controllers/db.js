@@ -22,24 +22,30 @@ client.query('SELECT * FROM public."faculty" WHERE title = \'FRI\'', (err, res) 
 });
 
 function getUser(user, callback) {
-  var query = 'SELECT * FROM public."user" WHERE ';
+  var query = 'SELECT * FROM public."user" WHERE';
   var params = [];
   
   var paramCount = 0;
   
   if(user.id) {
     paramCount++;
-    query = query + 'id = $' + paramCount;
+    query = query + ' id = $' + paramCount;
     params.push(user.id);
   }
   if(user.email) {
     paramCount++;
-    query = query + 'email = $' + paramCount;
+    if(paramCount > 1) {
+      query = query + ' AND';
+    }
+    query = query + ' email = $' + paramCount;
     params.push(user.email);
   }
   if(user.resetToken) {
     paramCount++;
-    query = query + 'reset_token = $' + paramCount;
+    if(paramCount > 1) {
+      query = query + ' AND';
+    }
+    query = query + ' reset_token = $' + paramCount;
     params.push(user.resetToken);
   }
   
@@ -54,29 +60,41 @@ function getUser(user, callback) {
 }
 
 function getStudent(student, callback) {
-  var query = 'SELECT * FROM public."student" WHERE ';
+  var query = 'SELECT * FROM public."student" WHERE';
   var params = [];
   
   var paramCount = 0;
   
   if(student.name) {
     paramCount++;
-    query = query + 'name = $' + paramCount;
+    if(paramCount > 1) {
+      query = query + ' AND';
+    }
+    query = query + ' name = $' + paramCount;
     params.push(student.name);
   }
   if(student.lastName) {
     paramCount++;
-    query = query + 'surname = $' + paramCount;
+    if(paramCount > 1) {
+      query = query + ' AND';
+    }
+    query = query + ' surname = $' + paramCount;
     params.push(student.lastName);
   }
   if(student.email) {
     paramCount++;
-    query = query + 'email = $' + paramCount;
+    if(paramCount > 1) {
+      query = query + ' AND';
+    }
+    query = query + ' email = $' + paramCount;
     params.push(student.email);
   }
   if(student.registrationNumber) {
     paramCount++;
-    query = query + 'registration_number = $' + paramCount;
+    if(paramCount > 1) {
+      query = query + ' AND';
+    }
+    query = query + ' registration_number = $' + paramCount;
     params.push(student.registrationNumber);
   }
   
@@ -86,6 +104,20 @@ function getStudent(student, callback) {
       callback(err);
     } else {
       callback(null, res.rows[0]);
+    }
+  })
+}
+
+function updateStudent(student, callback) {
+  const query = 'UPDATE public."student" SET (name, surname) = ($1, $2) WHERE email = $3';
+  const params = [student.name, student.lastName, student.email];
+  
+  client.query(query, params, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+      callback(err);
+    } else {
+      callback(null);
     }
   })
 }
@@ -180,49 +212,57 @@ function doImport(students, index, endCallback) {
   var student = students[index];
   
   getStudent(student, (getStudentErr, foundStudent) => {
+  
     if(getStudentErr) {
       return endCallback(getStudentErr);
     }
     if(foundStudent) {
       //TODO update student :)
-      return endCallback();
-    }
-  
-    client.query("SELECT nextval('public.registration_number_seq')", (err, res) => {
-      if(err) {
-        return endCallback(err);
-      }
-      var nextNumber = res.rows[0].nextval + '';
-      while(nextNumber.length < 4) {
-        nextNumber = '0' + nextNumber;
-      }
-      
-      var registrationNumber = '' + facultyNumber + currentYear() + nextNumber;
-      console.log(registrationNumber);
-      
-      const insertStudentQuery = 'INSERT INTO public."student"(name, surname, email, registration_number) VALUES ($1, $2, $3, $4)';
-      var params = [student.name, student.lastName, student.email, registrationNumber];
-
-      client.query(insertStudentQuery, params, (err) => {
+      students[index].registrationNumber = foundStudent.registration_number;
+      updateStudent(student, (err) => {
+        if(err) {
+          return endCallback(err);
+        } else {
+          return doImport(students, index + 1, endCallback);
+        }
+      })
+    } else {
+      client.query("SELECT nextval('public.registration_number_seq')", (err, res) => {
         if(err) {
           return endCallback(err);
         }
+        var nextNumber = res.rows[0].nextval + '';
+        while(nextNumber.length < 4) {
+          nextNumber = '0' + nextNumber;
+        }
         
-        students[index].registrationNumber = registrationNumber;
+        var registrationNumber = '' + facultyNumber + currentYear() + nextNumber;
+        console.log(registrationNumber);
         
-        insertUserQuery = 'INSERT INTO public."user"(password, type, email, student_id) VALUES ($1, $2, $3, $4)';
-        params = [bcrypt.hashSync('student', saltRounds), 'student', student.email, registrationNumber];
-        
-        client.query(insertUserQuery, params, (err) => {
+        const insertStudentQuery = 'INSERT INTO public."student"(name, surname, email, registration_number) VALUES ($1, $2, $3, $4)';
+        var params = [student.name, student.lastName, student.email, registrationNumber];
+
+        client.query(insertStudentQuery, params, (err) => {
           if(err) {
             return endCallback(err);
           }
           
-          return doImport(students, index + 1, endCallback);
+          students[index].registrationNumber = registrationNumber;
+          
+          insertUserQuery = 'INSERT INTO public."user"(password, type, email, student_id) VALUES ($1, $2, $3, $4)';
+          params = [bcrypt.hashSync('student', saltRounds), 'student', student.email, registrationNumber];
+          
+          client.query(insertUserQuery, params, (err) => {
+            if(err) {
+              return endCallback(err);
+            }
+            
+            return doImport(students, index + 1, endCallback);
+          });
         });
       });
-    });
-  }};
+    }
+  });
 }
 
 function currentYear() {
