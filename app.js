@@ -13,6 +13,7 @@ var usersRouter = require('./routes/users');
 var personalRouter = require('./routes/personal_data');
 var studentImportRouter = require('./routes/student_import');
 var loginRouter = require('./routes/login');
+var enrolRouter = require('./routes/enrol');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use('/users', usersRouter);
 app.use('/personal', personalRouter);
 app.use('/student_import', studentImportRouter);
 app.use('/', loginRouter);
+app.use('/enrol', enrolRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
