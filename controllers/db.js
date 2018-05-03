@@ -143,6 +143,42 @@ module.exports = {
   'studentImport': studentImport
 };
 
+//RESIDENTALS
+
+//GET POST
+module.exports.getPostOffice = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."post_office" ORDER BY name'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET COUNTRY
+module.exports.getCountry = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."country" ORDER BY name_slo'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET COUNTY
+module.exports.getCounty = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."county" ORDER BY name'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+
 //STUDENTS
 module.exports.getStudentById = function(id){
   return new Promise((resolve, reject)=>{
@@ -158,7 +194,7 @@ module.exports.getStudentById = function(id){
 module.exports.findStudent = function(queryData){
   return new Promise((resolve, reject)=>{
     queryData = queryData +'%';
-    let query = 'SELECT * FROM public."student" WHERE registration_number LIKE $1 OR name LIKE $1 OR surname LIKE $1'
+    let query = 'SELECT * FROM public."student" WHERE registration_number LIKE $1 OR name LIKE $1 OR surname LIKE $1 ORDER BY surname, name LIMIT 10'
     let params = [queryData];
 
     client.query(query, params, (err, res)=>{
@@ -171,7 +207,9 @@ module.exports.findStudent = function(queryData){
 //STUDENT ENROLS
 module.exports.getStudentEnrols = function(studentId){
   return new Promise((resolve, reject) =>{
-    let query = 'SELECT s.year as year, s.study_year as study_year, s.study_programme as s_programme, t.name as s_type, e.name as e_type FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code' ;
+    let query = `SELECT s.year as year, s.study_year as study_year, t.name as s_type, e.name as e_type, sp.name as s_programme 
+    FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e, public."study_programme" as sp 
+    WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code AND s.study_programme = sp.evs_code`
     let params =[studentId];
 
     client.query(query, params, (err, res) =>{

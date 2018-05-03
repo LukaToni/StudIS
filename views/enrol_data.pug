@@ -69,10 +69,10 @@ html(lang='en')
                                                     td @mdo
 
                         if(student.name)
-                            form.form-horizontal
+                            form(method="post" action='/enrol').form-horizontal
                                 fieldset
                                     h2 Osebni podatki študenta
-                                    form
+                                    div
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticRegNumber") Vpisna številka
                                             .col-sm-10
@@ -80,63 +80,53 @@ html(lang='en')
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticSurname") Priimek
                                             .col-sm-10
-                                                input#staticSurname.form-control(type="text" readonly="" value=student.surname)
+                                                input#staticSurname.form-control(type="text"  value=student.surname)
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticName") Ime
                                             .col-sm-10
-                                                input#staticName.form-control(type="text" readonly="" value=student.name)
+                                                input#staticName.form-control(type="text"  value=student.name)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticBirth") Datum rojstva
+                                            .col-sm-10
+                                                input#staticBirth.form-control(type="text"  value=student.birth pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}" required  oninput="form.emso.pattern = getEmsoRegex(this.value)") 
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticEMSO") EMŠO
+                                            .col-sm-10
+                                                input#staticEMSO.form-control(type="text"  value=student.emso name='emso') 
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticEmail") Email
                                             .col-sm-10
-                                                input#staticEmail.form-control(type="text" readonly="" value=student.email)
+                                                input#staticEmail.form-control(type="text"  readonly="" value=student.email)
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticPhone") Telefonska številka
                                             .col-sm-10
-                                                input#staticPhone.form-control(type="text" readonly="" value=student.telephone_number)
+                                                input#staticPhone.form-control(type="text"  value=student.telephone_number)
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticCountry") Država
                                             .col-sm-10
-                                                input#staticCountry.form-control(type="text" readonly="" value=student.country)
+                                                select.form-control()
+                                                    each c in country
+                                                        option(value=c.name_slo selected=c.name_slo==student.country)=c.name_slo
+                                                //input#staticCountry.form-control(type="text"  value=student.country)
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticStreet") Ulica
                                             .col-sm-10
-                                                input#staticStreet.form-control(type="text" readonly="" value=student.street)
+                                                input#staticStreet.form-control(type="text"  value=student.street)
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticPost") Pošta
                                             .col-sm-10
-                                                input#staticPost.form-control(type="text" readonly="" value=student.post_office_number)
+                                                select.form-control()
+                                                    each p in post
+                                                        option(value=p.number selected=p.number==student.post_office_number)=p.name
+                                                //input#staticPost.form-control(type="text"  value=student.post_office_number)
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticCounty") Občina
                                             .col-sm-10
-                                                input#staticCounty.form-control(type="text" readonly="" value=student.county)
-                    .col.text-center
-                        if student.name
-                            .container
-                                if type == 'professor' || type == 'clerk'
-                                  button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2csv('students');") Export CSV
-                                  button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2pdf('students');") Export PDF
-                                // Table
-                                table#tableBottom.table.table-sm
-                                // Table
-                                table.table.table-sm
-                                    // Table head
-                                    thead
-                                        tr
-                                            th Letnik
-                                            th Študijsko leto
-                                            th Program
-                                            th Način študija
-                                            th Vrsta vpisa
-                                    // Table head
-                                    // Table body
-                                    tbody
-                                        each enrol in enrols
-                                            tr
-                                                th(scope='row')=enrol.year
-                                                td=enrol.study_year+'/'+(parseInt(enrol.study_year)+1)
-                                                td=enrol.s_programme
-                                                td=enrol.s_type
-                                                td=enrol.e_type
+                                                select.form-control()
+                                                    each c in county
+                                                        option(value=c.name selected=c.name==student.county)=c.name
+                                                //input#staticCounty.form-control(type="text"  value=student.county)
+                                        button.btn-primary.btn(type="submit") Naprej
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
@@ -152,4 +142,4 @@ html(lang='en')
         // MDB core JavaScript
         script(type='text/javascript', src='../js/mdb.min.js')
         //search
-        script(type='text/javascript', src='../js/personal/search.js')
+        script(type='text/javascript', src='../js/enrol/prepare.js')
