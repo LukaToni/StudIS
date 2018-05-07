@@ -126,6 +126,28 @@ html(lang='en')
                                                     each c in county
                                                         option(value=c.name selected=c.name==student.county)=c.name
                                                 //input#staticCounty.form-control(type="text"  value=student.county)
+                                    h2 Podatki o vpisu
+                                        div
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticStudyProgramme") Študijski program
+                                                .col-sm-10
+                                                    input#staticStudyProgramme.form-control(type="text"  readonly="" value="token.studyProgramme")
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticYear") Letnik
+                                                .col-sm-10
+                                                    input#staticYear.form-control(type="text" readonly="" value="token.year")
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticEnrolType") Vrsta vpisa
+                                                .col-sm-10
+                                                    input#staticEnrolType.form-control(type="text" readonly="" value="token.enrolType")
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticStudyType") Način študija
+                                                .col-sm-10
+                                                    input#staticStudyType.form-control(type="text" readonly="" value="token.studyType")
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticStudyForm") Oblika študija?
+                                                .col-sm-10
+                                                    input#staticStudyForm.form-control(type="text" readonly="" value="e-študij")
                                         button.btn-primary.btn(type="submit") Naprej
         // SCRIPTS
         // JQuery
