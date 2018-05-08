@@ -13,10 +13,7 @@ function doImport(req, res) {
     }
     
     var lines = data.split(/\r?\n/);
-        
     var students = [];
-    
-    
     
     while(lines.length > 0) {
       var studentData = lines[0].split(' ');
@@ -52,7 +49,7 @@ function doImport(req, res) {
         if(err.stack) {
           console.log(err.stack);
         }
-        return res.render('student_import', { message: 'Napaka med uvozom, uvoz ni uspešen.' });
+        return res.render('student_import', { message: 'Napaka med uvozom, uvoz ni uspešen.' , type: req.session.type, email: req.session.email});
       } else {
         var studentsMessage = '';
         for(var i = 0; i < students.length; i++) {
@@ -60,7 +57,7 @@ function doImport(req, res) {
           studentsMessage = studentsMessage + '\n{ vpisna stevilka: ' + s.registrationNumber + ' ime: ' + s.name + ' priimek: ' + s.lastName + ' uporabnisko ime/email: ' + s.email + ' geslo: student }'
         }
         
-        return res.render('student_import', { message: 'Uvoz uspešen.', students: studentsNew});
+        return res.render('student_import', { message: 'Uvoz uspešen.', students: studentsNew, type: req.session.type, email: req.session.email});
       }
     });      
   });

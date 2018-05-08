@@ -28,10 +28,7 @@ html(lang='en')
                     ul.nav.navbar-nav.nav-flex-icons.ml-auto
                         li.nav-item.dropdown
                             a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                                if(type == 'student')
-                                    i.fa.fa-user=" "+student.name+" "+student.surname+" ("+student.registration_number+")"
-                                else
-                                    i.fa.fa-user=" "+email
+                                i.fa.fa-user=" "+email
                             .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
                                 a.dropdown-item(href='#') Uredi podatke
                                 a.dropdown-item(href='#') Poveži digitalno potrdilo
@@ -66,7 +63,7 @@ html(lang='en')
                                             td=student.lastName
                                             td=student.email
                                             td=student.registrationNumber
-                                            td
+                                            td student
                                         student
         // SCRIPTS
         // JQuery

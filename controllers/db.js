@@ -211,13 +211,12 @@ function doImport(students, index, endCallback) {
     
   var student = students[index];
   
-  getStudent(student, (getStudentErr, foundStudent) => {
+  getStudent({email: student.email}, (getStudentErr, foundStudent) => {
   
     if(getStudentErr) {
       return endCallback(getStudentErr);
     }
     if(foundStudent) {
-      //TODO update student :)
       students[index].registrationNumber = foundStudent.registration_number;
       updateStudent(student, (err) => {
         if(err) {
