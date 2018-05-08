@@ -41,9 +41,10 @@ html(lang='en')
         .wrapper
             .container
                 .row.mt-5.pt-5
-                    .alert.alert-primary(role='alert')
-                        | Izpoljujete pogoje za vpis.
-                        a.alert-link(href='#') Vpišite se tukaj.
+                    if(student.used == 0)
+                        .alert.alert-primary(role='alert')
+                            | Izpoljujete pogoje za vpis.
+                            a.alert-link(href='/enrol') Vpišite se tukaj.
                     .container
                         if type == 'professor' || type == 'clerk'
                                 .input-group

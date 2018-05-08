@@ -42,9 +42,20 @@ html(lang='en')
             .container
                 .row.mt-5.pt-5
                         .col-4
-                            #list-tab.list-group(role='tablist')
-                            each course in courses
-                                a.course.list-group-item.list-group-item-action=course.name
+                            #available-courses.list-group(role='tablist')
+                                h2 Na voljo
+                                each untakens in untaken
+                                    a.selected.list-group-item.list-group-item-action.course-item(id=untakens.key class=untakens.type==2?'type-two':'' data-kt=untakens.credits)=untakens.name
+                        .col-4
+                            #selected-courses.list-group(role='tablist')
+                                h2 Izbrani 
+                                    span#ktValue=0
+                                each selecteds in selected
+                                    a.selected.list-group-item.list-group-item-action.course-item(id=selecteds.key data-kt=selecteds.credits)=selecteds.name
+                        .col-4
+                            form(action="/enrol/store" method="post")
+                                input(type='text' name="selected")#selected-input
+                                button.btn-primary.btn(type="submit" ) Oddaj vpis
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
@@ -59,5 +70,5 @@ html(lang='en')
         script(type='text/javascript', src='../js/bootstrap.min.js')
         // MDB core JavaScript
         script(type='text/javascript', src='../js/mdb.min.js')
-        //search
-        script(type='text/javascript', src='../js/personal/search.js')
+        //courses
+        script(type='text/javascript', src='../js/enrol/courses.js')

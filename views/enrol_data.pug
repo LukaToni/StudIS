@@ -41,9 +41,6 @@ html(lang='en')
         .wrapper
             .container
                 .row.mt-5.pt-5
-                    .alert.alert-primary(role='alert')
-                        | Izpoljujete pogoje za vpis.
-                        a.alert-link(href='#') Vpišite se tukaj.
                     .container
                         if type == 'professor' || type == 'clerk'
                                 .input-group
@@ -131,23 +128,19 @@ html(lang='en')
                                             .form-group.row
                                                 label.col-sm-2.col-form-label(for="staticStudyProgramme") Študijski program
                                                 .col-sm-10
-                                                    input#staticStudyProgramme.form-control(type="text"  readonly="" value="token.studyProgramme")
+                                                    input#staticStudyProgramme.form-control(type="text"  readonly="" value=student.study_programme)
                                             .form-group.row
                                                 label.col-sm-2.col-form-label(for="staticYear") Letnik
                                                 .col-sm-10
-                                                    input#staticYear.form-control(type="text" readonly="" value="token.year")
+                                                    input#staticYear.form-control(type="text" readonly="" value=student.year)
                                             .form-group.row
                                                 label.col-sm-2.col-form-label(for="staticEnrolType") Vrsta vpisa
                                                 .col-sm-10
-                                                    input#staticEnrolType.form-control(type="text" readonly="" value="token.enrolType")
+                                                    input#staticEnrolType.form-control(type="text" readonly="" value=student.enrol_type)
                                             .form-group.row
                                                 label.col-sm-2.col-form-label(for="staticStudyType") Način študija
                                                 .col-sm-10
-                                                    input#staticStudyType.form-control(type="text" readonly="" value="token.studyType")
-                                            .form-group.row
-                                                label.col-sm-2.col-form-label(for="staticStudyForm") Oblika študija?
-                                                .col-sm-10
-                                                    input#staticStudyForm.form-control(type="text" readonly="" value="e-študij")
+                                                    input#staticStudyType.form-control(type="text" readonly="" value=student.study_type)
                                         button.btn-primary.btn(type="submit") Naprej
         // SCRIPTS
         // JQuery
