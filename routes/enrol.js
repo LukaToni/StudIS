@@ -38,7 +38,25 @@ router.post('/', auth.authenticate, function(req,res,next){
     })
 })
 router.post('/store', auth.authenticate, function(req, res, next){
-    debugger;
+    //debugger;
+    db.getUser({email:req.session.email}, (err, user)=>{
+        if(user){
+            db.getStudentById(user.student_id)
+            .then(student=>{
+                return db.getCoursesId(req.body)
+                .then(data=>{
+                    db.setEnrol(student,data)
+                    .then(()=>{
+                        db.usedToken(student.key)
+                        .then(()=>{
+                            res.redirect('/personal');
+                        })
+                    });
+                })
+            })
+        }
+    })/*
+    //debugger;
     db.getUser({email:req.session.email}, (err, user)=>{
         if(user){
             db.getStudentById(user.student_id)
@@ -53,14 +71,7 @@ router.post('/store', auth.authenticate, function(req, res, next){
                 })
             })
         }
-    })/*
-    db.getCoursesId(req.body)
-        .then(data=>{
-            db.setEnrol(req.session.student,data)
-            .then(()=>{
-                res.redirect('/personal_data');
-            });
-        })*/
+    })*/
 })
 function required(courses){
     return courses.filter(c=>c.type == 0);

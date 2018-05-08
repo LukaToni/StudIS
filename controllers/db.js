@@ -209,6 +209,20 @@ module.exports.getOptionalCourses = function(){
   })
 }
 
+//UPDATE TOKEN
+module.exports.usedToken = function(key){
+  return new Promise((resolve, reject)=>{
+    let query = `UPDATE public."token"
+    SET used = 1
+    WHERE key = $1`
+    let params = [key];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
 //STUDENTS
 module.exports.getStudentById = function(id){
   return new Promise((resolve, reject)=>{
@@ -230,6 +244,19 @@ module.exports.findStudent = function(queryData){
     let params = [queryData];
 
     client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+module.exports.updateStudentAll = function(student){
+  return new Promise((resolve, reject)=>{
+    let query = `UPDATE public."student"
+    SET (name, surname, emso, birth, telephone_number, country, county, post_office_number, street) = ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    WHERE registration_number = $10`
+    let params = [student.name, student.surname, student.emso, student.birth, student.telephone_number, student.country, student.county, 3000, student.street];
+
+    client.query(query,params, (err,res)=>{
       if(err) return reject(err);
       return resolve(res.rows);
     })
