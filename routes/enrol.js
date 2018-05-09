@@ -45,7 +45,7 @@ router.post('/store', auth.authenticate, function(req, res, next){
             .then(student=>{
                 return db.getCoursesId(req.body)
                 .then(data=>{
-                    db.setEnrol(student,data)
+                    db.setEnrolCourses(student,data)
                     .then(()=>{
                         db.usedToken(student.key)
                         .then(()=>{

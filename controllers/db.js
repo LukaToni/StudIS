@@ -182,10 +182,10 @@ module.exports.getCounty = function(){
 //GET (COMPULSORY(obvezni)) COURSES BY YEAR
 module.exports.getCoursesByYear = function(year, study_programme){
   return new Promise((resolve, reject)=>{
-    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cur.module as module
     FROM public."curriculum" as cur, public."courses" as cou 
     WHERE cur.year=$1 AND cur.study_programme=$2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
-    ORDER BY cou.name`
+    ORDER BY cou.module, cou.name`
     let params= [year, study_programme];
 
     client.query(query, params, (err, res)=>{
@@ -197,7 +197,7 @@ module.exports.getCoursesByYear = function(year, study_programme){
 //GET OPTIONAL COURSES
 module.exports.getOptionalCourses = function(){
   return new Promise((resolve, reject)=>{
-    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cou.module as module
     FROM public."curriculum" as cur, public."courses" as cou
     WHERE cur.type=2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
     ORDER BY cou.name`
@@ -288,7 +288,21 @@ module.exports.getCoursesId = function(id){
     })
   })
 }
-//SAVE ENROL
+//SAVE ENROL COURSES (predmete ki jih bo poslusal)
+module.exports.setEnrolCourses = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."course_enrol"(student_id,course_id,enrol_year, active) 
+      VALUES ($1,$2,$3, $4)`;
+      let params = [student.registration_number, data[i].course, 2018, true];
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}
 module.exports.setEnrol = function(student,data){
   return new Promise((resolve, reject)=>{
     for(var i=0; i<data.length; i++){
