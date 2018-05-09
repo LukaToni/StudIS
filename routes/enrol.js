@@ -12,7 +12,9 @@ router.post('/', auth.authenticate, function(req,res,next){
     db.getUser({email: req.session.email}, (err, user)=>{
         if(user){
             if(user.type == 'student'){
-                db.getStudentById(user.student_id)
+                db.updateStudentAll(req.body)
+                .then(()=>{
+                    db.getStudentById(user.student_id)
                 .then(student=>{
                     return db.getCoursesByYear(student.year,student.study_programme)
                         .then(courses=>{return {student,courses}})
@@ -22,17 +24,51 @@ router.post('/', auth.authenticate, function(req,res,next){
                         .then(optional=>{return Object.assign({optional},data)})
                 })
                 .then(data=>{
-                    pretvori(data.student);
-                    res.render('enrol', { 
-                      title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
-                      type: req.session.type,
-                      student:data.student,
-                      enrols:[],
-                      courses:data.courses,
-                      selected:required(data.courses),
-                      untaken:untaken(data.courses).concat(data.optional),
-                    });
+                    if(data.student.enrol_type == 1){
+                        if(data.student.year == 3 && data.student.average == 0){
+                            pretvori(data.student);
+                            res.render('enrol', { 
+                              title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
+                              type: req.session.type,
+                              student:data.student,
+                              enrols:[],
+                              courses:data.courses,
+                              selected:required(data.courses),
+                              untaken:untaken(data.courses).concat(data.optional),
+                            });
+                        }
+                        else{
+                            pretvori(data.student);
+                            res.render('enrol', { 
+                              title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
+                              type: req.session.type,
+                              student:data.student,
+                              enrols:[],
+                              courses:data.courses,
+                              selected:required(data.courses),
+                              untaken:untaken(data.courses).concat(data.optional),
+                            });
+                        }
+                    }
+                    else{
+                        db.getCoursesLastYear(data.student)
+                            .then(coursesLastYear=>{return Object.assign({coursesLastYear},data)})
+                            .then(data=>{
+                                pretvori(data.student);
+                                res.render('enrol', { 
+                                    title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
+                                    type: req.session.type,
+                                    student:data.student,
+                                    enrols:[],
+                                    courses:data.courses,
+                                    selected:data.coursesLastYear,
+                                    untaken:[]
+                                  });
+
+                            })
+                    }
                 });
+                })
             }
         }
     })

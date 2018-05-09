@@ -197,10 +197,9 @@ module.exports.getCoursesByYear = function(year, study_programme){
 //GET OPTIONAL COURSES
 module.exports.getOptionalCourses = function(){
   return new Promise((resolve, reject)=>{
-    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cou.module as module
-    FROM public."curriculum" as cur, public."courses" as cou
-    WHERE cur.type=2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
-    ORDER BY cou.name`
+    let query = `SELECT mod.name as name, mod.type as type, mod.key as key, mod.credits as credits, mod.key as module
+    FROM public."modules" as mod
+    ORDER BY mod.name`
 
     client.query(query, (err, res)=>{
       if(err) return reject(err);
@@ -208,7 +207,36 @@ module.exports.getOptionalCourses = function(){
     })
   })
 }
+//GET LAST YEAR COURSES
+module.exports.getCoursesLastYear = function(student){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cur.module as module
+    FROM public."courses" as cou, public."course_enrol" as enr, public."curriculum" as cur
+    WHERE cou.numberid = enr.course_id AND enr.student_id = $1 AND cou.numberid = cur.course AND enr.enrol_year='2017'
+    ORDER BY cou.module, cou.name`
+    let params= [student.registration_number];
 
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET MODULES
+module.exports.getModules = function(student){
+  return new Promise((resolve, reject)=>{
+    let query = ``
+    let params = [];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+
+
+//TOKEN
 //UPDATE TOKEN
 module.exports.usedToken = function(key){
   return new Promise((resolve, reject)=>{
@@ -249,12 +277,12 @@ module.exports.findStudent = function(queryData){
     })
   })
 }
-module.exports.updateStudentAll = function(student){
+module.exports.updateStudentAll = function(data){
   return new Promise((resolve, reject)=>{
     let query = `UPDATE public."student"
     SET (name, surname, emso, birth, telephone_number, country, county, post_office_number, street) = ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     WHERE registration_number = $10`
-    let params = [student.name, student.surname, student.emso, student.birth, student.telephone_number, student.country, student.county, 3000, student.street];
+    let params = [data.name, data.surname, data.emso, data.birth, data.telephone_number, data.country, data.county, 3000, data.street, data.registration_number];
 
     client.query(query,params, (err,res)=>{
       if(err) return reject(err);
