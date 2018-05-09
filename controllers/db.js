@@ -140,7 +140,9 @@ function updateUser(user, callback) {
 module.exports = {
   'updateUser': updateUser,
   'getUser': getUser,
-  'studentImport': studentImport
+  'studentImport': studentImport,
+  'getCourseEnrols': getCourseEnrols,
+  'getCourses' : getCourses
 };
 
 //STUDENTS
@@ -263,6 +265,58 @@ function doImport(students, index, endCallback) {
     }
   });
 }
+
+function getCourses(userType, professorId) {
+  return new Promise((resolve, reject) =>{
+    
+    if(userType === 'professor') {
+      let query = 'SELECT c.name, c.numberid FROM public.courses AS c ' + 
+              'INNER JOIN public.course_owner AS co ON c.numberid = co.course_id ' +
+              'WHERE co.professor_id = $1';
+      let params = [professorId];
+      
+      client.query(query, params, (err, res) =>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+    if(userType === 'clerk') {
+      query = 'SELECT name, numberid FROM public.courses';
+      
+      client.query(query, (err, res) =>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      });
+    }
+  });
+}
+
+function getCourseEnrols(courseNumberId) {
+  return new Promise((resolve, reject) => {
+    let query = 'SELECT c.numberid AS course_id, c."name" as course_name, ce.enrol_year AS course_enrol_year, ' +
+                  's.registration_number AS registration_number, s.surname as student_surname, s."name" AS student_name, st."name" AS student_enrol_type ' +
+                    'FROM course_enrol ce ' +
+                'INNER JOIN courses c ' +
+                  'ON ce.course_id = c.numberid ' +
+                'INNER JOIN student s ' +
+                  'ON s.registration_number = ce.student_id ' +
+                'INNER JOIN student_enrols se ' +
+                  'ON se.student_registration_number = s.registration_number ' +
+                'INNER JOIN study_type st ' +
+                  'ON st.key = se.study_type ' +
+                'WHERE ce.enrol_year = se.study_year ' +
+                  'AND c.numberid = $1 ';
+    let params = [courseNumberId];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
+
+
+
 
 function currentYear() {
   return new Date().getFullYear().toString().substr(-2);

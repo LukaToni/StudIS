@@ -53,6 +53,8 @@ function login(req, res, next) {
     if(user && req.body.password && bcrypt.compareSync(req.body.password, user.password)) {
     req.session.authenticated = true;
     req.session.id = user.id;
+    req.session.professor_id = user.professor_id;
+    req.session.clerk_id = user.clerk_id;
     req.session.email = user.email;
     req.session.type = user.type;
     res.redirect('/personal');
