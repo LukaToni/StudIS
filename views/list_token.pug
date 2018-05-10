@@ -36,37 +36,52 @@ html(lang='en')
             .container
                 .row.mt-5.pt-5
                     .col.text-center
-                        p= message
-                        if courses
-                            form(method='post')
-                                select(class = 'selectpicker' name = 'selectedCourseNumberId')
-                                    option(selected = '' disabled = '') Predmet
-                                    for course in courses
-                                        option(value=course.numberid)=course.name
-                                input(type='submit', value='Prikazi vpisane studente')
-                        if enrols
+                        p Pregled žetonov
                             table.table.table-sm
                                 thead
                                     tr
-                                        th Šifra predmeta
-                                        th Ime predmeta
-                                        th Študijsko leto
-                                        th Zaporedna številka
-                                        th Vpisna številka
-                                        th Priimek
                                         th Ime
+                                        th Priimek
+                                        th Vpisna številka
+                                        th Program
+                                        th Letnik
                                         th Vrsta vpisa
+                                        th Način študija
+                                        th 
+                                        th 
+                                        th 
+ 
                                 tbody
-                                    each enrol, index in enrols
-                                        tr
-                                            td=enrol.course_id
-                                            td=enrol.course_name
-                                            td=enrol.course_enrol_year
-                                            td=index
-                                            td=enrol.student_registration_number
-                                            td=enrol.student_surname
-                                            td=enrol.student_name
-                                            td=enrol.student_enrol_type
+                                   
+                                    tr
+                                        td moje ime
+                                        td moj priimek
+                                        td 15125215215
+                                        td Program
+                                        td Letnik
+                                        td Vrsta vpisa
+                                        td Način študija
+                                        td 
+                                            button.btn.btn-primary.btn-sm(type='button') Kreiraj
+                                        td 
+                                            button.btn.btn-danger.btn-sm(type='button') Briši
+                                        td 
+                                            button.btn.btn-info.btn-sm(type='button') Uredi
+                                            
+                                    tr
+                                        td moje ime
+                                        td moj priimek
+                                        td 15125215215
+                                        td Program
+                                        td Letnik
+                                        td Vrsta vpisa
+                                        td Način študija
+                                        td 
+                                            button.btn.btn-primary.btn-sm(type='button') Kreiraj
+                                        td 
+                                            button.btn.btn-danger.btn-sm(type='button') Briši
+                                        td 
+                                            button.btn.btn-info.btn-sm(type='button') Uredi        
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
