@@ -197,9 +197,10 @@ module.exports.getCoursesByYear = function(year, study_programme){
 //GET OPTIONAL COURSES
 module.exports.getOptionalCourses = function(){
   return new Promise((resolve, reject)=>{
-    let query = `SELECT mod.name as name, mod.type as type, mod.key as key, mod.credits as credits, mod.key as module
-    FROM public."modules" as mod
-    ORDER BY mod.name`
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cou.module as module
+    FROM public."curriculum" as cur, public."courses" as cou
+    WHERE cur.type=2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
+    ORDER BY cou.name`
 
     client.query(query, (err, res)=>{
       if(err) return reject(err);
@@ -225,10 +226,11 @@ module.exports.getCoursesLastYear = function(student){
 //GET MODULES
 module.exports.getModules = function(student){
   return new Promise((resolve, reject)=>{
-    let query = ``
-    let params = [];
+    let query = `SELECT mod.name as name, mod.type as type, mod.key as key, mod.credits as credits, mod.key as module
+    FROM public."modules" as mod
+    ORDER BY mod.name`
 
-    client.query(query, params, (err, res)=>{
+    client.query(query, (err, res)=>{
       if(err) return reject(err);
       return resolve(res.rows);
     })
@@ -331,6 +333,7 @@ module.exports.setEnrolCourses = function(student,data){
     }
   })
 }
+/*
 module.exports.setEnrol = function(student,data){
   return new Promise((resolve, reject)=>{
     for(var i=0; i<data.length; i++){
@@ -344,7 +347,7 @@ module.exports.setEnrol = function(student,data){
       })
     }
   })
-}
+}*/
 
 //STUDENT IMPORT
 function studentImport(students, callback) {

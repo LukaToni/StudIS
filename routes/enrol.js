@@ -26,19 +26,25 @@ router.post('/', auth.authenticate, function(req,res,next){
                 .then(data=>{
                     if(data.student.enrol_type == 1){
                         if(data.student.year == 3 && data.student.average == 0){
-                            pretvori(data.student);
-                            res.render('enrol', { 
-                              title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
-                              type: req.session.type,
-                              student:data.student,
-                              enrols:[],
-                              courses:data.courses,
-                              selected:required(data.courses),
-                              untaken:untaken(data.courses).concat(data.optional),
+                            db.getModules()
+                                .then(modules=>{return Object.assign({modules},data)})
+                                .then(data=>{
+                                    pretvori(data.student);
+                                    console.log("Naj bi bil 3 letnik z izbiro modulov")
+                                    res.render('enrol', { 
+                                      title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
+                                      type: req.session.type,
+                                      student:data.student,
+                                      enrols:[],
+                                      courses:data.courses,
+                                      selected:required(data.courses),
+                                      untaken:untaken(data.modules).concat(data.optional),
+                                })
                             });
                         }
                         else{
                             pretvori(data.student);
+                            console.log("Naj bi bil redni vpis ali 3 z prosto izbiro")
                             res.render('enrol', { 
                               title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
                               type: req.session.type,
