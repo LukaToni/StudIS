@@ -183,6 +183,21 @@ module.exports.getStudentEnrols = function(studentId){
   })
 }
 
+module.exports.getVpisniPdfData = function(enrolId){
+  
+  return new Promise((resolve, reject) =>{
+    return resolve('notNull');
+    
+    let query = '';
+    let params = [enrolId];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  });
+}
+
 function studentImport(students, callback) {
   const beginQuery = 'BEGIN';
   const commitQuery = 'COMMIT';

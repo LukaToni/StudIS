@@ -4,6 +4,7 @@ var path = require('path');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var pdf = require('express-pdf');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 var fs = require('fs');
@@ -13,6 +14,7 @@ var usersRouter = require('./routes/users');
 var personalRouter = require('./routes/personal_data');
 var studentImportRouter = require('./routes/student_import');
 var studentEnrolsRouter = require('./routes/course_enrols');
+var vpisniPdfRouter = require('./routes/vpisni_to_pdf');
 var loginRouter = require('./routes/login');
 
 var app = express();
@@ -30,6 +32,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+app.use(pdf);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -38,6 +41,7 @@ app.use('/users', usersRouter);
 app.use('/personal', personalRouter);
 app.use('/student_import', studentImportRouter);
 app.use('/student_enrols', studentEnrolsRouter);
+app.use('/vpisni_to_pdf', vpisniPdfRouter);
 app.use('/', loginRouter);
 
 // catch 404 and forward to error handler

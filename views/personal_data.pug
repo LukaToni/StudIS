@@ -128,6 +128,8 @@ html(lang='en')
                                             th Program
                                             th Način študija
                                             th Vrsta vpisa
+                                            if type == 'clerk'
+                                                th Tiskanje vpisnega lista
                                     // Table head
                                     // Table body
                                     tbody
@@ -138,6 +140,9 @@ html(lang='en')
                                                 td=enrol.s_programme
                                                 td=enrol.s_type
                                                 td=enrol.e_type
+                                                if type == 'clerk'
+                                                    td
+                                                        a(href='/vpisni_to_pdf') Natisni
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
