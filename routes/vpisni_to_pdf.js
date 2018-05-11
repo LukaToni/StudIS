@@ -30,6 +30,8 @@ router.get('/:enrolId', function(req, res, next) {
       htmlData = htmlData.replace('$student_vpisna', vpisniPdfData.student_vpisna);
       htmlData = htmlData.replace('$enrol_year', vpisniPdfData.enrol_year + '/' + (parseInt(vpisniPdfData.enrol_year)+1));
       htmlData = htmlData.replace('$student_email', vpisniPdfData.student_email);
+      htmlData = htmlData.replace('$enrol_study_program', vpisniPdfData.study_program_evs + ' - ' + vpisniPdfData.enrol_study_program);
+      htmlData = htmlData.replace('$student_emso', vpisniPdfData.student_emso);
       
       return res.pdfFromHTML({
         filename: 'vpisni_list.pdf',

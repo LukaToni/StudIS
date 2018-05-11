@@ -186,9 +186,11 @@ module.exports.getStudentEnrols = function(studentId){
 module.exports.getVpisniPdfData = function(enrolId){
   
   return new Promise((resolve, reject) =>{    
-    let query = 'select s.email as student_email, se.study_year as enrol_year, s.registration_number as student_vpisna, s."name" as student_name, s.surname as student_surname from student_enrols as se '+
+    let query = 'select sp.evs_code as study_program_evs, s.emso as student_emso, sp.name as enrol_study_program, s.email as student_email, se.study_year as enrol_year, s.registration_number as student_vpisna, s."name" as student_name, s.surname as student_surname from student_enrols as se '+
                 'inner join student as s '+
                   'on s.registration_number = se.student_registration_number '+
+                'inner join study_programme sp '+
+                  'on se.study_programme = sp.evs_code '+
                 'where se."key" = $1 ';
     let params = [enrolId];
     
