@@ -145,10 +145,122 @@ module.exports = {
   'getCourses' : getCourses
 };
 
+//RESIDENTALS
+
+//GET POST
+module.exports.getPostOffice = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."post_office" ORDER BY name'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET COUNTRY
+module.exports.getCountry = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."country" ORDER BY name_slo'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET COUNTY
+module.exports.getCounty = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."county" ORDER BY name'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//COURSES
+//GET (COMPULSORY(obvezni)) COURSES BY YEAR
+module.exports.getCoursesByYear = function(year, study_programme){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cur.module as module
+    FROM public."curriculum" as cur, public."courses" as cou 
+    WHERE cur.year=$1 AND cur.study_programme=$2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
+    ORDER BY cou.module, cou.name`
+    let params= [year, study_programme];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET OPTIONAL COURSES
+module.exports.getOptionalCourses = function(){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cou.module as module
+    FROM public."curriculum" as cur, public."courses" as cou
+    WHERE cur.type=2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
+    ORDER BY cou.name`
+
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET LAST YEAR COURSES
+module.exports.getCoursesLastYear = function(student){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cur.module as module
+    FROM public."courses" as cou, public."course_enrol" as enr, public."curriculum" as cur
+    WHERE cou.numberid = enr.course_id AND enr.student_id = $1 AND cou.numberid = cur.course AND enr.enrol_year='2017'
+    ORDER BY cou.module, cou.name`
+    let params= [student.registration_number];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET MODULES
+module.exports.getModules = function(student){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT mod.name as name, mod.type as type, mod.key as key, mod.credits as credits, mod.key as module
+    FROM public."modules" as mod
+    ORDER BY mod.name`
+
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+
+
+//TOKEN
+//UPDATE TOKEN
+module.exports.usedToken = function(key){
+  return new Promise((resolve, reject)=>{
+    let query = `UPDATE public."token"
+    SET used = 1
+    WHERE key = $1`
+    let params = [key];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
 //STUDENTS
 module.exports.getStudentById = function(id){
   return new Promise((resolve, reject)=>{
-    let query = 'SELECT * FROM public."student" WHERE registration_number=$1';
+    let query = `SELECT *
+    FROM public."student" as student, public."token" as token
+    WHERE registration_number=$1 AND student.token=token.key`;
     let params = [id];
 
     client.query(query, params, (err, res) =>{
@@ -160,10 +272,23 @@ module.exports.getStudentById = function(id){
 module.exports.findStudent = function(queryData){
   return new Promise((resolve, reject)=>{
     queryData = queryData +'%';
-    let query = 'SELECT * FROM public."student" WHERE registration_number LIKE $1 OR name LIKE $1 OR surname LIKE $1'
+    let query = 'SELECT * FROM public."student" WHERE registration_number LIKE $1 OR name LIKE $1 OR surname LIKE $1 ORDER BY surname, name LIMIT 10'
     let params = [queryData];
 
     client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+module.exports.updateStudentAll = function(data){
+  return new Promise((resolve, reject)=>{
+    let query = `UPDATE public."student"
+    SET (name, surname, emso, birth, telephone_number, country, county, post_office_number, street) = ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    WHERE registration_number = $10`
+    let params = [data.name, data.surname, data.emso, data.birth, data.telephone_number, data.country, data.county, 3000, data.street, data.registration_number];
+
+    client.query(query,params, (err,res)=>{
       if(err) return reject(err);
       return resolve(res.rows);
     })
@@ -173,7 +298,9 @@ module.exports.findStudent = function(queryData){
 //STUDENT ENROLS
 module.exports.getStudentEnrols = function(studentId){
   return new Promise((resolve, reject) =>{
-    let query = 'SELECT s.year as year, s.study_year as study_year, s.study_programme as s_programme, t.name as s_type, e.name as e_type FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code' ;
+    let query = `SELECT s.year as year, s.study_year as study_year, t.name as s_type, e.name as e_type, sp.name as s_programme 
+    FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e, public."study_programme" as sp 
+    WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code AND s.study_programme = sp.evs_code`
     let params =[studentId];
 
     client.query(query, params, (err, res) =>{
@@ -182,7 +309,64 @@ module.exports.getStudentEnrols = function(studentId){
     })
   })
 }
+//GET COURSES ID
+module.exports.getCoursesId = function(id){
+  return new Promise((resolve, reject) =>{
+    let query = `SELECT * from public.curriculum WHERE key in (`+id.selected+`)`
 
+    client.query(query, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//SAVE ENROL COURSES (predmete ki jih bo poslusal)
+module.exports.setEnrolCourses = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."course_enrol"(student_id,course_id,enrol_year, active) 
+      VALUES ($1,$2,$3, $4)`;
+      let params = [student.registration_number, data[i].course, 2018, true];
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}
+//SAVE ENROL COURSES WITH MODULES(ni mel proste izbire is so v seznamu moduli brez predmetov)
+module.exports.setEnrolCoursesModules = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."course_enrol"(student_id,course_id,enrol_year, active) 
+      VALUES ($1,$2,$3, $4)`;
+      let params = [student.registration_number, data[i].course, 2018, true];
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}
+/*
+module.exports.setEnrol = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."listen"(student,course,study_year) 
+      VALUES ($1,$2,$3)`;
+      let params = [student.registration_number, data[i].course, '2018/19']
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}*/
+
+//STUDENT IMPORT
 function studentImport(students, callback) {
   const beginQuery = 'BEGIN';
   const commitQuery = 'COMMIT';
