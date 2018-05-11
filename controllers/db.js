@@ -333,6 +333,21 @@ module.exports.setEnrolCourses = function(student,data){
     }
   })
 }
+//SAVE ENROL COURSES WITH MODULES(ni mel proste izbire is so v seznamu moduli brez predmetov)
+module.exports.setEnrolCoursesModules = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."course_enrol"(student_id,course_id,enrol_year, active) 
+      VALUES ($1,$2,$3, $4)`;
+      let params = [student.registration_number, data[i].course, 2018, true];
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}
 /*
 module.exports.setEnrol = function(student,data){
   return new Promise((resolve, reject)=>{

@@ -25,7 +25,7 @@ router.post('/', auth.authenticate, function(req,res,next){
                 })
                 .then(data=>{
                     if(data.student.enrol_type == 1){
-                        if(data.student.year == 3 && data.student.average == 0){
+                        if(data.student.year == 4 && data.student.average == 0){
                             db.getModules()
                                 .then(modules=>{return Object.assign({modules},data)})
                                 .then(data=>{

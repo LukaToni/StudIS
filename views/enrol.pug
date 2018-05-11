@@ -55,7 +55,7 @@ html(lang='en')
                                     a.selected.list-group-item.list-group-item-action.course-item(id=selecteds.key data-kt=selecteds.credits data-type=selecteds.type class=selecteds.type==0?'type-zero':'')=selecteds.name
                         .col-4
                             form(action="/enrol/store" method="post")
-                                input(type='text' name="selected")#selected-input
+                                input(type='text' name="selected" display="none" style="display:none")#selected-input
                                 button.btn-primary.btn#submitButton(type="submit" disabled=true) Oddaj vpis
                             if(student.year != 1)
                                 .alert.alert-primary#kt-limit(role='alert') Vaš predmetnik mora vsebovati 60 kreditnih.
