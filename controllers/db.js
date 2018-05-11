@@ -173,7 +173,7 @@ module.exports.findStudent = function(queryData){
 //STUDENT ENROLS
 module.exports.getStudentEnrols = function(studentId){
   return new Promise((resolve, reject) =>{
-    let query = 'SELECT s.year as year, s.study_year as study_year, s.study_programme as s_programme, t.name as s_type, e.name as e_type FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code' ;
+    let query = 'SELECT s.year as year, s.study_year as study_year, s.study_programme as s_programme, t.name as s_type, e.name as e_type, s.key as s_key FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code' ;
     let params =[studentId];
 
     client.query(query, params, (err, res) =>{
@@ -185,10 +185,11 @@ module.exports.getStudentEnrols = function(studentId){
 
 module.exports.getVpisniPdfData = function(enrolId){
   
-  return new Promise((resolve, reject) =>{
-    return resolve('notNull');
-    
-    let query = '';
+  return new Promise((resolve, reject) =>{    
+    let query = 'select s.email as student_email, se.study_year as enrol_year, s.registration_number as student_vpisna, s."name" as student_name, s.surname as student_surname from student_enrols as se '+
+                'inner join student as s '+
+                  'on s.registration_number = se.student_registration_number '+
+                'where se."key" = $1 ';
     let params = [enrolId];
     
     client.query(query, params, (err, res) =>{

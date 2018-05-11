@@ -22,8 +22,14 @@ router.get('/:enrolId', function(req, res, next) {
       if(!vpisniPdfData) {
         return res.render('pdf_error', { type: req.session.type, email: req.session.email, message: 'Vpisni list ne obstaja.' });
       }
+      vpisniPdfData = vpisniPdfData[0];
       
       //htmlData.replace('$param', vpisniPdfData.param)
+      htmlData = htmlData.replace('$student_name', vpisniPdfData.student_name);
+      htmlData = htmlData.replace('$student_surname', vpisniPdfData.student_surname)
+      htmlData = htmlData.replace('$student_vpisna', vpisniPdfData.student_vpisna);
+      htmlData = htmlData.replace('$enrol_year', vpisniPdfData.enrol_year + '/' + (parseInt(vpisniPdfData.enrol_year)+1));
+      htmlData = htmlData.replace('$student_email', vpisniPdfData.student_email);
       
       return res.pdfFromHTML({
         filename: 'vpisni_list.pdf',
@@ -40,6 +46,7 @@ router.get('/:enrolId', function(req, res, next) {
       }); 
     },
     (err) => {
+      console.log(err);
       return res.render('pdf_error', { type: req.session.type, email: req.session.email, message: 'Napaka med pobiranjem podatkov.' });
     })
   });
