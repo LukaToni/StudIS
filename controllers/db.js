@@ -298,7 +298,7 @@ module.exports.updateStudentAll = function(data){
 //STUDENT ENROLS
 module.exports.getStudentEnrols = function(studentId){
   return new Promise((resolve, reject) =>{
-    let query = `SELECT s.year as year, s.study_year as study_year, t.name as s_type, e.name as e_type, sp.name as s_programme 
+    let query = `SELECT s.year as year, s.study_year as study_year, t.name as s_type, e.name as e_type, sp.name as s_programme , s.key as s_key
     FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e, public."study_programme" as sp 
     WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code AND s.study_programme = sp.evs_code`
     let params =[studentId];
@@ -365,6 +365,24 @@ module.exports.setEnrol = function(student,data){
     }
   })
 }*/
+
+module.exports.getVpisniPdfData = function(enrolId){
+  
+  return new Promise((resolve, reject) =>{    
+    let query = 'select sp.evs_code as study_program_evs, s.emso as student_emso, sp.name as enrol_study_program, s.email as student_email, se.study_year as enrol_year, s.registration_number as student_vpisna, s."name" as student_name, s.surname as student_surname from student_enrols as se '+
+                'inner join student as s '+
+                  'on s.registration_number = se.student_registration_number '+
+                'inner join study_programme sp '+
+                  'on se.study_programme = sp.evs_code '+
+                'where se."key" = $1 ';
+    let params = [enrolId];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  });
+}
 
 //STUDENT IMPORT
 function studentImport(students, callback) {
