@@ -284,10 +284,15 @@ module.exports.findStudent = function(queryData){
 module.exports.updateStudentAll = function(data){
   return new Promise((resolve, reject)=>{
     let query = `UPDATE public."student"
-    SET (name, surname, emso, birth, telephone_number, country, county, post_office_number, street) = ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    SET (name, surname, emso, birth, telephone_number, country, county, post_office_number, street, street_post, country_post, county_post, post_post) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $11, $12, $13, $14)
     WHERE registration_number = $10`
-    let params = [data.name, data.surname, data.emso, data.birth, data.telephone_number, data.country, data.county, 3000, data.street, data.registration_number];
-
+    let birth =   "";
+    if(data.emso[4] == '9')
+      birth = data.emso[0] + data.emso[1] + "." + data.emso[2] + data.emso[3] + ".1" + data.emso[4] + data.emso[5] + data.emso[6]; 
+    else
+      birth = data.emso[0] + data.emso[1] + "." + data.emso[2] + data.emso[3] + ".2" + data.emso[4] + data.emso[5] + data.emso[6];
+    let params = [data.name, data.surname, data.emso, birth, data.telephone_number, data.country, data.county, 3000, data.street, data.registration_number, data.street_post, data.country_post, data.county_post, data.post_post];
+    
     client.query(query,params, (err,res)=>{
       if(err) return reject(err);
       return resolve(res.rows);

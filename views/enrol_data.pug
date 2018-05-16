@@ -66,6 +66,7 @@ html(lang='en')
                                                     td @mdo
 
                         if(student.name)
+                            .alert.alert-primary#emso-info(role='alert' style="display:none") EMŠO ni pravilna.
                             form(method="post" action='/enrol').form-horizontal
                                 fieldset
                                     h2 Osebni podatki študenta
@@ -81,11 +82,7 @@ html(lang='en')
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticName") Ime
                                             .col-sm-10
-                                                input#staticName.form-control(type="text"  value=student.name name='name')
-                                        .form-group.row
-                                            label.col-sm-2.col-form-label(for="staticBirth") Datum rojstva
-                                            .col-sm-10
-                                                input#staticBirth.form-control(type="text"  value=student.birth name='birth' pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}" required  oninput="form.emso.pattern = getEmsoRegex(this.value)") 
+                                                input#staticName.form-control(type="text"  value=student.name name='name') 
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticEMSO") EMŠO
                                             .col-sm-10
@@ -98,13 +95,7 @@ html(lang='en')
                                             label.col-sm-2.col-form-label(for="staticPhone") Telefonska številka
                                             .col-sm-10
                                                 input#staticPhone.form-control(type="text"  value=student.telephone_number name='telephone_number')
-                                        .form-group.row
-                                            label.col-sm-2.col-form-label(for="staticCountry") Država
-                                            .col-sm-10
-                                                select.form-control(name='country')
-                                                    each c in country
-                                                        option(value=c.name_slo selected=c.name_slo==student.country name='country')=c.name_slo
-                                                //input#staticCountry.form-control(type="text"  value=student.country)
+                                        h2 Naslov stalnega bivališča
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticStreet") Ulica
                                             .col-sm-10
@@ -123,6 +114,39 @@ html(lang='en')
                                                     each c in county
                                                         option(value=c.name name='county' selected=c.name==student.county)=c.name
                                                 //input#staticCounty.form-control(type="text"  value=student.county)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticCountry") Država
+                                            .col-sm-10
+                                                select.form-control(name='country')
+                                                    each c in country
+                                                        option(value=c.name_slo selected=c.name_slo==student.country name='country')=c.name_slo
+                                                //input#staticCountry.form-control(type="text"  value=student.country)
+                                        h2 Naslov za prejemanje pošte
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticStreetPost") Ulica
+                                            .col-sm-10
+                                                input#staticStreetPost.form-control(type="text" name='street_post' value=student.street_post)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticPostPost") Pošta
+                                            .col-sm-10
+                                                select.form-control(name='post_post')
+                                                    each p in post
+                                                        option(value=p.number name='post_post' selected=p.number==student.post_post)=p.name
+                                                //input#staticPost.form-control(type="text"  value=student.post_office_number)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticCountyPost") Občina
+                                            .col-sm-10
+                                                select.form-control(name='county_post')
+                                                    each c in county
+                                                        option(value=c.name name='county_post' selected=c.name==student.county_post)=c.name
+                                                //input#staticCounty.form-control(type="text"  value=student.county)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticCountryPost") Država
+                                            .col-sm-10
+                                                select.form-control(name='country_post')
+                                                    each c in country
+                                                        option(value=c.name_slo selected=c.name_slo==student.country_post name='country_post')=c.name_slo
+                                                //input#staticCountry.form-control(type="text"  value=student.country)
                                     h2 Podatki o vpisu
                                         div
                                             .form-group.row
