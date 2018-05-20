@@ -259,8 +259,8 @@ module.exports.usedToken = function(key){
 module.exports.getStudentById = function(id){
   return new Promise((resolve, reject)=>{
     let query = `SELECT *
-    FROM public."student" as student, public."token" as token
-    WHERE registration_number=$1 AND student.token=token.key`;
+    FROM public."student" as student
+    WHERE registration_number=$1`;
     let params = [id];
 
     client.query(query, params, (err, res) =>{
@@ -269,6 +269,22 @@ module.exports.getStudentById = function(id){
     })
   })
 }
+//GET TOKEN OF STUDENT
+module.exports.getTokenByKey = function(key){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT *
+    FROM public."token" as token
+    WHERE token.key = $1`
+    let params = [key];
+
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows[0]);
+    })
+  })
+}
+
+//FIND STUDENT
 module.exports.findStudent = function(queryData){
   return new Promise((resolve, reject)=>{
     queryData = queryData +'%';
@@ -281,6 +297,7 @@ module.exports.findStudent = function(queryData){
     })
   })
 }
+//UPDATE ALL INFO OF STUDENT
 module.exports.updateStudentAll = function(data){
   return new Promise((resolve, reject)=>{
     let query = `UPDATE public."student"

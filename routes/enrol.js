@@ -16,20 +16,25 @@ router.post('/', auth.authenticate, function(req,res,next){
                 .then(()=>{
                     db.getStudentById(user.student_id)
                 .then(student=>{
-                    return db.getCoursesByYear(student.year,student.study_programme)
-                        .then(courses=>{return {student,courses}})
+                    return db.getTokenByKey(student.token)
+                        .then(token=>{return Object.assign({token},{student})})
+                })
+                .then(data=>{
+                    return db.getCoursesByYear(data.token.year,data.token.study_programme)
+                        .then(courses=>{return Object.assign({courses},data)})
                 })
                 .then(data=>{
                     return db.getOptionalCourses()
                         .then(optional=>{return Object.assign({optional},data)})
                 })
+               
                 .then(data=>{
-                    if(data.student.enrol_type == 1){
-                        if(data.student.year == 4 && data.student.average == 0){
+                    if(data.token.enrol_type == 1){
+                        if(data.token.year == 4 && data.token.average == 0){
                             db.getModules()
                                 .then(modules=>{return Object.assign({modules},data)})
                                 .then(data=>{
-                                    pretvori(data.student);
+                                    pretvori(data.token);
                                     console.log("Naj bi bil 3 letnik z izbiro modulov")
                                     res.render('enrol', { 
                                       title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
@@ -39,11 +44,12 @@ router.post('/', auth.authenticate, function(req,res,next){
                                       courses:data.courses,
                                       selected:required(data.courses),
                                       untaken:untaken(data.modules).concat(data.optional),
+                                      token:data.token
                                 })
                             });
                         }
                         else{
-                            pretvori(data.student);
+                            pretvori(data.token);
                             console.log("Naj bi bil redni vpis ali 3 z prosto izbiro")
                             res.render('enrol', { 
                               title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
@@ -53,6 +59,7 @@ router.post('/', auth.authenticate, function(req,res,next){
                               courses:data.courses,
                               selected:required(data.courses),
                               untaken:untaken(data.courses).concat(data.optional),
+                              token:data.token
                             });
                         }
                     }
@@ -60,7 +67,7 @@ router.post('/', auth.authenticate, function(req,res,next){
                         db.getCoursesLastYear(data.student)
                             .then(coursesLastYear=>{return Object.assign({coursesLastYear},data)})
                             .then(data=>{
-                                pretvori(data.student);
+                                pretvori(data.token);
                                 res.render('enrol', { 
                                     title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
                                     type: req.session.type,
@@ -68,7 +75,8 @@ router.post('/', auth.authenticate, function(req,res,next){
                                     enrols:[],
                                     courses:data.courses,
                                     selected:data.coursesLastYear,
-                                    untaken:[]
+                                    untaken:[],
+                                    token:data.token
                                   });
 
                             })
@@ -124,35 +132,35 @@ function untaken(courses){
 function optional(courses){
     return courses.filter(c=>c.type == 2);
 }
-function pretvori(student){
-    switch (student.study_programme) {
+function pretvori(token){
+    switch (token.study_programme) {
         case 1000468:
-        student.study_programme = 'Računalništvo in informatika (UNI)';
+        token.study_programme = 'Računalništvo in informatika (UNI)';
             break;
         case 1000470:
-        student.study_programme = 'Računalništvo in informatika (VS)';
+        token.study_programme = 'Računalništvo in informatika (VS)';
         default:
             break;
     }
-    switch (student.enrol_type) {
+    switch (token.enrol_type) {
         case 1:
-        student.enrol_type = 'Prvi vpis'    
+        token.enrol_type = 'Prvi vpis'    
             break;
         case 2:
-        student.enrol_type = 'Ponovni vpis'    
+        token.enrol_type = 'Ponovni vpis'    
             break;
         case 3:
-            student.enrol_type = 'Absolvent'    
+            token.enrol_type = 'Absolvent'    
                 break;    
         default:
             break;
     }
-    switch (student.study_type) {
+    switch (token.study_type) {
         case 1:
-        student.study_type = 'Redni'    
+        token.study_type = 'Redni'    
             break;
         case 2:
-        student.study_type = 'Izredni'    
+        token.study_type = 'Izredni'    
             break;    
         default:
             break;
@@ -177,7 +185,11 @@ router.get('/prepare', auth.authenticate, function(req, res, next) {
                         .then(county=>{return Object.assign({county},data)})
                 })
                 .then(data=>{
-                    pretvori(data.student);
+                    return db.getTokenByKey(data.student.token)
+                        .then(token=>{return Object.assign({token},data)})
+                })
+                .then(data=>{
+                    pretvori(data.token);
                     res.render('enrol_data', { 
                       title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
                       type: req.session.type,
@@ -186,7 +198,8 @@ router.get('/prepare', auth.authenticate, function(req, res, next) {
                       courses:[],
                       post:data.post,
                       country:data.country,
-                      county:data.county
+                      county:data.county,
+                      token:data.token
                     });
                 });
 
