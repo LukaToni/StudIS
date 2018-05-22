@@ -103,11 +103,11 @@ html(lang='en')
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticPost") Pošta
                                             .col-sm-10
-                                                select.form-control(name='post')
+                                                select#staticPost.form-control(name='post')
                                                     each p in post
                                                         option(value=p.number name='post' selected=p.number==student.post_office_number)=p.name
                                                 //input#staticPost.form-control(type="text"  value=student.post_office_number)
-                                        .form-group.row
+                                        .form-group.row#staticCounty
                                             label.col-sm-2.col-form-label(for="staticCounty") Občina
                                             .col-sm-10
                                                 select.form-control(name='county')
@@ -117,7 +117,7 @@ html(lang='en')
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticCountry") Država
                                             .col-sm-10
-                                                select.form-control(name='country')
+                                                select#staticCountry.form-control(name='country')
                                                     each c in country
                                                         option(value=c.name_slo selected=c.name_slo==student.country name='country')=c.name_slo
                                                 //input#staticCountry.form-control(type="text"  value=student.country)

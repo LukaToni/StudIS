@@ -38,6 +38,10 @@ var priimek = $('#staticSurname').val();
 var emso = $('#staticEMSO').val();
 var telefon = $('#staticPhone').val();
 var ulicaPosta = $('#staticStreetPost').val();
+var drzava = $('#staticCountry').val();
+if(drzava != 'Slovenija'){
+    $('#staticCounty').css('display','none');
+}
 
     //$('#submitButton').prop("disabled", false);
 /*

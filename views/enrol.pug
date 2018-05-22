@@ -43,7 +43,7 @@ html(lang='en')
                 .row.mt-5.pt-5
                         .col-4
                             #available-courses.list-group(role='tablist')
-                                if(student.year != 1)
+                                if(token.year != 1)
                                     h2 Na voljo
                                     each untakens in untaken
                                         a.selected.list-group-item.list-group-item-action.course-item(id=untakens.key class=untakens.type==2?'type-two':'' data-module=untakens.module data-kt=untakens.credits data-type=untakens.type)=untakens.name
@@ -57,12 +57,15 @@ html(lang='en')
                             form(action="/enrol/store" method="post")
                                 input(type='text' name="selected" display="none" style="display:none")#selected-input
                                 button.btn-primary.btn#submitButton(type="submit" disabled=true) Oddaj vpis
-                            if(student.year != 1)
+                            if(token.year != 1)
                                 .alert.alert-primary#kt-limit(role='alert') Vaš predmetnik mora vsebovati 60 kreditnih.
-                            if(student.year == 2)
+                            if(token.year == 2)
                                 .alert.alert-primary#kt-limit(role='alert') Vaš predmetnik mora vsebovati vsaj en strokovni predmet.
-                            if(student.year == 3)
-                                .alert.alert-primary#kt-limit(role='alert') Vaš predmetnik mora vsebovati dva modula in en izbirni predmet.
+                            if(token.year == 3)
+                                if(token.average == 0)
+                                    .alert.alert-primary#kt-limit(role='alert') Vaš predmetnik mora vsebovati dva modula in en izbirni predmet.
+                                else
+                                    .alert.alert-primary.average#kt-limit(role='alert') Imate dovolj visoko povprečno oceno, da lahko prosto izbirate predmete.
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
