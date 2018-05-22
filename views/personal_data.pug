@@ -47,7 +47,7 @@ html(lang='en')
                 .row.mt-5.pt-5
                     if(student)
                         if(student.token)
-                            if(token.used == 0)
+                            if(student.token.used == 0)
                                 .alert.alert-primary(role='alert')
                                     | Izpoljujete pogoje za vpis.
                                     a.alert-link(href='/enrol') Vpišite se tukaj.
