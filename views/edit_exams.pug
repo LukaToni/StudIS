@@ -1,0 +1,90 @@
+﻿doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(http-equiv='x-ua-compatible', content='ie=edge')
+        title StudIS
+        // Font Awesome
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        // Bootstrap core CSS
+        link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+        // Material Design Bootstrap
+        link(href='../stylesheets/mdb.min.css', rel='stylesheet')
+        // Your custom styles (optional)
+        link(href='../stylesheets/style.css', rel='stylesheet')
+        // Font awesome
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(href='../stylesheets/personal.css', rel='stylesheet')
+    body
+        // Main Navigation
+        header
+            nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.red.scrolling-navbar
+                a.navbar-brand(href='')
+                    strong StudIS
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarSupportedContent.collapse.navbar-collapse
+                    ul.nav.navbar-nav.nav-flex-icons.ml-auto
+                        li.nav-item.dropdown
+                            a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                                i.fa.fa-user=" "+email
+                            .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
+                                a.dropdown-item(href='/personal') Pojdi nazaj
+                                a.dropdown-item(href='/logout') Odjava
+        .wrapper
+            .container
+                .row.mt-5.pt-5
+                    .col.text-center
+                        p= examErr
+                        p= message
+                        if !courses
+                            br
+                            form(action='/edit_exams/add' method='post')
+                                span Datum, ura, minute:
+                                input(type='date', name='date', placeholder='DD/MM/YYYY').col-lg-2
+                                input(type='text', name='hour', placeholder='HH24').col-lg-1
+                                input(type='text', name='minutes', placeholder='MI').col-lg-1
+                                input(hidden='', name='course_id', value=course_id)
+                                input(type='submit', value='Dodaj izpitni rok')
+                            br
+                    
+                        if courses
+                            form(method='post')
+                                select(class = 'selectpicker' name = 'selectedCourseNumberId')
+                                    option(selected = '' disabled = '') Predmet
+                                    for course in courses
+                                        option(value=course.numberid)=course.name
+                                input(type='submit', value='Prikazi izpitne roke')
+                        if exams
+                            p.lead Seznam izpitnih rokov:
+                        
+                            button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2csv('exams');") Export CSV
+                            button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2pdf('exams');") Export PDF
+                            
+                            table.table.table-sm#tableSearch
+                                thead
+                                    tr
+                                        th Zaporedna številka
+                                        th Datum
+                                tbody
+                                    each exam, index in exams
+                                        tr
+                                            td=index + 1
+                                            td=exam.date.toLocaleString('en-GB', {hour12: false, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'})
+        // SCRIPTS
+        // JQuery
+        script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
+        // for generating export tables csv, pdf
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.min.js")
+        script(type='text/javascript', src='../js/personal/table2pdf.js')
+        script(type='text/javascript', src='../js/table2csv.js')
+        // Bootstrap tooltips
+        script(type='text/javascript', src='../js/popper.min.js')
+        // Bootstrap core JavaScript
+        script(type='text/javascript', src='../js/bootstrap.min.js')
+        // MDB core JavaScript
+        script(type='text/javascript', src='../js/mdb.min.js')
+        //search
+        script(type='text/javascript', src='../js/personal/search.js')

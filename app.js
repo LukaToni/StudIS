@@ -15,6 +15,7 @@ var personalRouter = require('./routes/personal_data');
 var studentImportRouter = require('./routes/student_import');
 var studentEnrolsRouter = require('./routes/course_enrols');
 var vpisniPdfRouter = require('./routes/vpisni_to_pdf');
+var editExamsRouter = require('./routes/edit_exams');
 var loginRouter = require('./routes/login');
 var enrolRouter = require('./routes/enrol');
 
@@ -43,6 +44,7 @@ app.use('/personal', personalRouter);
 app.use('/student_import', studentImportRouter);
 app.use('/student_enrols', studentEnrolsRouter);
 app.use('/vpisni_to_pdf', vpisniPdfRouter);
+app.use('/edit_exams', editExamsRouter);
 app.use('/', loginRouter);
 app.use('/enrol', enrolRouter);
 
