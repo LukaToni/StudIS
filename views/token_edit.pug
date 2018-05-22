@@ -36,45 +36,48 @@ html(lang='en')
             .container
                 .row.mt-5.pt-5
                     .col.text-center
-                        p Pregled Žetonov 
-                        //p= JSON.stringify(students_noTokens)
-                        //p= JSON.stringify(students_haveTokens)
+                        p Pregled Žetonov
                         table.table.table-sm
                             thead
                                 tr
                                     th Ime
                                     th Priimek
                                     th Vpisna številka
-                                    th Leto
                                     th Program
+                                    th Letnik
                                     th Vrsta vpisa
-                                    th Vrsta študija
+                                    th Način študija
+                                    th 
                                     th 
                                     th 
 
                             tbody
-                                each sht in students_haveTokens 
-                                    tr
-                                        td= sht.name
-                                        td= sht.surname
-                                        td= sht.registration_number
-                                        td= sht.year
-                                        td= sht.programme_type
-                                        td= sht.enrol_type
-                                        td= sht.study_type
-                                        td 
-                                            button.btn.btn-danger.btn-sm(type='button') Briši
-                                        td 
-                                            button.btn.btn-info.btn-sm(type='button') Uredi
-                                            
-                                each snt in students_noTokens 
-                                    tr
-                                        td= snt.name
-                                        td= snt.surname
-                                        td= snt.registration_number
-                                        td 
-                                            button.btn.btn-success.btn-sm(type='button') Ustvari
-                                            
+                               
+                                tr
+                                    td moje ime
+                                    td moj priimek
+                                    td 15125215215
+                                    td Program
+                                    td Letnik
+                                    td Vrsta vpisa
+                                    td Način študija
+                                    td 
+                                        button.btn.btn-danger.btn-sm(type='button') Briši
+                                    td 
+                                        button.btn.btn-info.btn-sm(type='button') Uredi
+                                        
+                                tr
+                                    td moje ime
+                                    td moj priimek
+                                    td 15125215215
+                                    td Program
+                                    td Letnik
+                                    td Vrsta vpisa
+                                    td Način študija
+                                    td 
+                                        button.btn.btn-danger.btn-sm(type='button') Briši
+                                    td 
+                                        button.btn.btn-info.btn-sm(type='button') Uredi        
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')

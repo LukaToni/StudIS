@@ -142,7 +142,9 @@ module.exports = {
   'getUser': getUser,
   'studentImport': studentImport,
   'getCourseEnrols': getCourseEnrols,
-  'getCourses' : getCourses
+  'getCourses' : getCourses,
+  'getStudentsWithNoTokens': getStudentsWithNoTokens,
+  'getStudentsWithTokens': getStudentsWithTokens,
 };
 
 //STUDENTS
@@ -314,6 +316,44 @@ function getCourseEnrols(courseNumberId) {
     });
   });
 }
+
+function getStudentsWithTokens() {
+  return new Promise((resolve, reject) => {
+    let query = "SELECT t.key, t.used, t.verified, t.year, t.average," +
+                "  p.name as programme_type, p.level as programme_level," +
+                "  s.emso, s.name, s.surname, s.registration_number," +
+                "  e.name as enrol_type," +
+                "  st.name as study_type from token t" +
+                "  INNER JOIN study_programme p" +
+                "  On study_programme = p.evs_code" +
+                "  INNER JOIN student s" +
+                "  ON student_id = s.registration_number" +
+                "  INNER JOIN enrol_type e" +
+                "  ON enrol_type = e.code" +
+                "  INNER JOIN study_type st" +
+                "  ON study_type = st.key";
+    let params = [];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
+
+function getStudentsWithNoTokens() {
+  return new Promise((resolve, reject) => {
+    let query = "  SELECT s.emso, s.name, s.surname, s.registration_number from student s" +
+                "  WHERE token IS NULL";
+    let params = [];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
+
 
 
 
