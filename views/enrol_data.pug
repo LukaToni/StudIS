@@ -100,7 +100,7 @@ html(lang='en')
                                             label.col-sm-2.col-form-label(for="staticStreet") Ulica
                                             .col-sm-10
                                                 input#staticStreet.form-control(type="text" name='street' value=student.street)
-                                        .form-group.row
+                                        .form-group.row#staticPost
                                             label.col-sm-2.col-form-label(for="staticPost") Pošta
                                             .col-sm-10
                                                 select#staticPost.form-control(name='post')
@@ -122,11 +122,11 @@ html(lang='en')
                                                         option(value=c.name_slo selected=c.name_slo==student.country name='country')=c.name_slo
                                                 //input#staticCountry.form-control(type="text"  value=student.country)
                                         h2 Naslov za prejemanje pošte
-                                        .form-group.row
+                                        .form-group.row#staticPostPost
                                             label.col-sm-2.col-form-label(for="staticStreetPost") Ulica
                                             .col-sm-10
                                                 input#staticStreetPost.form-control(type="text" name='street_post' value=student.street_post)
-                                        .form-group.row
+                                        .form-group.row#staticCountyPost
                                             label.col-sm-2.col-form-label(for="staticPostPost") Pošta
                                             .col-sm-10
                                                 select.form-control(name='post_post')
@@ -143,7 +143,7 @@ html(lang='en')
                                         .form-group.row
                                             label.col-sm-2.col-form-label(for="staticCountryPost") Država
                                             .col-sm-10
-                                                select.form-control(name='country_post')
+                                                select#staticCountryPost.form-control(name='country_post')
                                                     each c in country
                                                         option(value=c.name_slo selected=c.name_slo==student.country_post name='country_post')=c.name_slo
                                                 //input#staticCountry.form-control(type="text"  value=student.country)

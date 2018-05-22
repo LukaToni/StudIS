@@ -15,12 +15,28 @@ function onDataChange(){
     emso = $('#staticEMSO').val();
     telefon = $('#staticPhone').val();
     ulicaPosta = $('#staticStreetPost').val();
+    drzava = $('#staticCountry').val();
+    drzavaPosta = $('#staticCountryPost').val();
 
     if(ulica && ime && priimek && emso && telefon){
         $('#submitButton').prop("disabled", false);
     }
     else{
         $('#submitButton').prop("disabled", true);
+    }
+    if(drzava != 'Slovenija'){
+        $('#staticCounty').css('display','none');
+        $('#staticPost').css('display','none');
+    }else {
+        $('#staticCounty').css('display','');
+        $('#staticPost').css('display','');
+    }
+    if(drzavaPosta != 'Slovenija'){
+        $('#staticCountyPost').css('display','none');
+        $('#staticPostPost').css('display','none');
+    }else {
+        $('#staticCountyPost').css('display','');
+        $('#staticPostPost').css('display','');
     }
 }
 
@@ -31,6 +47,8 @@ $('#staticName').on('change',onDataChange);
 $('#staticSurname').on('change',onDataChange);
 $('#staticEMSO').on('change',onDataChange);
 $('#staticPhone').on('change',onDataChange);
+$('#staticCountry').on('change',onDataChange);
+$('#staticCountryPost').on('change',onDataChange);
 
 var ulica = $('#staticStreet').val();
 var ime = $('#staticName').val();
@@ -39,8 +57,14 @@ var emso = $('#staticEMSO').val();
 var telefon = $('#staticPhone').val();
 var ulicaPosta = $('#staticStreetPost').val();
 var drzava = $('#staticCountry').val();
+var drzavaPosta = $('#staticCountryPost').val();
 if(drzava != 'Slovenija'){
     $('#staticCounty').css('display','none');
+    $('#staticPost').css('display','none');
+}
+if(drzavaPosta != 'Slovenija'){
+    $('#staticCountyPost').css('display','none');
+    $('#staticPostPost').css('display','none');
 }
 
     //$('#submitButton').prop("disabled", false);
