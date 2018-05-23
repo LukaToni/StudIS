@@ -12,7 +12,7 @@ html(lang='en')
         // Material Design Bootstrap
         link(href='../stylesheets/mdb.min.css', rel='stylesheet')
         // Your custom styles (optional)
-        link(href='../stylesheets/style.css', rel='stylesheet')
+        //link(href='../stylesheets/style.css', rel='stylesheet')
         // Font awesome
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
         link(href='../stylesheets/personal.css', rel='stylesheet')
@@ -35,49 +35,68 @@ html(lang='en')
         .wrapper
             .container
                 .row.mt-5.pt-5
-                    .col.text-center
-                        p Pregled Žetonov
-                        table.table.table-sm
-                            thead
-                                tr
-                                    th Ime
-                                    th Priimek
-                                    th Vpisna številka
-                                    th Program
-                                    th Letnik
-                                    th Vrsta vpisa
-                                    th Način študija
-                                    th 
-                                    th 
-                                    th 
-
-                            tbody
-                               
-                                tr
-                                    td moje ime
-                                    td moj priimek
-                                    td 15125215215
-                                    td Program
-                                    td Letnik
-                                    td Vrsta vpisa
-                                    td Način študija
-                                    td 
-                                        button.btn.btn-danger.btn-sm(type='button') Briši
-                                    td 
-                                        button.btn.btn-info.btn-sm(type='button') Uredi
+                    .col
+                        h1 Uredi žeton
+                        // p= JSON.stringify(token)
+                        form(action='update?tokenId='+tokenId, method='post')
+                            legend Podatki študenta
+                            .form-group
+                                label(for='name') Ime
+                                input#name.form-control(disabled, value=token.name)
+                            .form-group
+                                label(for='surname') Priimek
+                                input#surname.form-control(disabled, value=token.surname)
+                            .form-group
+                                label(for='registration_number') Vpisna Številka
+                                input#registration_number.form-control(disabled, name='registration_number' value=token.registration_number)
+                            legend Parametri žetona
+                            .form-group
+                                label Leto
+                                select.form-control(name='year')
+                                    each year in years
+                                        - var selected = year.value == token.year
+                                        option(value=year.value, selected=selected)= year.name
+                                    
+                            .form-group
+                                label Način vpisa
+                                select.form-control(name='enrol_type')
+                                    each enrol_type in enrol_types
+                                        - var selected = enrol_type.value == token.enrol_type_key
+                                        option(value=enrol_type.value, selected=selected)= enrol_type.name
                                         
-                                tr
-                                    td moje ime
-                                    td moj priimek
-                                    td 15125215215
-                                    td Program
-                                    td Letnik
-                                    td Vrsta vpisa
-                                    td Način študija
-                                    td 
-                                        button.btn.btn-danger.btn-sm(type='button') Briši
-                                    td 
-                                        button.btn.btn-info.btn-sm(type='button') Uredi        
+                            .form-group
+                                label Način Študija
+                                select.form-control(name='study_type')
+                                    each study_type in study_types
+                                        - var selected = study_type.value == token.study_type_key
+                                        option(value=study_type.value, selected=selected)= study_type.name
+                                        
+                            .form-group
+                                label Študijski Program
+                                select.form-control(name='study_programme')
+                                    each study_programme in study_programmes
+                                        - var selected = study_programme.value == token.study_programme_key
+                                        option(value=study_programme.value, selected=selected)= study_programme.name
+                            .form-check
+                                label.form-check-label
+                                    input.form-check-input(type='checkbox', name='used', checked=!!+token.used)
+                                    |       Žeton uporabljen
+                            .form-check
+                                label.form-check-label
+                                    input.form-check-input(type='checkbox', name='verified', checked=!!+token.verified)
+                                    |       Žeton Potrjen
+                            br
+                            button.btn.btn-primary Potrdi Spremembe
+                            a(href='tokens/list')
+                                button.btn.btn-secondary Prekliči
+                            br
+                            br
+                            br
+                            br
+                            br
+
+
+                                            
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')

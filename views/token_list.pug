@@ -62,18 +62,21 @@ html(lang='en')
                                         td= sht.programme_type
                                         td= sht.enrol_type
                                         td= sht.study_type
-                                        td 
-                                            button.btn.btn-danger.btn-sm(type='button') Briši
-                                        td 
-                                            button.btn.btn-info.btn-sm(type='button') Uredi
+                                        td
+                                            a(href='delete?tokenId='+sht.key)
+                                                button.btn.btn-danger.btn-sm(type='button') Briši
+                                        td
+                                            a(href='edit?tokenId='+sht.key)
+                                                button.btn.btn-info.btn-sm(type='button') Uredi
                                             
                                 each snt in students_noTokens 
                                     tr
                                         td= snt.name
                                         td= snt.surname
                                         td= snt.registration_number
-                                        td 
-                                            button.btn.btn-success.btn-sm(type='button') Ustvari
+                                        td
+                                            a(href='create?registration_number='+snt.registration_number)
+                                                button.btn.btn-success.btn-sm(type='button') Ustvari
                                             
         // SCRIPTS
         // JQuery

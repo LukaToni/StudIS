@@ -320,7 +320,7 @@ function getCourseEnrols(courseNumberId) {
 function getStudentsWithTokens() {
   return new Promise((resolve, reject) => {
     let query = "SELECT t.key, t.used, t.verified, t.year, t.average," +
-                "  p.name as programme_type, p.level as programme_level," +
+                "  p.name as programme_type, p.evs_code as study_programme_key," +
                 "  s.emso, s.name, s.surname, s.registration_number," +
                 "  e.name as enrol_type," +
                 "  st.name as study_type from token t" +
@@ -354,8 +354,82 @@ function getStudentsWithNoTokens() {
   });
 }
 
+module.exports.getTokenWithId = function(tokenId) {
+  return new Promise((resolve, reject) => {
+    let query = "SELECT t.key, t.used, t.verified, t.year, t.average," +
+                "  p.name as programme_type, p.evs_code as study_programme_key," +
+                "  s.emso, s.name, s.surname, s.registration_number," +
+                "  e.name as enrol_type, e.code as enrol_type_key," +
+                "  st.name as study_type, st.key as study_type_key" +
+                "  from token t" +
+                "  INNER JOIN study_programme p" +
+                "    On study_programme = p.evs_code" +
+                "  INNER JOIN student s" +
+                "    ON student_id = s.registration_number" +
+                "  INNER JOIN enrol_type e" +
+                "    ON enrol_type = e.code" +
+                "  INNER JOIN study_type st" +
+                "    ON study_type = st.key" +
+                "  WHERE t.key = $1";
+                
+    let params = [tokenId];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
 
+module.exports.updateTokenWithId = function(tokenId, tokenValues) {
+  return new Promise((resolve, reject) => {
+    console.log("Updating token ... ", tokenId, tokenValues);
+    let query = 'UPDATE public."token" SET (used, verified, year, enrol_type, study_type, study_programme) = '+
+                '($1, $2, $3, $4, $5, $6)' +
+                'WHERE key = $7';
+                
+    let t = tokenValues;
+    t.used = htmlBooleanToInt(t.used);
+    t.verified = htmlBooleanToInt(t.verified);
+    
+    let params = [t.used, t.verified, t.year, t.enrol_type, t.study_type, t.study_programme, tokenId];
+    
+    console.log("Upgrading with params:", params)
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
 
+module.exports.deleteTokenWithId = function(tokenId) {
+  return new Promise((resolve, reject) => {
+    let query = 'DELETE FROM token WHERE key = $1';
+    let params = [tokenId];
+  
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
+
+module.exports.createNewToken = function(registration_number) {
+  return new Promise((resolve, reject) => {
+    let query = 'DELETE FROM token WHERE key = $1';
+    let params = [registration_number];
+  
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+  
+}
+
+function htmlBooleanToInt(htmlBoolean) {
+  return htmlBoolean == 'on'? 1 : 0;
+}
 
 
 function currentYear() {
