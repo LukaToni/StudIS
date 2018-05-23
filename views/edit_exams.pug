@@ -51,13 +51,13 @@ html(lang='en')
                     
                         if courses
                             form(method='post')
-                                select(class = 'selectpicker' name = 'selectedCourseNumberId')
+                                select(class = 'selectpicker' name = 'selectedCourse')
                                     option(selected = '' disabled = '') Predmet
                                     for course in courses
-                                        option(value=course.numberid)=course.name
+                                        option(value={"numberid": course.numberid, "name": course.name})=course.name + ' - ' +course.numberid
                                 input(type='submit', value='Prikazi izpitne roke')
                         if exams
-                            p.lead Seznam izpitnih rokov:
+                            p.lead= 'Seznam izpitnih rokov predmeta "' + course_name + '":'
                         
                             button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2csv('exams');") Export CSV
                             button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2pdf('exams');") Export PDF

@@ -544,7 +544,8 @@ function getCourseEnrols(courseNumberId) {
 
 module.exports.getExams = function(courseNumberId){
   return new Promise((resolve, reject) =>{    
-    let query = 'SELECT * FROM EXAMS WHERE course_id = $1';
+    let query = 'SELECT * FROM EXAMS WHERE course_id = $1 '+
+                  'ORDER BY date ASC';
     let params = [courseNumberId];
     
     client.query(query, params, (err, res) =>{
@@ -555,7 +556,6 @@ module.exports.getExams = function(courseNumberId){
 }
 
 module.exports.addExam = function(courseNumberId, date){
-
   dayStr = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
   monthStr = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
   hoursStr = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();

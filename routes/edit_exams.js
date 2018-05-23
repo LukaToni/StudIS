@@ -24,16 +24,27 @@ router.post('/', function(req, res, next) {
     prevErr = req.session.examsErr;
   }
 
-  if(req.body.selectedCourseNumberId) {
-    req.session.courseId = req.body.selectedCourseNumberId;
+  if(req.body.selectedCourse) {
+    req.body.selectedCourse = JSON.parse(req.body.selectedCourse)
+    
+    console.log(req.body.selectedCourse.numberid);
+    console.log(req.body.selectedCourse.name);
+    console.log(req.body.selectedCourse);
+    
+    req.session.courseId = req.body.selectedCourse.numberid;
+    req.session.courseName = req.body.selectedCourse.name;
   }
   
-  if(!req.body.selectedCourseNumberId) {
-    req.body.selectedCourseNumberId = req.session.courseId;
+  /*
+  if(!req.body.selectedCourse.numberid) {
+    req.body.selectedCourse.numberid = req.session.courseId;
+    req.body.selectedCourse.name = req.session.courseName;
   }
+  */
   
-  db.getExams(req.body.selectedCourseNumberId).then( (exams) => {    
-    courseId = req.body.selectedCourseNumberId;
+  db.getExams(req.session.courseId).then( (exams) => {    
+    courseId = req.session.courseId;
+    courseName = req.session.courseName;
   
     //console.log(exams.length);
     console.log(exams);
@@ -41,7 +52,7 @@ router.post('/', function(req, res, next) {
     if(!exams || exams.length === 0) {
       return res.render('edit_exams',{ type: req.session.type, email: req.session.email, course_id: courseId, examErr: prevErr, message: ' Ni vpisanih izpitnih rokov.'});
     }
-    return res.render('edit_exams',{ type: req.session.type, email: req.session.email, course_id: courseId, examErr: prevErr, exams: exams});
+    return res.render('edit_exams',{ type: req.session.type, email: req.session.email, course_name: courseName, course_id: courseId, examErr: prevErr, exams: exams});
   },
   (err) => {
     console.log(err);
@@ -78,8 +89,10 @@ router.post('/add', function(req, res, next) {
   }
   date.setMinutes(minutes);
   
-
-  db.addExam(req.body.course_id, date).then( () => {
+  prazniki = [];
+  
+  
+  db.addExam(req.session.courseId, date).then( () => {
     req.session.examsErr = undefined;
     return res.redirect(307, '/edit_exams');
   },
