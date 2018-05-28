@@ -77,7 +77,7 @@ router.post('/store', auth.authenticate, function(req, res, next){
                 .then(data=>{
                     db.setEnrolCourses(student,data)
                     .then(()=>{
-                        db.usedToken(student.key)
+                        db.usedToken(student.token)
                         .then(()=>{
                             res.redirect('/personal');
                         })
