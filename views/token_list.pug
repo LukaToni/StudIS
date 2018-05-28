@@ -12,7 +12,7 @@ html(lang='en')
         // Material Design Bootstrap
         link(href='../stylesheets/mdb.min.css', rel='stylesheet')
         // Your custom styles (optional)
-        link(href='../stylesheets/style.css', rel='stylesheet')
+        //link(href='../stylesheets/style.css', rel='stylesheet')
         // Font awesome
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
         link(href='../stylesheets/personal.css', rel='stylesheet')
@@ -36,7 +36,7 @@ html(lang='en')
             .container
                 .row.mt-5.pt-5
                     .col.text-center
-                        p Pregled Žetonov 
+                        h1 Pregled Žetonov 
                         //p= JSON.stringify(students_noTokens)
                         //p= JSON.stringify(students_haveTokens)
                         table.table.table-sm
@@ -75,7 +75,7 @@ html(lang='en')
                                         td= snt.surname
                                         td= snt.registration_number
                                         td
-                                            a(href='create?registration_number='+snt.registration_number)
+                                            a(href='create?studentId='+snt.registration_number)
                                                 button.btn.btn-success.btn-sm(type='button') Ustvari
                                             
         // SCRIPTS

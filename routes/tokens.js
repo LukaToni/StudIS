@@ -68,6 +68,13 @@ router.get('/edit', auth.authenticate, function(req, res, next) {
       {"name":"3", "value":3},
     ]
     
+    let average_options = [
+      {"name":"Dovoljeno", "value":1},
+      {"name":"Ni Dovoljeno", "value":0},
+    ]
+    
+    
+    
     return res.render('token_edit', { 
       type: req.session.type, 
       tokenId,
@@ -75,7 +82,8 @@ router.get('/edit', auth.authenticate, function(req, res, next) {
       study_types,
       enrol_types,
       study_programmes,
-      years
+      years,
+      average_options,
     });
   })
 });
@@ -93,7 +101,7 @@ router.post('/update', auth.authenticate, function(req, res, next) {
   
   let newTokenData = req.body;
   if(!newTokenData) {
-    console.error("No new token data in POST body!")
+    console.error("No new token data in the POST body!")
     return res.redirect('/tokens/list')
   }
   
@@ -105,19 +113,39 @@ router.post('/update', auth.authenticate, function(req, res, next) {
 });
 
 router.get('/create', auth.authenticate, function(req, res, next) {
-  console.log(req.query.student_id)
+  console.log(req.query.studentId)
   
-  let student_id = req.query.student_id;
+  let student_id = req.query.studentId;
   
   if(!student_id) {
     console.error("No student_id provided in query")
     return res.redirect('/tokens/list');
   }
 
-  db.createNewToken(student_id).then(() => {
+  db.createNewToken(student_id).then((new_token_key) => {
+    // nevem zkva morm tuki se array pa poj kljuc iskat "[0].key" ker mislm da bi moug ze 
+    // poslt cifro sam jo o_č_i_t_n_o  ne.  
+    return res.redirect('/tokens/edit?tokenId=' + new_token_key[0].key);
+  });
+  
+});
+
+
+router.get('/delete', auth.authenticate, function(req, res, next) {
+  console.log(req.query.tokenId)
+  
+  let tokenId = req.query.tokenId;
+  
+  if(!tokenId) {
+    console.error("No tokenId provided in query")
+    return res.redirect('/tokens/list');
+  }
+
+  db.deleteTokenWithId(tokenId).then((new_token_key) => {
     return res.redirect('/tokens/list');
   });
   
 });
+
 
 module.exports = router;

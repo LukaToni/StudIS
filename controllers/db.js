@@ -404,8 +404,9 @@ module.exports.updateTokenWithId = function(tokenId, tokenValues) {
 
 module.exports.deleteTokenWithId = function(tokenId) {
   return new Promise((resolve, reject) => {
-    let query = 'DELETE FROM token WHERE key = $1';
-    let params = [tokenId];
+    let query = 'UPDATE student SET (token) = (null) WHERE token = ' + tokenId + ';' +  
+                'DELETE FROM token WHERE key = ' + tokenId;
+    let params = [];
   
     client.query(query, params, (err, res) =>{
       if(err) return reject(err);
@@ -414,12 +415,34 @@ module.exports.deleteTokenWithId = function(tokenId) {
   });
 }
 
-module.exports.createNewToken = function(registration_number) {
+
+module.exports.createNewToken = function(student_id) {
   return new Promise((resolve, reject) => {
-    let query = 'DELETE FROM token WHERE key = $1';
-    let params = [registration_number];
+    let query = "INSERT INTO token" +
+                "(study_programme, year, enrol_type, study_type, average, student_id)" +
+                "VALUES" +
+                "('1000468', 1, 1, 1, 0, $1)" + 
+                "RETURNING key";
+                
+    let params = [student_id];
   
     client.query(query, params, (err, res) =>{
+      console.log(res);
+      if(!err && res.rows.length != 0) {
+          let query = "UPDATE student SET (token) = ($1) WHERE registration_number = $2";
+          let new_token_key = res.rows[0].key
+          let params = [new_token_key, student_id];
+          console.log("params", params)
+          
+          client.query(query, params, (err, res) =>{
+            // TODO: CRITICAL: ce pride tuki do napake je treba tudi prejsni query nazaj poslt !! 
+            // TODo: preveri ce se mogoce to da narediti samo z enim klicem  
+            console.log(err)
+            if(err) return reject(err);
+            return resolve(new_token_key);
+          });
+      }
+      
       if(err) return reject(err);
       return resolve(res.rows);
     });

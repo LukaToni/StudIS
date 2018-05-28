@@ -37,7 +37,7 @@ html(lang='en')
                 .row.mt-5.pt-5
                     .col
                         h1 Uredi žeton
-                        // p= JSON.stringify(token)
+                        //p= JSON.stringify(token)
                         form(action='update?tokenId='+tokenId, method='post')
                             legend Podatki študenta
                             .form-group
@@ -50,40 +50,49 @@ html(lang='en')
                                 label(for='registration_number') Vpisna Številka
                                 input#registration_number.form-control(disabled, name='registration_number' value=token.registration_number)
                             legend Parametri žetona
+                            - var disabled = token.used == 1;
                             .form-group
                                 label Leto
-                                select.form-control(name='year')
+                                select.form-control(name='year', disabled=disabled)
                                     each year in years
                                         - var selected = year.value == token.year
                                         option(value=year.value, selected=selected)= year.name
                                     
                             .form-group
                                 label Način vpisa
-                                select.form-control(name='enrol_type')
+                                select.form-control(name='enrol_type', disabled=disabled)
                                     each enrol_type in enrol_types
                                         - var selected = enrol_type.value == token.enrol_type_key
                                         option(value=enrol_type.value, selected=selected)= enrol_type.name
                                         
                             .form-group
                                 label Način Študija
-                                select.form-control(name='study_type')
+                                select.form-control(name='study_type', disabled=disabled)
                                     each study_type in study_types
                                         - var selected = study_type.value == token.study_type_key
                                         option(value=study_type.value, selected=selected)= study_type.name
                                         
                             .form-group
                                 label Študijski Program
-                                select.form-control(name='study_programme')
+                                select.form-control(name='study_programme', disabled=disabled)
                                     each study_programme in study_programmes
                                         - var selected = study_programme.value == token.study_programme_key
                                         option(value=study_programme.value, selected=selected)= study_programme.name
+                                        
+                            .form-group
+                                label Posamezno izbiranje predmetov
+                                select.form-control(name='average', disabled=disabled)
+                                    each average_option in average_options
+                                        - var selected = average_option.value == token.average
+                                        option(value=average_option.value, selected=selected)= average_option.name
+                                        
                             .form-check
                                 label.form-check-label
-                                    input.form-check-input(type='checkbox', name='used', checked=!!+token.used)
+                                    input.form-check-input(type='checkbox', name='used', checked=!!+token.used, disabled)
                                     |       Žeton uporabljen
                             .form-check
                                 label.form-check-label
-                                    input.form-check-input(type='checkbox', name='verified', checked=!!+token.verified)
+                                    input.form-check-input(type='checkbox', name='verified', checked=!!+token.verified, disabled)
                                     |       Žeton Potrjen
                             br
                             button.btn.btn-primary Potrdi Spremembe
