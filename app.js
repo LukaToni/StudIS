@@ -13,13 +13,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var personalRouter = require('./routes/personal_data');
 var studentImportRouter = require('./routes/student_import');
-<<<<<<< HEAD
 //var studentEnrolsRouter = require('./routes/course_enrols');
 var tokens = require('./routes/tokens');
-=======
-var studentEnrolsRouter = require('./routes/course_enrols');
+//var studentEnrolsRouter = require('./routes/course_enrols');
 var vpisniPdfRouter = require('./routes/vpisni_to_pdf');
->>>>>>> 0c8e9a5e87c9bae62f73522c0933263255346493
 var loginRouter = require('./routes/login');
 var enrolRouter = require('./routes/enrol');
 
@@ -46,13 +43,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/personal', personalRouter);
 app.use('/student_import', studentImportRouter);
-<<<<<<< HEAD
 //app.use('/student_enrols', studentEnrolsRouter);
 app.use('/tokens', tokens);
-=======
-app.use('/student_enrols', studentEnrolsRouter);
+//app.use('/student_enrols', studentEnrolsRouter);
 app.use('/vpisni_to_pdf', vpisniPdfRouter);
->>>>>>> 0c8e9a5e87c9bae62f73522c0933263255346493
 app.use('/', loginRouter);
 app.use('/enrol', enrolRouter);
 

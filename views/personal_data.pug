@@ -45,7 +45,7 @@ html(lang='en')
         .wrapper
             .container
                 .row.mt-5.pt-5
-                    if(student)
+                    if type == 'student'
                         if(student.token)
                             if(token.used == 0)
                                 .alert.alert-primary(role='alert')
