@@ -315,6 +315,44 @@ function getCourseEnrols(courseNumberId) {
   });
 }
 
+module.exports.getCountCourseEnrols = function(year){
+  return new Promise((resolve, reject) => {
+    // Sej vem da se bi dal te query krajs nardit sam se mi res s temu ne da jebat
+    // If it is not broken do not fix it :)
+    let query = 'SELECT c.numberid AS course_id, COUNT(*) as number_enroled, c."name" as course_name  '  + 
+                '   FROM course_enrol ce  '  + 
+                '     INNER JOIN courses c  '  + 
+                '       ON ce.course_id = c.numberid  '  + 
+                '     INNER JOIN student s  '  + 
+                '       ON s.registration_number = ce.student_id  '  + 
+                '     INNER JOIN student_enrols se  '  + 
+                '       ON se.student_registration_number = s.registration_number  '  + 
+                '     INNER JOIN study_type st  '  + 
+                '       ON st.key = se.study_type  '  + 
+                '     WHERE ce.enrol_year = se.study_year  '  + 
+                '       AND ce.enrol_year = $1  '  + 
+                '    GROUP BY c.numberid;  ' ;
+                
+    let params = [year];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
+
+module.exports.getEnrolYears = function() {
+  return new Promise((resolve, reject) => {
+    let query = 'SELECT DISTINCT enrol_year FROM course_enrol  '  + 
+                '  ORDER BY enrol_year DESC  ' ;
+                
+    client.query(query, [], (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
 
 
 
