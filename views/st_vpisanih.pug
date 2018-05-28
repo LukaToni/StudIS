@@ -36,6 +36,7 @@ html(lang='en')
             .container
                 .row.mt-5.pt-5
                     .col.text-center
+<<<<<<< HEAD:views/st_vpisanih.pug
                         p Število vpisanih v posamezne predmente
                         button.btn.btn-primary.btn-sm(type='button') Nov žeton
                         table.table.table-sm
@@ -79,6 +80,42 @@ html(lang='en')
                                         button.btn.btn-danger.btn-sm(type='button') Briši
                                     td 
                                         button.btn.btn-info.btn-sm(type='button') Uredi        
+=======
+                        p= message
+                        if courses
+                            form(method='post')
+                                select(class = 'selectpicker' name = 'selectedCourseNumberId')
+                                    option(selected = '' disabled = '') Predmet
+                                    for course in courses
+                                        option(value=course.numberid)=course.name
+                                input(type='submit', value='Prikazi vpisane studente')
+                        if enrols
+                            button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2csv('enrols');") Export CSV
+                            button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2pdf('enrols');") Export PDF
+
+                            table.table.table-sm#tableSearch
+                                thead
+                                    tr
+                                        th Zaporedna številka
+                                        th Šifra predmeta
+                                        th Ime predmeta
+                                        th Študijsko leto
+                                        th Vpisna številka
+                                        th Priimek
+                                        th Ime
+                                        th Vrsta vpisa
+                                tbody
+                                    each enrol, index in enrols
+                                        tr
+                                            td=index + 1
+                                            td=enrol.course_id
+                                            td=enrol.course_name
+                                            td=enrol.course_enrol_year + '/' + (parseInt(enrol.course_enrol_year)+1)
+                                            td=enrol.student_registration_number
+                                            td=enrol.student_surname
+                                            td=enrol.student_name
+                                            td=enrol.student_enrol_type
+>>>>>>> 0c8e9a5e87c9bae62f73522c0933263255346493:views/course_enrols.pug
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')

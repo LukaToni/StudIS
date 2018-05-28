@@ -32,3 +32,16 @@ box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.55);
 .table-item:hover{
     background-color: rgba(0,0,0,0.10);
 }
+
+.type-two{
+    background-color: #f44336;
+}
+
+.type-zero{
+    cursor: not-allowed;
+}
+
+#available-courses{
+    max-height: 500px;
+    overflow-y: scroll;
+}

@@ -15,12 +15,27 @@ router.get('/', auth.authenticate, function(req, res, next) {
               .then(enrols=>{return {student, enrols}})
           })
           .then(data=>{
-          res.render('personal_data', { 
-            title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
-            type: req.session.type,
-            student:data.student,
-            enrols:data.enrols
-           });
+            if(data.student.token){
+              return db.getTokenByKey(data.student.token)
+                .then(token=>{return Object.assign({token},data)})
+                .then(data=>{
+                res.render('personal_data', { 
+                  title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
+                  type: req.session.type,
+                  student:data.student,
+                  enrols:data.enrols,
+                  token:data.token
+                 });
+                })
+            }
+            else{
+                res.render('personal_data', { 
+                  title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
+                  type: req.session.type,
+                  student:data.student,
+                  enrols:data.enrols,
+                 });
+            }
         })}
       else {
         res.render('personal_data', { 

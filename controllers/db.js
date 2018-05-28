@@ -147,10 +147,122 @@ module.exports = {
   'getStudentsWithTokens': getStudentsWithTokens,
 };
 
+//RESIDENTALS
+
+//GET POST
+module.exports.getPostOffice = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."post_office" ORDER BY name'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET COUNTRY
+module.exports.getCountry = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."country" ORDER BY name_slo'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET COUNTY
+module.exports.getCounty = function(){
+  return new Promise((resolve, reject)=>{
+    let query = 'SELECT * FROM public."county" ORDER BY name'
+    
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//COURSES
+//GET (COMPULSORY(obvezni)) COURSES BY YEAR
+module.exports.getCoursesByYear = function(year, study_programme){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cur.module as module
+    FROM public."curriculum" as cur, public."courses" as cou 
+    WHERE cur.year=$1 AND cur.study_programme=$2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
+    ORDER BY cou.module, cou.name`
+    let params= [year, study_programme];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET OPTIONAL COURSES
+module.exports.getOptionalCourses = function(){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cou.module as module
+    FROM public."curriculum" as cur, public."courses" as cou
+    WHERE cur.type=2 AND cur.study_year='2018/19' AND cur.course = cou.numberid
+    ORDER BY cou.name`
+
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET LAST YEAR COURSES
+module.exports.getCoursesLastYear = function(student){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT cou.name as name, cur.study_year as s_year, cur.type as type, cur.key as key, cou.credits as credits, cur.module as module
+    FROM public."courses" as cou, public."course_enrol" as enr, public."curriculum" as cur
+    WHERE cou.numberid = enr.course_id AND enr.student_id = $1 AND cou.numberid = cur.course AND enr.enrol_year='2017'
+    ORDER BY cou.module, cou.name`
+    let params= [student.registration_number];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET MODULES
+module.exports.getModules = function(student){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT mod.name as name, mod.type as type, mod.key as key, mod.credits as credits, mod.key as module
+    FROM public."modules" as mod
+    ORDER BY mod.name`
+
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+
+
+//TOKEN
+//UPDATE TOKEN
+module.exports.usedToken = function(key){
+  return new Promise((resolve, reject)=>{
+    let query = `UPDATE public."token"
+    SET used = 1
+    WHERE key = $1`
+    let params = [key];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
 //STUDENTS
 module.exports.getStudentById = function(id){
   return new Promise((resolve, reject)=>{
-    let query = 'SELECT * FROM public."student" WHERE registration_number=$1';
+    let query = `SELECT *
+    FROM public."student" as student
+    WHERE registration_number=$1`;
     let params = [id];
 
     client.query(query, params, (err, res) =>{
@@ -159,13 +271,48 @@ module.exports.getStudentById = function(id){
     })
   })
 }
+//GET TOKEN OF STUDENT
+module.exports.getTokenByKey = function(key){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT *
+    FROM public."token" as token
+    WHERE token.key = $1`
+    let params = [key];
+
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows[0]);
+    })
+  })
+}
+
+//FIND STUDENT
 module.exports.findStudent = function(queryData){
   return new Promise((resolve, reject)=>{
     queryData = queryData +'%';
-    let query = 'SELECT * FROM public."student" WHERE registration_number LIKE $1 OR name LIKE $1 OR surname LIKE $1'
+    let query = 'SELECT * FROM public."student" WHERE registration_number LIKE $1 OR name LIKE $1 OR surname LIKE $1 ORDER BY surname, name LIMIT 10'
     let params = [queryData];
 
     client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//UPDATE ALL INFO OF STUDENT
+module.exports.updateStudentAll = function(data){
+  return new Promise((resolve, reject)=>{
+    let query = `UPDATE public."student"
+    SET (name, surname, emso, birth, telephone_number, country, county, post_office_number, street, street_post, country_post, county_post, post_post) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $11, $12, $13, $14)
+    WHERE registration_number = $10`
+    let birth =   "";
+    if(data.emso[4] == '9')
+      birth = data.emso[0] + data.emso[1] + "." + data.emso[2] + data.emso[3] + ".1" + data.emso[4] + data.emso[5] + data.emso[6]; 
+    else
+      birth = data.emso[0] + data.emso[1] + "." + data.emso[2] + data.emso[3] + ".2" + data.emso[4] + data.emso[5] + data.emso[6];
+    let params = [data.name, data.surname, data.emso, birth, data.telephone_number, data.country, data.county, 3000, data.street, data.registration_number, data.street_post, data.country_post, data.county_post, data.post_post];
+    
+    client.query(query,params, (err,res)=>{
       if(err) return reject(err);
       return resolve(res.rows);
     })
@@ -175,7 +322,9 @@ module.exports.findStudent = function(queryData){
 //STUDENT ENROLS
 module.exports.getStudentEnrols = function(studentId){
   return new Promise((resolve, reject) =>{
-    let query = 'SELECT s.year as year, s.study_year as study_year, s.study_programme as s_programme, t.name as s_type, e.name as e_type FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code' ;
+    let query = `SELECT s.year as year, s.study_year as study_year, t.name as s_type, e.name as e_type, sp.name as s_programme , s.key as s_key
+    FROM public."student_enrols" as s, public."study_type" as t, public."enrol_type" as e, public."study_programme" as sp 
+    WHERE s.student_registration_number = $1 AND s.study_type = t.key AND s.enrol_type = e.code AND s.study_programme = sp.evs_code`
     let params =[studentId];
 
     client.query(query, params, (err, res) =>{
@@ -184,7 +333,82 @@ module.exports.getStudentEnrols = function(studentId){
     })
   })
 }
+//GET COURSES ID
+module.exports.getCoursesId = function(id){
+  return new Promise((resolve, reject) =>{
+    let query = `SELECT * from public.curriculum WHERE key in (`+id.selected+`)`
 
+    client.query(query, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//SAVE ENROL COURSES (predmete ki jih bo poslusal)
+module.exports.setEnrolCourses = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."course_enrol"(student_id,course_id,enrol_year, active) 
+      VALUES ($1,$2,$3, $4)`;
+      let params = [student.registration_number, data[i].course, 2018, true];
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}
+//SAVE ENROL COURSES WITH MODULES(ni mel proste izbire is so v seznamu moduli brez predmetov)
+module.exports.setEnrolCoursesModules = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."course_enrol"(student_id,course_id,enrol_year, active) 
+      VALUES ($1,$2,$3, $4)`;
+      let params = [student.registration_number, data[i].course, 2018, true];
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}
+/*
+module.exports.setEnrol = function(student,data){
+  return new Promise((resolve, reject)=>{
+    for(var i=0; i<data.length; i++){
+      let query = `INSERT INTO public."listen"(student,course,study_year) 
+      VALUES ($1,$2,$3)`;
+      let params = [student.registration_number, data[i].course, '2018/19']
+      //console.log(data[i].course);
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+    }
+  })
+}*/
+
+module.exports.getVpisniPdfData = function(enrolId){
+  
+  return new Promise((resolve, reject) =>{    
+    let query = 'select sp.evs_code as study_program_evs, s.emso as student_emso, sp.name as enrol_study_program, s.email as student_email, se.study_year as enrol_year, s.registration_number as student_vpisna, s."name" as student_name, s.surname as student_surname from student_enrols as se '+
+                'inner join student as s '+
+                  'on s.registration_number = se.student_registration_number '+
+                'inner join study_programme sp '+
+                  'on se.study_programme = sp.evs_code '+
+                'where se."key" = $1 ';
+    let params = [enrolId];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  });
+}
+
+//STUDENT IMPORT
 function studentImport(students, callback) {
   const beginQuery = 'BEGIN';
   const commitQuery = 'COMMIT';
@@ -274,7 +498,8 @@ function getCourses(userType, professorId) {
     if(userType === 'professor') {
       let query = 'SELECT c.name, c.numberid FROM public.courses AS c ' + 
               'INNER JOIN public.course_owner AS co ON c.numberid = co.course_id ' +
-              'WHERE co.professor_id = $1';
+              'WHERE co.professor_id = $1 ' +
+              'ORDER BY c.name';
       let params = [professorId];
       
       client.query(query, params, (err, res) =>{
@@ -283,7 +508,8 @@ function getCourses(userType, professorId) {
       })
     }
     if(userType === 'clerk') {
-      query = 'SELECT name, numberid FROM public.courses';
+      query = 'SELECT name, numberid FROM public.courses as c ' +
+              'ORDER BY c.name';
       
       client.query(query, (err, res) =>{
         if(err) return reject(err);
@@ -296,7 +522,7 @@ function getCourses(userType, professorId) {
 function getCourseEnrols(courseNumberId) {
   return new Promise((resolve, reject) => {
     let query = 'SELECT c.numberid AS course_id, c."name" as course_name, ce.enrol_year AS course_enrol_year, ' +
-                  's.registration_number AS registration_number, s.surname as student_surname, s."name" AS student_name, st."name" AS student_enrol_type ' +
+                  's.registration_number AS student_registration_number, s.surname as student_surname, s."name" AS student_name, st."name" AS student_enrol_type ' +
                     'FROM course_enrol ce ' +
                 'INNER JOIN courses c ' +
                   'ON ce.course_id = c.numberid ' +
@@ -307,7 +533,8 @@ function getCourseEnrols(courseNumberId) {
                 'INNER JOIN study_type st ' +
                   'ON st.key = se.study_type ' +
                 'WHERE ce.enrol_year = se.study_year ' +
-                  'AND c.numberid = $1 ';
+                  'AND c.numberid = $1 ' +
+                'ORDER BY s.surname';
     let params = [courseNumberId];
     
     client.query(query, params, (err, res) =>{
