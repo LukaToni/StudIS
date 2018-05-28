@@ -1,7 +1,7 @@
 
 const { Client } = require('pg')
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 const saltRounds = 10;
 
 const client = new Client({
@@ -557,7 +557,20 @@ module.exports.addExam = function(courseNumberId, date){
   monthStr = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
   hoursStr = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
   minutesStr = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-});
+  dateStr = dayStr + '-' + monthStr + '-' + date.getFullYear() + ' ' + hoursStr + ':' + minutesStr + ':00';
+  console.log('dateStr: ' + dateStr);
+  
+  return new Promise((resolve, reject) =>{    
+    let query = 'INSERT INTO exams(course_id, date) VALUES' +
+                  "( $1, to_timestamp( $2 , 'dd-mm-yyyy hh24:mi:ss'))";
+    let params = [courseNumberId, dateStr];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve();
+    })
+  });
+};
 
 function getStudentsWithTokens() {
   return new Promise((resolve, reject) => {
@@ -695,22 +708,6 @@ module.exports.createNewToken = function(student_id) {
 function htmlBooleanToInt(htmlBoolean) {
   return htmlBoolean == 'on'? 1 : 0;
 }
-
-  dateStr = dayStr + '-' + monthStr + '-' + date.getFullYear() + ' ' + hoursStr + ':' + minutesStr + ':00';
-  console.log('dateStr: ' + dateStr);
-  
-  return new Promise((resolve, reject) =>{    
-    let query = 'INSERT INTO exams(course_id, date) VALUES' +
-                  "( $1, to_timestamp( $2 , 'dd-mm-yyyy hh24:mi:ss'))";
-    let params = [courseNumberId, dateStr];
-    
-    client.query(query, params, (err, res) =>{
-      if(err) return reject(err);
-      return resolve();
-    })
-  });
-}
-
 
 function currentYear() {
   return new Date().getFullYear().toString().substr(-2);

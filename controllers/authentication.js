@@ -1,5 +1,5 @@
 var express = require('express');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 const saltRounds = 10;
