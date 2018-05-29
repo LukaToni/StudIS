@@ -241,9 +241,17 @@ module.exports.getModules = function(student){
   })
 }
 
+//KO BOM RABO DOBIT PREDMETE
+/*
+SELECT *
+FROM public."token" as token, public."course_enrol" as cor_enrol
+WHERE token.key  = '36' AND cor_enrol.student_id = token.student_id AND cor_enrol.enrol_year = '2018'
+*/
+
+
 
 //TOKEN
-//UPDATE TOKEN
+//UPDATE TOKEN AS USED
 module.exports.usedToken = function(key){
   return new Promise((resolve, reject)=>{
     let query = `UPDATE public."token"
@@ -257,6 +265,34 @@ module.exports.usedToken = function(key){
     })
   })
 }
+//UPDATE TOKEN AS VERIFIED
+module.exports.verifyToken = function(id){
+  return new Promise((resolve, reject)=>{
+    let query = `UPDATE public."token"
+    SET verified = 1
+    WHERE key = $1`
+    let params = [id];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+//GET STUDENTS WITH USED TOKEN AND NOT VERIFIED
+module.exports.getStudentsWithUsedToken = function(){
+  return new Promise((resolve, reject)=>{
+    let query = `SELECT token.key as key, token.used as used, token.verified as verified, student.registration_number as registration_number, student.name as name, student.surname as surname
+    FROM public."token" as token, public."student" as student
+    WHERE student.token = token.key AND token.used = '1' AND token.verified = '0'`;
+
+    client.query(query, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+
 //STUDENTS
 module.exports.getStudentById = function(id){
   return new Promise((resolve, reject)=>{
@@ -328,6 +364,33 @@ module.exports.getStudentEnrols = function(studentId){
     let params =[studentId];
 
     client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}
+/*
+//INSERT STUDENT ENROL
+module.export.setStudentEnrol = function(token){
+  return new Promise((resolve, reject)=>{
+    let query = `INSERT INTO public."student_enrols"(student_registration_number, year, study_year, study_type, enrol_type, study_programme)
+    VALUES ($1, $2, $3, $4, $5, $6)`
+    let params = [token.student_id, token.year, '2018', token.enrol_type, token.study_type, token.study_programme];
+
+    client.query(query, params, (err, res)=>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    })
+  })
+}*/
+module.exports.setStudentEnrol = function(token){
+  return new Promise((resolve, reject)=>{
+    let query = `INSERT INTO public."student_enrols"(student_registration_number, year, study_year, study_type, enrol_type, study_programme, key)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+    let cifra = Math.floor(Math.random() * (2147483643 - 100 + 1)) + 100;
+    let params = [token.registration_number, token.year, '2018', token.enrol_type_key, token.study_type_key, token.study_programme_key, cifra];
+
+    client.query(query, params, (err, res)=>{
       if(err) return reject(err);
       return resolve(res.rows);
     })

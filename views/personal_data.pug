@@ -39,6 +39,8 @@ html(lang='en')
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='tokens') Žetoni
                                     a.dropdown-item(href='student_enrols') Preglej vpise v predmet
+                                if(type == 'clerk')
+                                    a.dropdown-item(href='verify_token') Potrdi vpise
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='edit_exams') Izpitni roki
                                 a.dropdown-item(href='#') Poveži digitalno potrdilo
