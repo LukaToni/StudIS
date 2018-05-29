@@ -41,6 +41,8 @@ html(lang='en')
                                     a.dropdown-item(href='student_enrols') Preglej vpise v predmet
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='edit_exams') Izpitni roki
+                                if(type == 'student')
+                                    a.dropdown-item(href='exam_enrol') Izpitni roki
                                 a.dropdown-item(href='#') Poveži digitalno potrdilo
                                 // <a class="dropdown-item" href="#">English</a>
                                 a.dropdown-item(href='/logout') Odjava

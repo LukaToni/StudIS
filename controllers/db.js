@@ -705,6 +705,50 @@ module.exports.createNewToken = function(student_id) {
   
 }
 
+module.exports.getExamsForStudent = function(student_id) {
+  return new Promise((resolve, reject) => {
+    /*
+    select (c.name || ' ' || c.numberid), e."date", e.id, e.lecture_room,
+    (select count(*) > 0 from exam_enrols ee where ee.valid = true and ee.course_id = ce.course_id and ee.student_id = '631800002' and ee."year" = 2018) as enrolled,
+    (select count(*) > 3 from exam_enrols ee where ee.valid = true and ee.course_id = ce.course_id and ee.student_id = '631800002') as paid,
+    (select  (e."date" - now()) > interval '1 day' ) as changeable
+    from course_enrol ce
+    inner join exams e on e.course_id = ce.course_id
+    inner join courses c on c.numberid = ce.course_id
+    where student_id = '63180002'
+    */
+  
+    var exams = [{course_name: 'nekneki123', date: 'nekdatum', exam_id: 1, lecture_room = 'PA', enrolled: false, paid: false, changeable: true},
+                {course_name: 'nekneki1231233', date: 'nekdrugdatum', exam_id: 2, lecture_room = 'PA', enrolled: false, paid: true, changeable: true},
+                {course_name: 'nekneki1asd231233', date: 'nekdruasdgdatum', exam_id: 3, lecture_room = 'PA', enrolled: false, paid: false, changeable: false},
+                {course_name: 'nekne212easd231233', date: 'nekdr12euasdgdatum', exam_id: 4, lecture_room = 'PA', enrolled: true, paid: false, changeable: true}]; //TODO
+  
+    resolve(exams)
+  });
+}
+
+module.exports.doEnrol = function(exam_id, student_id) {
+  return new Promise((resolve, reject) => {
+    /*
+    insert into exam_enrols (course_id, valid, student_id, "year", taking)
+    values ($course_id, $valid, $student_id, $"year", $taking)
+    */
+  
+    resolve();
+  });
+}
+
+module.exports.undoEnrol = function(exam_id, student_id) {
+  return new Promise((resolve, reject) => {
+    /*
+    update exam_enrols set valid = false, updated = now(), updated_by = $user_id
+    where id = $id
+    */
+  
+    resolve();
+  });
+}
+
 function htmlBooleanToInt(htmlBoolean) {
   return htmlBoolean == 'on'? 1 : 0;
 }
