@@ -40,6 +40,7 @@ app.use('/personal', personalRouter);
 app.use('/student_import', studentImportRouter);
 app.use('/student_enrols', studentEnrolsRouter);
 app.use('/count_course_enrols', countCourseEnrols);
+app.use('/exam_list', require('./routes/exam_list'))
 app.use('/', loginRouter);
 
 // catch 404 and forward to error handler
