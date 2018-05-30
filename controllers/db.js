@@ -284,7 +284,8 @@ module.exports.getStudentsWithUsedToken = function(){
   return new Promise((resolve, reject)=>{
     let query = `SELECT token.key as key, token.used as used, token.verified as verified, student.registration_number as registration_number, student.name as name, student.surname as surname
     FROM public."token" as token, public."student" as student
-    WHERE student.token = token.key AND token.used = '1' AND token.verified = '0'`;
+    WHERE student.token = token.key AND token.used = '1' AND token.verified = '0'
+    ORDER BY student.surname, student.name`;
 
     client.query(query, (err, res)=>{
       if(err) return reject(err);
