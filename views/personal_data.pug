@@ -28,8 +28,10 @@ html(lang='en')
                     ul.nav.navbar-nav.nav-flex-icons.ml-auto
                         li.nav-item.dropdown
                             a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                                i.fa.fa-user
-                                |  Luka Toni (63120258)
+                                if(type == 'student')
+                                    i.fa.fa-user=" "+student.name+" "+student.surname+" ("+student.registration_number+")"
+                                else
+                                    i.fa.fa-user=" "+email
                             .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
                                 a.dropdown-item(href='#') Uredi podatke
                                 if(type == 'professor' || type == 'clerk')
@@ -39,9 +41,13 @@ html(lang='en')
                                     a.dropdown-item(href='student_enrols') Preglej vpise v predmet
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='edit_exams') Izpitni roki
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='count_course_enrols') Preštej vpise v predmet    
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='exam_list') Pokaži vpisane na izpit
                                 a.dropdown-item(href='#') Poveži digitalno potrdilo
                                 // <a class="dropdown-item" href="#">English</a>
-                                a.dropdown-item(href='#') Odjava
+                                a.dropdown-item(href='/logout') Odjava
         // Main Navigation
         .wrapper
             .container
