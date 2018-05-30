@@ -11,7 +11,7 @@ var fs = require('fs');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var personalRouter = require('./routes/personal_data');
-var studentImportRouter = require('./routes/student_import');
+//var studentImportRouter = require('./routes/student_import');
 var studentEnrolsRouter = require('./routes/course_enrols');
 var countCourseEnrols = require('./routes/count_course_enrols');
 var loginRouter = require('./routes/login');
@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/personal', personalRouter);
-app.use('/student_import', studentImportRouter);
+//app.use('/student_import', studentImportRouter);
 app.use('/student_enrols', studentEnrolsRouter);
 app.use('/count_course_enrols', countCourseEnrols);
 app.use('/exam_list', require('./routes/exam_list'))

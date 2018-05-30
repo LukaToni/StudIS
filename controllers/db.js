@@ -380,6 +380,33 @@ module.exports.getAllExams = function(cleark_id) {
   
 }
 
+module.exports.getExamsForProffesor = function(professor_id) {
+  return new Promise((resolve, reject) => {
+    let query = `SELECT
+                  id as exam_id,
+                  e.course_id as course_id,
+                  date as exam_date,
+                  lecture_room as exam_room,
+                  c."name" as course_name,
+                  p."name" as prof_name,
+                  p.surname as prof_surname
+                FROM exams e
+                INNER JOIN courses c ON
+                  e.course_id = c.numberid
+                INNER JOIN operator o ON
+                  e.course_id = o.course
+                INNER JOIN professor p ON
+                  o.professor = p.key
+                WHERE p.key = $1`;
+                
+    client.query(query, [professor_id], (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+  
+}
+
 module.exports.getExams = function(cleark_id, professor_id) {
   
 
@@ -406,8 +433,6 @@ module.exports.getStudentsForExam = function(examId) {
       return resolve(res.rows);
     });
   });
-  
-  
 }
 
 

@@ -58,21 +58,23 @@ html(lang='en')
                         br
                         if students
                             if selectedExamName
-                                h3= "Študentje izpitnega roka " + selectedExamName
+                                h3#header= "Študentje izpitnega roka " + selectedExamName
                             br
-                            table.table.table-sm.text-center
+                            button.btn.btn-sm.btn-default(onclick="$('#studentTable').table2csv('students');") Izvozi CSV
+                            button.btn.btn-sm.btn-default(onclick="$('#studentTable').table2pdf('students', '#header');") Izvozi PDF
+                            table.table.table-sm.text-center#studentTable
                                 thead
                                     tr
                                         th #
-                                        th Vpisna številka
+                                        th Vpisna
                                         th Ime
                                         th Priimek
-                                        th Študijsko leto
-                                        th št polaganja
+                                        th Leto
+                                        th Polaganje
                                         th Točke
-                                        th Končna ocena
+                                        th Ocena
 
-                                tbody
+                                tbody(style="text-transform:capitalize;")
                                     each student, index in students
                                         tr
                                             td=index
@@ -92,8 +94,9 @@ html(lang='en')
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
         // for generating export tables csv, pdf
-        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js")
-        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.0/jspdf.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js")
         script(type='text/javascript', src='../js/personal/table2pdf.js')
         script(type='text/javascript', src='../js/table2csv.js')
         // Bootstrap tooltips

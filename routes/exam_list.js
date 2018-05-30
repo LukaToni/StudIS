@@ -36,7 +36,8 @@ function addFormatedDate(exams) {
  **/
 function getExamsFunctionPromise(session) {
   // TODO change function
-  return isProfessor(session)? db.getAllExams() : db.getAllExams();  
+  return isProfessor(session)? 
+      db.getExamsForProffesor(session.professor_id) : db.getAllExams();  
 }
 
 router.get('/', auth.authenticate, function(req, res, next) {
