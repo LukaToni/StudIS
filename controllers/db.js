@@ -418,7 +418,7 @@ module.exports.getStudentsForExam = function(examId) {
                   student_id,
                   s.name as student_name,
                   s.surname as student_surname,
-                  year,
+                  
                   taking,
                   grade_total,
                   exam_grade,
