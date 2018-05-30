@@ -6,7 +6,7 @@ let db = require('../controllers/db');
 
 /* GET personal data. */
 router.get('/', auth.authenticate, function(req, res, next) {
-  db.getUser({email: req.session.email}, (err, user)=>{
+  db.getUser({email: req.session.email}, (user)=>{
     if(user){
       if(user.type == 'student'){
         db.getStudentById(user.student_id)
@@ -78,6 +78,7 @@ router.get('/:studentId', auth.authenticate, function(req, res, next) {
         .then(data=>{
           res.render('personal_data', { 
             title: 'Welcome: ' + req.session.type + ' ' + req.session.username,
+            type: req.session.type,
             type: req.session.type,
             email: req.session.email,
             student:data.student,

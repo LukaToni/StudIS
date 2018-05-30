@@ -571,6 +571,32 @@ module.exports.addExam = function(courseNumberId, date){
     })
   });
 };
+module.exports.getCountCourseEnrols = function(year){
+  return new Promise((resolve, reject) => {
+    // Sej vem da se bi dal te query krajs nardit sam se mi res s temu ne da jebat
+    // If it is not broken do not fix it :)
+    let query = 'SELECT c.numberid AS course_id, COUNT(*) as number_enroled, c."name" as course_name  '  + 
+                '   FROM course_enrol ce  '  + 
+                '     INNER JOIN courses c  '  + 
+                '       ON ce.course_id = c.numberid  '  + 
+                '     INNER JOIN student s  '  + 
+                '       ON s.registration_number = ce.student_id  '  + 
+                '     INNER JOIN student_enrols se  '  + 
+                '       ON se.student_registration_number = s.registration_number  '  + 
+                '     INNER JOIN study_type st  '  + 
+                '       ON st.key = se.study_type  '  + 
+                '     WHERE ce.enrol_year = se.study_year  '  + 
+                '       AND ce.enrol_year = $1  '  + 
+                '    GROUP BY c.numberid;  ' ;
+                
+    let params = [year];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
 
 function getStudentsWithTokens() {
   return new Promise((resolve, reject) => {
@@ -595,7 +621,43 @@ function getStudentsWithTokens() {
     });
   });
 }
+module.exports.getEnrolYears = function() {
+  return new Promise((resolve, reject) => {
+    let query = 'SELECT DISTINCT enrol_year FROM course_enrol  '  + 
+                '  ORDER BY enrol_year DESC  ' ;
+                
+    client.query(query, [], (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
 
+module.exports.getAllExams = function(cleark_id) {
+  return new Promise((resolve, reject) => {
+    let query = `SELECT
+                  id as exam_id,
+                  e.course_id as course_id,
+                  date as exam_date,
+                  lecture_room as exam_room,
+                  c."name" as course_name,
+                  p."name" as prof_name,
+                  p.surname as prof_surname
+                FROM exams e
+                INNER JOIN courses c ON
+                  e.course_id = c.numberid
+                INNER JOIN operator o ON
+                  e.course_id = o.course
+                INNER JOIN professor p ON
+                  o.professor = p.key`;
+                
+    client.query(query, [], (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+  
+}
 function getStudentsWithNoTokens() {
   return new Promise((resolve, reject) => {
     let query = "  SELECT s.emso, s.name, s.surname, s.registration_number from student s" +
@@ -608,6 +670,64 @@ function getStudentsWithNoTokens() {
     });
   });
 }
+
+module.exports.getExamsForProffesor = function(professor_id) {
+  return new Promise((resolve, reject) => {
+    let query = `SELECT
+                  id as exam_id,
+                  e.course_id as course_id,
+                  date as exam_date,
+                  lecture_room as exam_room,
+                  c."name" as course_name,
+                  p."name" as prof_name,
+                  p.surname as prof_surname
+                FROM exams e
+                INNER JOIN courses c ON
+                  e.course_id = c.numberid
+                INNER JOIN operator o ON
+                  e.course_id = o.course
+                INNER JOIN professor p ON
+                  o.professor = p.key
+                WHERE p.key = $1`;
+                
+    client.query(query, [professor_id], (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+  
+}
+
+module.exports.getExams = function(cleark_id, professor_id) {
+  
+
+}
+
+module.exports.getStudentsForExam = function(examId) {
+    return new Promise((resolve, reject) => {
+    let query = `SELECT
+                  student_id,
+                  s.name as student_name,
+                  s.surname as student_surname,
+                  
+                  taking,
+                  grade_total,
+                  exam_grade,
+                  "valid"
+                FROM exam_enrols e
+                INNER JOIN student s ON e.student_id = s.registration_number
+                WHERE e.exam_id = $1
+                ORDER BY student_name, student_surname`;
+                
+    client.query(query, [examId], (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+}
+
+
+
 
 module.exports.getTokenWithId = function(tokenId) {
   return new Promise((resolve, reject) => {

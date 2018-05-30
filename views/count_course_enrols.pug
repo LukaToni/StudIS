@@ -12,7 +12,7 @@ html(lang='en')
         // Material Design Bootstrap
         link(href='../stylesheets/mdb.min.css', rel='stylesheet')
         // Your custom styles (optional)
-        link(href='../stylesheets/style.css', rel='stylesheet')
+        //link(href='../stylesheets/style.css', rel='stylesheet')
         // Font awesome
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
         link(href='../stylesheets/personal.css', rel='stylesheet')
@@ -35,15 +35,36 @@ html(lang='en')
         .wrapper
             .container
                 .row.mt-5.pt-5
-                    .col.text-center
+                    .col
+                        h2 Število vpisanih v posamezen predmet
                         p= message
+                        if enrolYears
+                            form.form-inline.text-center(method='post')
+                                select.form-control.form-control-sm(name = 'selectedEnrolYear')
+                                    option Leto
+                                    for enrolYear in enrolYears
+                                        - let selected = enrolYear.enrol_year == selectedYear 
+                                        option(value=enrolYear.enrol_year selected=selected)=enrolYear.enrol_year
+                                button.btn.btn-primary.btn-sm(type='submit') Prikazi
+                        if enrols
+                            table.table.table-sm
+                                thead
+                                    tr
+                                        th Šifra predmeta
+                                        th Ime predmeta
+                                        th Število vpisanih
+                                tbody
+                                    each enrol, index in enrols
+                                        tr
+                                            td=enrol.course_id
+                                            td=enrol.course_name
+                                            td=enrol.number_enroled
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
         // for generating export tables csv, pdf
-        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.0/jspdf.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js")
         script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.min.js")
-        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js")
         script(type='text/javascript', src='../js/personal/table2pdf.js')
         script(type='text/javascript', src='../js/table2csv.js')
         // Bootstrap tooltips
