@@ -39,5 +39,17 @@ router.get('/verify', auth.authenticate, function(req, res, next){
     })
 
 })
+router.get('/potrdilo_vpisa', auth.authenticate, function(req, res, next){
+  let tokenId = req.query.tokenId;
+  //debugger;
+  db.getTokenWithId(tokenId).then(tokens=>{
+    let token = tokens[0];
+    //debugger;
+    return res.render('potrdilo_vpisa', {
+      token,
+    });
+  })
+
+})
 
 module.exports = router;

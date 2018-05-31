@@ -775,6 +775,7 @@ module.exports.getStudentsForExam = function(examId) {
                   s.surname as student_surname,
                   
                   taking,
+                  id,
                   grade_total,
                   exam_grade,
                   "valid"
@@ -790,7 +791,24 @@ module.exports.getStudentsForExam = function(examId) {
   });
 }
 
-
+//SAVE GRADES
+module.exports.saveGrades = function(data){
+  return new Promise((resolve, reject)=>{
+    //debugger;
+    for(var i = 0; i<data.length; i++){
+      let query = `UPDATE exam_enrols
+                  SET (valid, exam_grade, grade_total) = ($1, $2, $3)
+                  WHERE id = $4`;
+      //debugger;
+      let params = [data[i].valid, data[i].total, data[i].grade, data[i].id];
+      client.query(query, params, (err, res)=>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      })
+      
+    }
+  })
+}
 
 
 module.exports.getTokenWithId = function(tokenId) {
@@ -799,7 +817,7 @@ module.exports.getTokenWithId = function(tokenId) {
                 "  p.name as programme_type, p.evs_code as study_programme_key," +
                 "  s.emso, s.name, s.surname, s.registration_number," +
                 "  e.name as enrol_type, e.code as enrol_type_key," +
-                "  st.name as study_type, st.key as study_type_key" +
+                "  st.name as study_type, st.key as study_type_key, s.registration_number as registration_number, s.birth as birth, s.street as street, s.county as county, s.post_office_number as post" +
                 "  from token t" +
                 "  INNER JOIN study_programme p" +
                 "    On study_programme = p.evs_code" +
