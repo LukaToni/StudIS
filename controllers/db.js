@@ -546,9 +546,14 @@ function getCourseEnrols(courseNumberId) {
 
 module.exports.getExams = function(courseNumberId){
   return new Promise((resolve, reject) =>{    
-    let query = 'SELECT * FROM EXAMS WHERE course_id = $1 '+
-                  'ORDER BY date ASC';
-    let params = [courseNumberId];
+      let query = 'SELECT * FROM exams WHERE course_id = $1 '+
+                    'ORDER BY date ASC';
+      let params = [courseNumberId];
+      
+      client.query(query, params, (err, res) =>{
+        if(err) return reject(err);
+        return resolve(res.rows);
+      });
     });
 }
     
@@ -561,7 +566,7 @@ module.exports.addExam = function(courseNumberId, date){
   console.log('dateStr: ' + dateStr);
   
   return new Promise((resolve, reject) =>{    
-    let query = 'INSERT INTO exams(course_id, date) VALUES' +
+    let query = 'INSERT INTO exams(course_id, date) VALUES ' +
                   "( $1, to_timestamp( $2 , 'dd-mm-yyyy hh24:mi:ss'))";
     let params = [courseNumberId, dateStr];
     
@@ -707,45 +712,166 @@ module.exports.createNewToken = function(student_id) {
 
 module.exports.getExamsForStudent = function(student_id) {
   return new Promise((resolve, reject) => {
-    /*
-    select (c.name || ' ' || c.numberid), e."date", e.id, e.lecture_room,
-    (select count(*) > 0 from exam_enrols ee where ee.valid = true and ee.course_id = ce.course_id and ee.student_id = '631800002' and ee."year" = 2018) as enrolled,
-    (select count(*) > 3 from exam_enrols ee where ee.valid = true and ee.course_id = ce.course_id and ee.student_id = '631800002') as paid,
-    (select  (e."date" - now()) > interval '1 day' ) as changeable
-    from course_enrol ce
-    inner join exams e on e.course_id = ce.course_id
-    inner join courses c on c.numberid = ce.course_id
-    where student_id = '63180002'
-    */
+    let query =  '   select  '  + 
+    'e.id exam_id,' +
+ '       e.*,  '  + 
+ '       c.*,  '  + 
+ '       ce.*,  '  + 
+ '       (  '  + 
+ '         select count(*)  '  + 
+ '         from (  '  + 
+ '             select *  '  + 
+ '             from exam_enrols ee  '  + 
+ '             where 1=1  '  + 
+ '             and student_id = $1  '  + 
+ '             and e.course_id = ce.course_id  '  + 
+ '             and ee.valid = true  '  + 
+ "             and e.date > to_date('09/2017', 'mm/yyyy') and e.date < to_date('09/2018', 'mm/yyyy')  "  + 
+ '         ) as foo  '  + 
+ '       ) as takings_this_year,  '  + 
+ '       (  '  + 
+ '         select count(*)  '  + 
+ '         from (  '  + 
+ '             select *  '  + 
+ '             from exam_enrols ee  '  + 
+ '             where 1=1  '  + 
+ '             and student_id = $1  '  + 
+ '             and e.course_id = ce.course_id  '  + 
+ '             and ee.valid = true  '  + 
+ '         ) as foo  '  + 
+ '       ) as takings_all_years,  '  + 
+ '       (  '  + 
+ "         select  extract ('doy' from e.\"date\") < extract( 'doy' from now())  "  + 
+ '       ) as exam_expired,  '  + 
+ '       (  '  + 
+ '         select count(*) > 0  '  + 
+ '         from (  '  + 
+ '             select *  '  + 
+ '             from exam_enrols ee  '  + 
+ '             where 1=1  '  + 
+ '             and student_id = $1  '  + 
+ '             and e.course_id = ce.course_id  '  + 
+ '             and ee.valid = true  '  + 
+ '             and ee.exam_grade is not null and ee.exam_grade > 5  '  + 
+ '         ) as foo  '  + 
+ '       ) as course_completed,  '  + 
+ '       (  '  + 
+ '         select count(*) > 0  '  + 
+ '         from (  '  + 
+ '             select *  '  + 
+ '             from exam_enrols ee  '  + 
+ '             where 1=1  '  + 
+ '             and student_id = $1  '  + 
+ '             and e.course_id = ce.course_id  '  + 
+ '             and ee.valid = true  '  + 
+ '             and ee.exam_grade is null  '  + 
+ '         ) as foo  '  + 
+ '       ) as exists_enrol_without_grade,  '  + 
+  '       (  '  + 
+ '         select count(*) > 0  '  + 
+ '         from (  '  + 
+ '             select *  '  + 
+ '             from exam_enrols ee  '  + 
+ '             where 1=1  '  + 
+ '             and student_id = $1  '  + 
+ '             and e.course_id = ce.course_id  '  + 
+ '             and ee.valid = true  '  + 
+ '             and ee.exam_grade is null  '  + 
+ '              and ee.exam_id = e.id ' +
+ '         ) as foo  '  + 
+ '       ) as exists_enrol_for_this_exam,  '  + 
+ '       (  '  + 
+ "         select extract( 'day' from (  "  + 
+ '           select foo.date - now() from (  '  + 
+ '             select "date"  '  + 
+ '             from exam_enrols ee  '  + 
+ '             where 1=1  '  + 
+ '             and student_id = $1  '  + 
+ '             and e.course_id = ce.course_id  '  + 
+ '             and ee.valid = true  '  + 
+ '             order by date desc  '  + 
+ '             limit 1  '  + 
+ '           ) as foo  '  + 
+ '         ))  '  + 
+ '       ) as days_since_last_valid_exam_enrol,  '  + 
+ '       (  '  + 
+ '         select count(*) > 0 from student_enrols se  '  + 
+ '           where 1=1  '  + 
+ "           and study_year = extract('year' from now())  "  + 
+ '       ) as student_enrolled  '  + 
+ '       from exams e  '  + 
+ '       inner join courses c  '  + 
+ '         on e.course_id = c.numberid  '  + 
+ '       inner join course_enrol ce  '  + 
+ '         on e.course_id = ce.course_id  '  + 
+ '       where 1=1  '  + 
+ "       and e.date > to_date('09/2017', 'mm/yyyy') and e.date < to_date('09/2018', 'mm/yyyy')  "  + 
+ '       and ce.active = true  '  + 
+ '       and ce.student_id = $1  '  + 
+ '       order by e."date" asc  ';
+                
+    let params = [student_id];
   
-    var exams = [{course_name: 'nekneki123', date: 'nekdatum', exam_id: 1, lecture_room = 'PA', enrolled: false, paid: false, changeable: true},
-                {course_name: 'nekneki1231233', date: 'nekdrugdatum', exam_id: 2, lecture_room = 'PA', enrolled: false, paid: true, changeable: true},
-                {course_name: 'nekneki1asd231233', date: 'nekdruasdgdatum', exam_id: 3, lecture_room = 'PA', enrolled: false, paid: false, changeable: false},
-                {course_name: 'nekne212easd231233', date: 'nekdr12euasdgdatum', exam_id: 4, lecture_room = 'PA', enrolled: true, paid: false, changeable: true}]; //TODO
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      //console.log(res.rows);
+      return resolve(res.rows);
+    });
+  
+    /*
+    var exams = [{course_name: 'nekneki123', date: 'nekdatum', exam_id: 1, lecture_room: 'PA', enrolled: false, paid: false, changeable: true},
+                {course_name: 'nekneki1231233', date: 'nekdrugdatum', exam_id: 2, lecture_room: 'PA', enrolled: false, paid: true, changeable: true},
+                {course_name: 'nekneki1asd231233', date: 'nekdruasdgdatum', exam_id: 3, lecture_room: 'PA', enrolled: false, paid: false, changeable: false},
+                {course_name: 'nekne212easd231233', date: 'nekdr12euasdgdatum', exam_id: 4, lecture_room: 'PA', enrolled: true, paid: false, changeable: true}]; //TODO
   
     resolve(exams)
+    */
   });
 }
 
 module.exports.doEnrol = function(exam_id, student_id) {
   return new Promise((resolve, reject) => {
+    let query = "insert into exam_enrols (valid, student_id, taking, exam_id) values (true, $1, 1 + (select count(*) from exam_enrols ee inner join exams e on ee.exam_id = e.id where ee.valid = true and ee.student_id = $2) ,$3)";
+  
+    let params = [student_id, student_id,  exam_id];
+    
+    console.log(query);
+    console.log(params);
+    
+    client.query(query, params, (err, res) =>{
+      console.log('exam enrol err: ' + err);
+      if(err) return reject(err);
+      return resolve();
+    });
+    
     /*
     insert into exam_enrols (course_id, valid, student_id, "year", taking)
     values ($course_id, $valid, $student_id, $"year", $taking)
-    */
-  
-    resolve();
+    */  
   });
 }
 
-module.exports.undoEnrol = function(exam_id, student_id) {
+module.exports.undoEnrol = function(exam_id, user_id) {
+  if(isNaN(exam_id)) return;
+
+  console.log('undoing enrol: ' + exam_id + ' ' + user_id);
+
   return new Promise((resolve, reject) => {
-    /*
-    update exam_enrols set valid = false, updated = now(), updated_by = $user_id
-    where id = $id
-    */
   
-    resolve();
+    let query = 'update exam_enrols ee set valid = false, cancelled = now(), cancelled_by = $1 ' +
+    'where ee.exam_id = $2 ' +
+    'and ee.valid = true ';
+  
+    let params = [user_id,  exam_id];
+  
+    console.log(query);
+    console.log(params);
+    
+    client.query(query, params, (err, res) =>{
+      console.log('exam unenrol err: ' + err);
+      if(err) return reject(err);
+      return resolve();
+    });
   });
 }
 

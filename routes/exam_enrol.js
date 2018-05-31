@@ -22,31 +22,32 @@ router.get('/:vpisnaId', function(req, res, next) {
   });
 });
 
-router.get('/doEnrol/:examId', function(req, res, next)  {
-  db.doEnrol(req.params.examId, req.session.student_id).then(() => {
+router.get('/doEnrol/:examId/:studentId', function(req, res, next)  {
+  db.doEnrol(parseInt(req.params.examId), req.params.studentId).then(() => {
     req.session.succMsg = 'Prijava uspešna.';
-    return res.redirect('/../exam_enrol');
+    return res.redirect('/../../exam_enrol');
   },
-  (err, errMsg) => {
-    if(errMsg) {
-      return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, examEnrolErr: errMsg});
-    }
+  (err) => {
     console.log(err);
-    return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, message:'Napaka na strežniku.'});
+
+    req.session.succMsg = undefined;
+    
+    return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, message:'Napaka na strežniku.', examEnrolErr: 'Napaka na strežniku.'});
   });
 });
 
-router.get('/undoEnrol/:examId', function(req, res, next)  {
-  db.undoEnrol(req.params.examId, req.session.student_id).then(() => {
+router.get('/undoEnrol/:examId/:studentId', function(req, res, next)  {
+  console.log('session user_id: ' + req.session.user_id);
+  db.undoEnrol(parseInt(req.params.examId), req.session.user_id).then(() => {
     req.session.succMsg = 'Odjava uspešna.';
-    return res.redirect('/../exam_enrol');
+    return res.redirect('/../../exam_enrol');
   },
-  (err, errMsg) => {
-    if(errMsg) {
-      return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, examEnrolErr: errMsg});
-    }
+  (err) => {
     console.log(err);
-    return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, message:'Napaka na strežniku.'});
+  
+    req.session.succMsg = undefined;
+  
+    return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, message:'Napaka na strežniku.', examEnrolErr: 'Napaka na strežniku.'});
   });
 });
 

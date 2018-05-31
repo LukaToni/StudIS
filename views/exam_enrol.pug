@@ -41,25 +41,31 @@ html(lang='en')
                         if exams
                             p.lead= 'Seznam izpitnih rokov:'
                         
+                        
                             table.table.table-sm#tableSearch
                                 thead
                                     tr
                                         th Predmet
                                         th Datum
+                                        th Ura
                                         th Predavalnica
                                         th Prijava
                                 tbody
                                     each exam, index in exams
                                         tr
-                                            td=exam.course_name
-                                            td=exam.date
+                                            td=exam.name + ' - ' + exam.numberid
+                                            td=exam.date.getDate() + '/' + (exam.date.getMonth() + 1) + '/' + exam.date.getFullYear()
+                                            td=(exam.date.getHours() < 10 ? '0' + exam.date.getHours() : exam.date.getHours())  + ':' + (exam.date.getMinutes() < 10 ? '0' + exam.date.getMinutes() : exam.date.getMinutes())
                                             td=exam.lecture_room
-                                            if(exam.enrolled)
+                                            
+                                            //e.*, c.*, ce.*, takings_this_year, takings_all_years, course_completed, exists_enrol_without_grade, days_since_last_valid_exam_enrol, student_enrolled, exam_expired
+
+                                            if(exam.exists_enrol_for_this_exam)
                                                 td
-                                                    a(href="/exam_enrol/undoEnrol/" + exam.exam_id, onclick="return confirm('Potrdite odjavo.')", class=exam.changeable ? "active" : "disabled" ).btn.btn-primary odjavi se
+                                                    a(href="/exam_enrol/undoEnrol/" + exam.exam_id + "/" + exam.student_id, onclick="return confirm('Potrdite odjavo.')", class=exam.exam_expired ? "disabled" : "active" ).btn.btn-primary odjavi se
                                             else
                                                 td
-                                                    a(href="/exam_enrol/doEnrol/" + exam.exam_id, onclick="return confirm('Potrdite prijavo." + (exam.paid ? " Potrebno bo placilo.')": "')"), class=exam.changeable ? "active" : "disabled" ).btn.btn-primary prijavi se
+                                                    a(href="/exam_enrol/doEnrol/" + exam.exam_id + "/" + exam.student_id, onclick="return confirm('Potrdite prijavo." + (exam.takings_all_years > 3 || !exam.student_enrolled ? " Potrebno bo placilo.')": "')"), class=exam.takings_all_years < 6 && !exam.exam_expired && exam.takings_this_year < 3 && (!exam.days_since_last_valid_exam_enrol  || exam.days_since_last_valid_exam_enrol > 3) && !exam.course_completed && !exam.exists_enrol_without_grade ? "active" : "disabled" ).btn.btn-primary prijavi se
                         
         // SCRIPTS
         // JQuery

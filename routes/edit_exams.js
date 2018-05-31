@@ -97,6 +97,7 @@ router.post('/add', function(req, res, next) {
     return res.redirect(307, '/edit_exams');
   },
   (err) => {
+    console.log(err);
     req.session.examsErr = 'Napaka, izpitni rok ni bil dodan.';
     return res.redirect(307, '/edit_exams');
   })
