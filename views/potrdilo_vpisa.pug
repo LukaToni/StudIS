@@ -40,7 +40,7 @@ html(lang='en')
         br
         button.btn.btn-sm.btn-default#toPdfButton(onclick="html2pdf('potrdilo.pdf', '#potrdilo', '#toPdfButton');") Izvozi PDF
 
-        #potrdilo
+        #potrdilo(style="width:50%")
             div(style="float: left; width:  25%; line-height: 1;")
                 span#name.s1= token.name+" "
                 span#surname.s1= token.surname
