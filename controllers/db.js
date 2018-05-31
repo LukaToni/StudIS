@@ -896,3 +896,38 @@ function htmlBooleanToInt(htmlBoolean) {
 function currentYear() {
   return new Date().getFullYear().toString().substr(-2);
 }
+
+
+module.exports.getStudentKartotekaInfo = function(studentId) {
+  return new Promise((resolve, reject) => {
+    let query = ""; // TODO TODO
+                
+    let params = [studentId];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+  
+}
+
+
+module.exports.searchForStudents = function(searchQuery) {
+  return new Promise((resolve, reject) => {
+    let query = `SELECT name, surname, registration_number from student
+                    WHERE
+                      name ILIKE '%' || $1 || '%' OR
+                      surname ILIKE '%' || $1 || '%' OR
+                      registration_number ILIKE '%' || $1 || '%'
+                    ORDER BY surname, name`
+    
+    let params = [searchQuery];
+    console.log("params", params)
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
+    });
+  });
+  
+}
