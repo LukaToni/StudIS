@@ -43,6 +43,8 @@ html(lang='en')
                                     a.dropdown-item(href='verify_token') Potrdi vpise
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='edit_exams') Izpitni roki
+                                if(type == 'student')
+                                    a.dropdown-item(href='exam_enrol') Izpitni roki
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='count_course_enrols') Preštej vpise v predmet    
                                 if(type == 'professor' || type == 'clerk')
