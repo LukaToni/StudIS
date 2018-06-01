@@ -49,6 +49,7 @@ html(lang='en')
                                         th Datum
                                         th Ura
                                         th Predavalnica
+                                        th Ocena
                                         th Prijava
                                 tbody
                                     each exam, index in exams
@@ -57,6 +58,7 @@ html(lang='en')
                                             td=exam.date.getDate() + '/' + (exam.date.getMonth() + 1) + '/' + exam.date.getFullYear()
                                             td=(exam.date.getHours() < 10 ? '0' + exam.date.getHours() : exam.date.getHours())  + ':' + (exam.date.getMinutes() < 10 ? '0' + exam.date.getMinutes() : exam.date.getMinutes())
                                             td=exam.lecture_room
+                                            td=exam.exam_grade
                                             
                                             //e.*, c.*, ce.*, takings_this_year, takings_all_years, course_completed, exists_enrol_without_grade, days_since_last_valid_exam_enrol, student_enrolled, exam_expired
 

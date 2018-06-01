@@ -717,6 +717,9 @@ module.exports.getExamsForStudent = function(student_id) {
  '       e.*,  '  + 
  '       c.*,  '  + 
  '       ce.*,  '  + 
+          '( '+
+            'select exam_grade from exam_enrols where student_id = $1 and exam_id = e.id limit 1 '+
+         ' ) exam_grade, ' +
  '       (  '  + 
  '         select count(*)  '  + 
  '         from (  '  + 
