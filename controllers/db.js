@@ -923,16 +923,17 @@ module.exports.getExamsForStudent = function(student_id) {
             'select exam_grade from exam_enrols where student_id = $1 and exam_id = e.id limit 1 '+
          ' ) exam_grade, ' +
  '       (  '  + 
- '         select count(*)  '  + 
+ '         select count(*) '  + 
  '         from (  '  + 
  '             select *  '  + 
  '             from exam_enrols ee  '  + 
+               'inner join exams eee on ee.exam_id = eee.id '+
  '             where 1=1  '  + 
  '             and student_id = $1  '  + 
- '             and e.course_id = ce.course_id  '  + 
-              'and e.id = ee.exam_id '+
+ '             and eee.course_id = ce.course_id  '  + 
+              'and eee.id = ee.exam_id '+
  '             and ee.valid = true  '  + 
- "             and e.date > to_date('09/2017', 'mm/yyyy') and e.date < to_date('09/2018', 'mm/yyyy')  "  + 
+ "             and eee.date > to_date('09/2017', 'mm/yyyy') and e.date < to_date('09/2018', 'mm/yyyy')  "  + 
  '         ) as foo  '  + 
  '       ) as takings_this_year,  '  + 
  '       (  '  + 
@@ -940,12 +941,26 @@ module.exports.getExamsForStudent = function(student_id) {
  '         from (  '  + 
  '             select *  '  + 
  '             from exam_enrols ee  '  + 
+                'inner join exams eee on ee.exam_id = eee.id '+
  '             where 1=1  '  + 
  '             and student_id = $1  '  + 
- '             and e.course_id = ce.course_id  '  + 
+ '             and eee.course_id = ce.course_id  '  + 
  '             and ee.valid = true  '  + 
  '         ) as foo  '  + 
  '       ) as takings_all_years,  '  + 
+  '       (  '  + 
+ '         select count(*)  '  + 
+ '         from (  '  + 
+ '             select *  '  + 
+ '             from exam_enrols ee  '  + 
+                'inner join exams eee on ee.exam_id = eee.id '+
+ '             where 1=1  '  + 
+              " and extract('year' from eee.date) in (select werere from (select se.\"year\", max(se.study_year) werere from student_enrols se where se.student_registration_number = $1 group by se.year) as bobo) " +
+ '             and student_id = $1  '  + 
+ '             and eee.course_id = ce.course_id  '  + 
+ '             and ee.valid = true  '  + 
+ '         ) as foo  '  + 
+ '       ) as takings_all_years_repeated,  '  + 
  '       (  '  + 
  "         select  extract ('doy' from e.\"date\") < extract( 'doy' from now())  "  + 
  '       ) as exam_expired,  '  + 
