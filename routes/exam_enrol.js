@@ -13,6 +13,7 @@ router.get('/:vpisnaId', function(req, res, next) {
     if(!exams) {
       return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, message:'Na voljo nimate nobenega izpitnega roka.'});
     }
+    console.log(exams);
     succMsg = req.session.succMsg;
     return res.render('exam_enrol',{ type: req.session.type, email: req.session.email, exams: exams, examEnrolSuccMsg: succMsg});
   },
