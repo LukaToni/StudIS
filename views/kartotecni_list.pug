@@ -68,6 +68,10 @@ html(lang='en')
                             if !courses[0]
                                 p Student ni prijavljen na noben predmet
                             else    
+                                label
+                                    input(onchange="$('.skrij').toggle()", value= "asdsad", type="checkbox")
+                                    | Pokazi samo zadnje ponavlanje
+                                    
                                 div#kartotecni_list
                                     span
                                         b UNIVERZA V LJUBLJANI
@@ -116,28 +120,35 @@ html(lang='en')
                                                 th Datum
                                                 th Ocena
                                                 th Št polaganja
+                                                
+                                            -var viden = {};
                                             each course, index in courses
-                                                -var c = index%2 == 0 ? "#f2f2f2" : "#fff";
-                                                tr(style="background-color:"+c)
-                                                    td= index + 1
-                                                    td= course.course_id
-                                                    td= course.course_name
-                                                    td= course.course_credits
-                                                    if course.profs_names.length == 0
+                                                if true || course.exam_grade
+                                                    - var zadnji = false;
+                                                    - var pro4 = false;
+                                                    - if(!viden[course.course_id]) {zadnji = true; viden[course.course_id]=true;};
+                                                    - var cls = !zadnji? "skrij" : "";
+                                                    tr(class=cls)
+                                                        td= index + 1
+                                                        td= course.course_id
+                                                        td= course.course_name
+                                                        td= course.course_credits
+                                                        //if course.profs_names.length == 0
                                                         td= course.prof_surname + " " + course.prof_name
-                                                    else
-                                                        td(style="white-space:pre")= course.profs_names
-                                                    if course.exam_date
-                                                        - var d = new Date(course.exam_date)
-                                                        td= d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear()
-                                                    else
-                                                        td
-                                                    if !course.exam_valid && course.exam_date
-                                                        td VP
-                                                        td 
-                                                    else 
-                                                        td= course.exam_grade
-                                                        td= course.taking
+                                                        //else
+                                                        //    td(style="white-space:pre")= course.profs_names
+                                                        if course.exam_date
+                                                            - var d = new Date(course.exam_date)
+                                                            td= d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear()
+                                                        else
+                                                            td
+                                                        if !course.exam_valid && course.exam_date
+                                                            td VP
+                                                            td 
+                                                        else 
+                                                            td= course.exam_grade
+                                                            td= course.taking
+                                                            td= course.taking_this_year
                                         br
                                         br
                                 

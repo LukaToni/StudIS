@@ -8,42 +8,48 @@ var db = require('../controllers/db');
 
 function groupCourses(courses) {
  
+ 
+  return courses;
   let c = {};
   for(let i=0; i<courses.length; i++) {
     let course = courses[i];
     course.profs = {};
     course.profs_names = "";
-    
-    if(!c[course.course_id]) {
-      // add course to list if the corse is uniqe 
-      c[course.course_id] = course;
-    } else if(c[course.course_id].taking <= course.taking) {
-      // if the saved course has lower taking we need to replace it with this new one
-      // since we are only interested in the score of the last taking
-      
-      // save the saved course porfs(were profs ids are saved) and prof_names(where profs names are already made ready for display - they are seperated with \n)
-      let profs = c[course.course_id].profs;
-      let profs_names =  c[course.course_id].profs_names; 
-      
-      // check if the course has Id of a new professor and add it to profs
-      // we dont want to add professor that is already added
-      if(!profs[course.prof_id]) {
-        let prof_id = course.prof_id;
-        let prof_fullName = course.prof_surname + " " + course.prof_name;
-        
-        profs[prof_id] = prof_fullName;
-        profs_names += prof_fullName + "\n";
-      }
-      
-      c[course.course_id] = course;
-      
-      // restore the profs and profs_names that were overwritten one line above
-      c[course.course_id].profs = profs;
-      c[course.course_id].profs_names = profs_names;
-    } 
-    
 
+    let id = course.course_id + " " + course.pastTaking + " " + course.year;
+
+    if(!c[id]) {
+      // add course to list if the corse is uniqe 
+      c[id] = course;
+    }
+    
+    c[id].pastTaking = true;
+    
+    
+    // if the saved course has lower taking we need to replace it with this new one
+    // since we are only interested in the score of the last taking
+    
+    // save the saved course porfs(were profs ids are saved) and prof_names(where profs names are already made ready for display - they are seperated with \n)
+    let profs = c[id].profs;
+    let profs_names =  c[id].profs_names; 
+    
+    // check if the course has Id of a new professor and add it to profs
+    // we dont want to add professor that is already added
+    if(!profs[course.prof_id]) {
+      let prof_id = course.prof_id;
+      let prof_fullName = course.prof_surname + " " + course.prof_name;
+      
+      profs[prof_id] = prof_fullName;
+      profs_names += prof_fullName + "\n";
+    }
+
+    
+    // restore the profs and profs_names that were overwritten one line above
+    c[id].profs = profs;
+    c[id].profs_names = profs_names;
   }
+  
+  
   
   // wirte courses back to array
   let out = [];
@@ -65,7 +71,7 @@ function sortCourses(courses) {
         return -1;
       if (a_c > b_c)
         return 1;
-      return 0;
+      return - a.taking + b.taking;
     }
   );
 }
