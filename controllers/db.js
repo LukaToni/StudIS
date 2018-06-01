@@ -958,45 +958,47 @@ module.exports.getEnroledCourses = function(studentId) {
 module.exports.getNotEnroledCourses = function(studentId) {
   return new Promise((resolve, reject) => {
     let query = `SELECT
-                  c.numberid as course_id,
-                  ce.student_id,
-                  taking,
-                  exam_grade,
-                  grade_total,
-                  s.name,
-                  s.surname,
-                  se.study_year,
-                  se.year,
-                  c.name as course_name,
-                  c.credits as course_credits,
-                  et.name as enrol_type,
-                  st.name as study_type,
-                  p.name as prof_name,
-                  p.surname as prof_surname,
-                  p.key as prof_id,
-                  ee.id as exam_id
-                
-                FROM course_enrol ce
-                  INNER JOIN student s ON
-                    ce.student_id = s.registration_number
-                  INNER JOIN exams e ON
-                    ce.course_id = e.course_id
-                  INNER JOIN courses c ON
-                    e.course_id = c.numberid
-                  LEFT JOIN exam_enrols ee ON
-                    ee.exam_id = e.id
-                  INNER JOIN student_enrols se ON
-                    ce.student_id = se.student_registration_number
-                  INNER JOIN enrol_type et ON
-                    se.enrol_type = et.code
-                  INNER JOIN study_type st ON
-                    se.study_type = st.key
-                  INNER JOIN operator o ON
-                    c.numberid = o.course
-                  INNER JOIN professor p ON
-                    o.professor = p.key
-                  WHERE ce.student_id = $1
-                  AND ee.exam_id IS NULL
+  c.numberid as course_id,
+  ce.student_id,
+  taking,
+  exam_grade,
+  grade_total,
+  s.name,
+  s.surname,
+  se.study_year,
+  se.year,
+  c.name as course_name,
+  c.credits as course_credits,
+  et.name as enrol_type,
+  st.name as study_type,
+  p.name as prof_name,
+  p.surname as prof_surname,
+  p.key as prof_id,
+  ee.id as exam_id,
+  sp.name as study_programme_name
+FROM course_enrol ce
+  INNER JOIN student s ON
+                         ce.student_id = s.registration_number
+  INNER JOIN exams e ON
+                       ce.course_id = e.course_id
+  INNER JOIN courses c ON
+                         e.course_id = c.numberid
+  LEFT JOIN exam_enrols ee ON
+                             ee.exam_id = e.id
+  INNER JOIN student_enrols se ON
+                                 ce.student_id = se.student_registration_number
+  INNER JOIN enrol_type et ON
+                             se.enrol_type = et.code
+  INNER JOIN study_type st ON
+                             se.study_type = st.key
+  INNER JOIN operator o ON
+                          c.numberid = o.course
+  INNER JOIN professor p ON
+                           o.professor = p.key
+  INNER JOIN study_programme sp ON
+                                  c.programme = sp.evs_code
+WHERE ce.student_id = $1
+      AND ee.exam_id IS NULL
                 `;
                 
     let params = [studentId];

@@ -29,7 +29,7 @@ function groupCourses(courses) {
       // we dont want to add professor that is already added
       if(!profs[course.prof_id]) {
         let prof_id = course.prof_id;
-        let prof_fullName = course.prof_surname + course.prof_name;
+        let prof_fullName = course.prof_surname + " " + course.prof_name;
         
         profs[prof_id] = prof_fullName;
         profs_names += prof_fullName + "\n";
