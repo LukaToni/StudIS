@@ -96,7 +96,7 @@ html(lang='en')
                                         tbody(style="text-transform:capitalize;")
                                             each student, index in students
                                                 tr
-                                                    td=index
+                                                    td=index+1
                                                     //td= JSON.stringify(student)
                                                     td=student.student_id
                                                     td=student.student_name
@@ -104,14 +104,17 @@ html(lang='en')
                                                     //TODO: TODO tole je treba zamenat 
                                                     th 2017/18 
                                                     th=student.taking
+                                                    - var sty =! student.valid ? "display:none;" : ""
                                                     th
-                                                        input.form-control(type="number" min="0" max="100" step="1" name=student.id+'_gradeTotal' value=student.grade_total style="text-align:center")
+                                                        div(class=index+"total", style=sty)
+                                                            input.form-control(type="number" min="0" max="100" step="1" name=student.id+'_gradeTotal'  value=student.grade_total style="text-align:center")
                                                     th
-                                                        input.form-control(type="number" min="5" max="10" step="1" name=student.id+'_examGrade' value=student.exam_grade style="text-align:center")
+                                                        div(class=index+"total", style=sty)
+                                                            input.form-control(type="number" min="5" max="10" step="1" name=student.id+'_examGrade'  value=student.exam_grade style="text-align:center")
                                                     th
                                                         .form-check
                                                             label.form-check-label
-                                                                input.form-check-input(type='checkbox', name=student.id+'_valid', checked=!+student.valid)
+                                                                input.form-check-input(onchange="$('."+ index + "total').toggle()" type='checkbox', id=index+"check", name=student.id+'_valid', checked=!+student.valid)
                                                                 | VP
                                     
                                         button.btn-primary.btn#submitButton(type="submit") Shrani ocene

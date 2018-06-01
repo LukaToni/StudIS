@@ -12,7 +12,7 @@ function isProfessor(session) {
 
 function formatDate(date) {
   return {
-    "date": dateFormat(date, "shortDate"),
+    "date": dateFormat(date, "dd.mm.yyyy"),
     "time": dateFormat(date, "HH:MM")
   }
 }
