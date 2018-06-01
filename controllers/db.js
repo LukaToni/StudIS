@@ -787,7 +787,7 @@ module.exports.getStudentsForExam = function(examId) {
                 FROM exam_enrols e
                 INNER JOIN student s ON e.student_id = s.registration_number
                 WHERE e.exam_id = $1
-                ORDER BY student_name, student_surname`;
+                ORDER BY student_surname, student_name`;
                 
     client.query(query, [examId], (err, res) =>{
       if(err) return reject(err);
