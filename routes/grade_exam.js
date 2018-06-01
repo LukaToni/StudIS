@@ -119,6 +119,7 @@ router.post('/store', auth.authenticate, function(req, res, next){
         }
         else if(a.indexOf('gradeTotal')>-1){
             grade.grade = parseInt(value);
+
         }
         else if(a.indexOf('examGrade')>-1){
             grade.total = parseInt(value);
@@ -129,5 +130,8 @@ router.post('/store', auth.authenticate, function(req, res, next){
         return res.redirect('/grade_exam');
     });
 })
+function clamp(num, min, max) {
+  return num <= min ? min : num >= max ? max : num;
+}
 
 module.exports = router;

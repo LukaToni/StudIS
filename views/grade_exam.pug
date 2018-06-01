@@ -105,9 +105,9 @@ html(lang='en')
                                                     th 2017/18 
                                                     th=student.taking
                                                     th
-                                                        input.form-control(type="number" name=student.id+'_gradeTotal' value=student.grade_total style="text-align:center")
+                                                        input.form-control(type="number" min="0" max="100" step="1" name=student.id+'_gradeTotal' value=student.grade_total style="text-align:center")
                                                     th
-                                                        input.form-control(type="number" name=student.id+'_examGrade' value=student.exam_grade style="text-align:center")
+                                                        input.form-control(type="number" min="5" max="10" step="1" name=student.id+'_examGrade' value=student.exam_grade style="text-align:center")
                                                     th
                                                         .form-check
                                                             label.form-check-label
