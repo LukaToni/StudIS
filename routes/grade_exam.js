@@ -118,11 +118,15 @@ router.post('/store', auth.authenticate, function(req, res, next){
             grade.valid = false;
         }
         else if(a.indexOf('gradeTotal')>-1){
+            
             grade.grade = parseInt(value);
-
+            if(isNaN(grade.grade))
+              grade.grade = null;
         }
         else if(a.indexOf('examGrade')>-1){
             grade.total = parseInt(value);
+            if(isNaN(grade.total))
+              grade.total = null;
         }
 
     })
