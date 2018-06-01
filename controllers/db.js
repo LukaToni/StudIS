@@ -764,9 +764,10 @@ module.exports.getExamsForStudent = function(student_id) {
  '         from (  '  + 
  '             select *  '  + 
  '             from exam_enrols ee  '  + 
+                'inner join exams eee on ee.exam_id = eee.id '+
  '             where 1=1  '  + 
  '             and student_id = $1  '  + 
- '             and e.course_id = ce.course_id  '  + 
+ '             and eee.course_id = ce.course_id  '  + 
  '             and ee.valid = true  '  + 
  '             and ee.exam_grade is null  '  + 
  '         ) as foo  '  + 
@@ -776,9 +777,10 @@ module.exports.getExamsForStudent = function(student_id) {
  '         from (  '  + 
  '             select *  '  + 
  '             from exam_enrols ee  '  + 
+                'inner join exams eee on ee.exam_id = eee.id '+
  '             where 1=1  '  + 
  '             and student_id = $1  '  + 
- '             and e.course_id = ce.course_id  '  + 
+ '             and eee.course_id = ce.course_id  '  + 
  '             and ee.valid = true  '  + 
  '             and ee.exam_grade is null  '  + 
  '              and ee.exam_id = e.id ' +
@@ -786,14 +788,15 @@ module.exports.getExamsForStudent = function(student_id) {
  '       ) as exists_enrol_for_this_exam,  '  + 
  '       (  '  + 
  "         select extract( 'day' from (  "  + 
- '           select foo.date - now() from (  '  + 
+ '           select e."date" - foo.date from (  '  + 
  '             select "date"  '  + 
  '             from exam_enrols ee  '  + 
+               '   inner join exams eee on ee.exam_id = eee.id ' +
  '             where 1=1  '  + 
- '             and student_id = $1  '  + 
- '             and e.course_id = ce.course_id  '  + 
+ '             and student_id = $1  '  +
+ '             and eee.course_id = ce.course_id  '  + 
  '             and ee.valid = true  '  + 
- '             order by date desc  '  + 
+ '             order by eee.date desc  '  + 
  '             limit 1  '  + 
  '           ) as foo  '  + 
  '         ))  '  + 
