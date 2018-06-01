@@ -18,6 +18,7 @@ var countCourseEnrols = require('./routes/count_course_enrols');
 var tokens = require('./routes/tokens');
 var verifyRouter = require('./routes/verify_token');
 var vpisniPdfRouter = require('./routes/vpisni_to_pdf');
+var examEnrolRouter = require('./routes/exam_enrol');
 var editExamsRouter = require('./routes/edit_exams');
 var loginRouter = require('./routes/login');
 var enrolRouter = require('./routes/enrol');
@@ -47,12 +48,14 @@ app.use('/personal', personalRouter);
 app.use('/tokens', tokens);
 app.use('/verify_token', verifyRouter);
 app.use('/vpisni_to_pdf', vpisniPdfRouter);
+app.use('/exam_enrol', examEnrolRouter)
 app.use('/edit_exams', editExamsRouter);
 //app.use('/student_import', studentImportRouter);
 //app.use('/student_enrols', studentEnrolsRouter);
 app.use('/count_course_enrols', countCourseEnrols);
-app.use('/exam_list', require('./routes/exam_list'));
 app.use('/grade_exam', require('./routes/grade_exam'));
+app.use('/kartotecni_list', require('./routes/kartotecni_list'))
+app.use('/exam_list', require('./routes/exam_list'))
 app.use('/', loginRouter);
 app.use('/enrol', enrolRouter);
 

@@ -43,12 +43,15 @@ html(lang='en')
                                     a.dropdown-item(href='verify_token') Potrdi vpise
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='edit_exams') Izpitni roki
+                                if(type == 'student')
+                                    a.dropdown-item(href='exam_enrol') Izpitni roki
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='count_course_enrols') Preštej vpise v predmet    
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='exam_list') Pokaži vpisane na izpit
                                 if(type == 'professor' || type == 'clerk')
                                     a.dropdown-item(href='grade_exam') Vpiši ocene
+                                a.dropdown-item(href='kartotecni_list') Kartotecni List
                                 a.dropdown-item(href='#') Poveži digitalno potrdilo
                                 // <a class="dropdown-item" href="#">English</a>
                                 a.dropdown-item(href='/logout') Odjava
