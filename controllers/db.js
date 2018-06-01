@@ -741,7 +741,6 @@ module.exports.getExamsForStudent = function(student_id) {
  '             where 1=1  '  + 
  '             and student_id = $1  '  + 
  '             and e.course_id = ce.course_id  '  + 
-              'and e.id = ee.exam_id '+
  '             and ee.valid = true  '  + 
  '         ) as foo  '  + 
  '       ) as takings_all_years,  '  + 
@@ -802,6 +801,7 @@ module.exports.getExamsForStudent = function(student_id) {
  '       (  '  + 
  '         select count(*) > 0 from student_enrols se  '  + 
  '           where 1=1  '  + 
+              'and se.student_registration_number = $1 ' +
  "           and study_year = extract('year' from now())  "  + 
  '       ) as student_enrolled  '  + 
  '       from exams e  '  + 
