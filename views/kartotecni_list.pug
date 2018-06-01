@@ -65,82 +65,85 @@ html(lang='en')
                             br
                         
                         if studentId
-                            div#kartotecni_list
-                                span
-                                    b UNIVERZA V LJUBLJANI
-                                br
-                                span Fakulteta za računalništvo in informatiko
-                                div(style="float:right")
-                                    - var d = new Date()
-                                    span= d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
-                                
-                                br
-                                br
-                                h3 KARTOTEČNI LIST
-                                hr
-                                
-                                div(style="text-align:center")
-                                    h4 Pregled opravljenih izpitov
-                                    p= courses[0].student_id + " " + courses[0].name + " " + courses[0].surname
-                                
-                                for courses in coursesSplit
+                            if !courses[0]
+                                p Student ni prijavljen na noben predmet
+                            else    
+                                div#kartotecni_list
+                                    span
+                                        b UNIVERZA V LJUBLJANI
+                                    br
+                                    span Fakulteta za računalništvo in informatiko
+                                    div(style="float:right")
+                                        - var d = new Date()
+                                        span= d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
+                                    
+                                    br
+                                    br
+                                    h3 KARTOTEČNI LIST
+                                    hr
+                                    
                                     div(style="text-align:center")
-                                        h4= courses[0].study_programme_name
-                                    table(style="text-align:left; width: 70%")
-                                        tr
-                                            th Študijsko leto
-                                            td= courses[0].study_year + "/" + (courses[0].study_year+1+"").substr(2, 2)
-                                            th Smer:
-                                            td L2000 - UNI-RI
-                                        tr
-                                            th Letnik
-                                            td= courses[0].year
-                                            th Vrsta vpisa:
-                                            td= courses[0].enrol_type
-                                        tr
-                                            th Način
-                                            td= courses[0].study_type
-                                            th Skupina:
-                                            td LJUBLJANA
-                                    br
-                                    table(style="text-align:left; width: 100%")
-                                        tr
-                                            th
-                                            th Šifra
-                                            th Predmet
-                                            th KT/U
-                                            th Predavatelji
-                                            th Datum
-                                            th Ocena
-                                            th Št polaganja
-                                        each course, index in courses
-                                            -var c = index%2 == 0 ? "#f2f2f2" : "#fff";
-                                            tr(style="background-color:"+c)
-                                                td= index + 1
-                                                td= course.course_id
-                                                td= course.course_name
-                                                td= course.course_credits
-                                                if course.profs_names.length == 0
-                                                    td= course.prof_surname + " " + course.prof_name
-                                                else
-                                                    td(style="white-space:pre")= course.profs_names
-                                                if course.exam_date
-                                                    - var d = new Date(course.exam_date)
-                                                    td= d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear()
-                                                else
-                                                    td
-                                                if !course.exam_valid && course.exam_date
-                                                    td VP
-                                                    td 
-                                                else 
-                                                    td= course.exam_grade
-                                                    td= course.taking
-                                    br
-                                    br
-                            
-                            
-                            button.btn.btn-sm.btn-default(onclick="$('#kartotecni_list').table2csv('list');") Izvozi CSV
-                            button.btn.btn-sm.btn-default#toPdfButton(onclick="html2pdf('list.pdf', '#kartotecni_list', '#toPdfButton');") Izvozi PDF
+                                        h4 Pregled opravljenih izpitov
+                                        p= courses[0].student_id + " " + courses[0].name + " " + courses[0].surname
+                                    
+                                    for courses in coursesSplit
+                                        div(style="text-align:center")
+                                            h4= courses[0].study_programme_name
+                                        table(style="text-align:left; width: 70%")
+                                            tr
+                                                th Študijsko leto
+                                                td= courses[0].study_year + "/" + (courses[0].study_year+1+"").substr(2, 2)
+                                                th Smer:
+                                                td L2000 - UNI-RI
+                                            tr
+                                                th Letnik
+                                                td= courses[0].year
+                                                th Vrsta vpisa:
+                                                td= courses[0].enrol_type
+                                            tr
+                                                th Način
+                                                td= courses[0].study_type
+                                                th Skupina:
+                                                td LJUBLJANA
+                                        br
+                                        table(style="text-align:left; width: 100%")
+                                            tr
+                                                th
+                                                th Šifra
+                                                th Predmet
+                                                th KT/U
+                                                th Predavatelji
+                                                th Datum
+                                                th Ocena
+                                                th Št polaganja
+                                            each course, index in courses
+                                                -var c = index%2 == 0 ? "#f2f2f2" : "#fff";
+                                                tr(style="background-color:"+c)
+                                                    td= index + 1
+                                                    td= course.course_id
+                                                    td= course.course_name
+                                                    td= course.course_credits
+                                                    if course.profs_names.length == 0
+                                                        td= course.prof_surname + " " + course.prof_name
+                                                    else
+                                                        td(style="white-space:pre")= course.profs_names
+                                                    if course.exam_date
+                                                        - var d = new Date(course.exam_date)
+                                                        td= d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear()
+                                                    else
+                                                        td
+                                                    if !course.exam_valid && course.exam_date
+                                                        td VP
+                                                        td 
+                                                    else 
+                                                        td= course.exam_grade
+                                                        td= course.taking
+                                        br
+                                        br
+                                
+                                
+                                button.btn.btn-sm.btn-default(onclick="$('#kartotecni_list').table2csv('list');") Izvozi CSV
+                                button.btn.btn-sm.btn-default#toPdfButton(onclick="html2pdf('list.pdf', '#kartotecni_list', '#toPdfButton');") Izvozi PDF
 
         // SCRIPTS
         // JQuery
