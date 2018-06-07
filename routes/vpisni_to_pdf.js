@@ -26,8 +26,9 @@ router.get('/:enrolId', function(req, res, next) {
             
       //htmlData.replace('$param', vpisniPdfData.param)
       htmlData = htmlData.replace('$student_name', vpisniPdfDataIsto.student_name);
-      htmlData = htmlData.replace('$student_surname', vpisniPdfDataIsto.student_surname)
+      htmlData = htmlData.replace('$student_surname', vpisniPdfDataIsto.student_surname);
       htmlData = htmlData.replace('$student_vpisna', vpisniPdfDataIsto.student_vpisna);
+      htmlData = htmlData.replace('$student_emso', vpisniPdfData.student_emso);
       htmlData = htmlData.replace('$enrol_year', vpisniPdfDataIsto.enrol_year + '/' + (parseInt(vpisniPdfDataIsto.enrol_year)+1));
       htmlData = htmlData.replace('$student_email', vpisniPdfDataIsto.student_email);
       htmlData = htmlData.replace('$enrol_study_program', vpisniPdfDataIsto.study_program_evs + ' - ' + vpisniPdfDataIsto.enrol_study_program);
