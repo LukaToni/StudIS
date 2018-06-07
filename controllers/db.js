@@ -641,20 +641,20 @@ function getCourseEnrols(courseNumberId) {
   });
 }
 
-module.exports.getExams = function(courseNumberId){
+module.exports.getExamsForEditExams = function(courseNumberId){
   return new Promise((resolve, reject) =>{    
-      let query = 'SELECT * FROM exams WHERE course_id = $1 '+
-                    'ORDER BY date ASC';
-      let params = [courseNumberId];
-      
-      client.query(query, params, (err, res) =>{
-        if(err) return reject(err);
-        return resolve(res.rows);
-      });
+    let query = 'SELECT * FROM exams WHERE course_id = $1 '+
+                  'ORDER BY date ASC';
+    let params = [courseNumberId];
+    
+    client.query(query, params, (err, res) =>{
+      if(err) return reject(err);
+      return resolve(res.rows);
     });
+  });
 }
     
-module.exports.addExam = function(courseNumberId, date){
+module.exports.addExam = function(courseNumberId, date, predavalnica){
   dayStr = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
   monthStr = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
   hoursStr = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
@@ -663,9 +663,9 @@ module.exports.addExam = function(courseNumberId, date){
   console.log('dateStr: ' + dateStr);
   
   return new Promise((resolve, reject) =>{    
-    let query = 'INSERT INTO exams(course_id, date) VALUES ' +
-                  "( $1, to_timestamp( $2 , 'dd-mm-yyyy hh24:mi:ss'))";
-    let params = [courseNumberId, dateStr];
+    let query = 'INSERT INTO exams(course_id, date, lecture_room) VALUES ' +
+                  "( $1, to_timestamp( $2 , 'dd-mm-yyyy hh24:mi:ss'), $3)";
+    let params = [courseNumberId, dateStr, predavalnica];
     
     client.query(query, params, (err, res) =>{
       if(err) return reject(err);

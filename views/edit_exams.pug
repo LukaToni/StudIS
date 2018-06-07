@@ -45,6 +45,8 @@ html(lang='en')
                                 input(type='date', name='date', placeholder='DD/MM/YYYY').col-lg-2
                                 input(type='text', name='hour', placeholder='HH24').col-lg-1
                                 input(type='text', name='minutes', placeholder='MI').col-lg-1
+                                span Predavalnica:
+                                input(type='text', name='predavalnica', placeholder='PA').col-lg-1
                                 input(hidden='', name='course_id', value=course_id)
                                 input(type='submit', value='Dodaj izpitni rok')
                             br
@@ -67,11 +69,13 @@ html(lang='en')
                                     tr
                                         th Zaporedna številka
                                         th Datum
+                                        th Predavalnica
                                 tbody
                                     each exam, index in exams
                                         tr
                                             td=index + 1
-                                            td=exam.date.toLocaleString('en-GB', {hour12: false, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'})
+                                            td='' + exam.date.getDate() + '.' + (exam.date.getMonth()+1) + '.' + exam.date.getFullYear() + ' ' + (exam.date.getHours() > 9 ?  exam.date.getHours() : '0' + exam.date.getHours()) + ':' + (exam.date.getMinutes() > 9 ? exam.date.getMinutes() : '0' + exam.date.getMinutes())
+                                            td=exam.lecture_room
         // SCRIPTS
         // JQuery
         script(type='text/javascript', src='../js/jquery-3.2.1.min.js')

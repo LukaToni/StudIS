@@ -42,7 +42,7 @@ router.post('/', function(req, res, next) {
   }
   */
   
-  db.getExams(req.session.courseId).then( (exams) => {    
+  db.getExamsForEditExams(req.session.courseId).then( (exams) => {    
     courseId = req.session.courseId;
     courseName = req.session.courseName;
   
@@ -64,6 +64,7 @@ router.post('/add', function(req, res, next) {
   
   currDate = new Date();
   date = new Date(req.body.date);
+  predavalnica = req.body.predavalnica;
   
   if(currDate > date) {
     req.session.examsErr = 'Izberite kasnejši datum.';
@@ -92,7 +93,7 @@ router.post('/add', function(req, res, next) {
   prazniki = [];
   
   
-  db.addExam(req.session.courseId, date).then( () => {
+  db.addExam(req.session.courseId, date, predavalnica).then( () => {
     req.session.examsErr = undefined;
     return res.redirect(307, '/edit_exams');
   },
