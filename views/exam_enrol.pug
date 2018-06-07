@@ -34,6 +34,7 @@ html(lang='en')
                                 a.dropdown-item(href='/logout') Odjava
         .wrapper
             .container
+                pre= "exams;" + JSON.stringify(exams, null, 2)
                 .row.mt-5.pt-5
                     .col.text-center
                         p= message

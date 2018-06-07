@@ -1153,50 +1153,52 @@ function currentYear() {
 module.exports.getEnroledCourses = function(studentId) {
   return new Promise((resolve, reject) => {
     let query = `SELECT
-                  ce.student_id,
-                  en.taking,
-                  en.taking_this_year,
-                  en.exam_grade,
-                  en.grade_total,
-                  en.date as exam_date,
-                  en.id as exam_id,
-                  en.valid as exam_valid,
-                  s.name,
-                  s.surname,
-                  se.study_year,
-                  se.year,
-                  c.name as course_name,
-                  c.numberid as course_id,
-                  c.credits as course_credits,
-                  et.name as enrol_type,
-                  st.name as study_type,
-                  p.surname ||' '|| p.name as prof_fullname,
-                  p.key as prof_id,
-                  sp.name as study_programme_name
-                FROM student_enrols as se
-                  INNER JOIN course_enrol ce ON ce.student_id = se.student_registration_number
-                  LEFT JOIN (SELECT e.id, student_id, e.course_id, ee.taking_this_year, ee.taking, ee.exam_grade, ee.grade_total, e.date, ee.valid
-                      from exam_enrols as ee
-                      INNER JOIN exams e ON ee.exam_id = e.id
-                      WHERE ee.student_id = $1
-                    ) as en
-                    ON en.student_id = ce.student_id
-                    AND ce.course_id = en.course_id
-                  LEFT JOIN student as s
-                    ON se.student_registration_number = s.registration_number
-                  LEFT JOIN courses c ON
-                    ce.course_id = c.numberid
-                  LEFT JOIN enrol_type et ON
-                    se.enrol_type = et.code
-                  LEFT JOIN study_type st ON
-                    se.study_type = st.key
-                  LEFT JOIN operator o ON
-                    c.numberid = o.course
-                  LEFT JOIN professor p ON
-                    o.professor = p.key
-                  LEFT JOIN study_programme sp ON
-                    se.study_programme = sp.evs_code
-                  WHERE se.student_registration_number = $2
+  ce.student_id,
+  en.taking,
+  en.taking_this_year,
+  en.exam_grade,
+  en.grade_total,
+  en.date as exam_date,
+  en.id as exam_id,
+  en.valid as exam_valid,
+  s.name,
+  s.surname,
+  se.study_year,
+  se.year,
+  c.name as course_name,
+  c.numberid as course_id,
+  c.credits as course_credits,
+  et.name as enrol_type,
+  st.name as study_type,
+  p.surname ||' '|| p.name as prof_fullname,
+  p.key as prof_id,
+  sp.name as study_programme_name
+FROM course_enrol as ce
+  LEFT JOIN (SELECT e.id, student_id, e.course_id, ee.taking_this_year, ee.taking, ee.exam_grade, ee.grade_total, e.date, ee.valid
+      from exam_enrols as ee
+      INNER JOIN exams e ON ee.exam_id = e.id
+      WHERE ee.student_id = $1
+    ) as en
+    ON en.student_id = ce.student_id
+    AND ce.course_id = en.course_id
+  INNER JOIN student_enrols se ON
+     se.student_registration_number = ce.student_id AND
+     se.study_year = enrol_year
+  LEFT JOIN student as s
+    ON ce.student_id = s.registration_number
+  LEFT JOIN courses c ON
+    ce.course_id = c.numberid
+  LEFT JOIN enrol_type et ON
+    se.enrol_type = et.code
+  LEFT JOIN study_type st ON
+    se.study_type = st.key
+  LEFT JOIN operator o ON
+    c.numberid = o.course
+  LEFT JOIN professor p ON
+    o.professor = p.key
+  LEFT JOIN study_programme sp ON
+    se.study_programme = sp.evs_code
+  WHERE se.student_registration_number = $2
                 `;
                 
     let params = [studentId, studentId];
