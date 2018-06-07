@@ -16,6 +16,14 @@ html(lang='en')
         // Font awesome
         link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
         link(href='../stylesheets/personal.css', rel='stylesheet')
+        style.
+            td[rowspan] {
+              vertical-align: top;
+              text-align: left;
+            }
+            .numbersOnHide {
+                display: none;
+            }
     body
         // Main Navigation
         header
@@ -36,7 +44,7 @@ html(lang='en')
             .container
                 .row.mt-5.pt-5
                     .col
-                        if coursesSplit
+                        //if coursesSplit
                             //pre= "coursesaa: " + JSON.stringify(coursesSplit, null, 2)
                         p= message
                         if !hideSearch
@@ -69,17 +77,17 @@ html(lang='en')
                                 p Student ni prijavljen na noben predmet
                             else    
                                 label
-                                    input(onchange="$('.skrij').toggle()", value= "asdsad", type="checkbox")
+                                    input(onchange='$(".optionalHide").toggle(); $(".numbersOnShow").toggle(); $(".numbersOnHide").toggle();', type="checkbox")
                                     | Pokazi samo zadnje ponavlanje
-                                    
                                 div#kartotecni_list
                                     span
                                         b UNIVERZA V LJUBLJANI
                                     br
                                     span Fakulteta za računalništvo in informatiko
                                     div(style="float:right")
-                                        - var d = new Date()
-                                        span= d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
+                                        - var d = new Date();
+                                        - d.setHours(d.getHours() + 2); 
+                                        span= d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
                                     
                                     br
                                     br
@@ -119,36 +127,42 @@ html(lang='en')
                                                 th Predavatelji
                                                 th Datum
                                                 th Ocena
-                                                th Št polaganja
-                                                
-                                            -var viden = {};
-                                            each course, index in courses
-                                                if true || course.exam_grade
-                                                    - var zadnji = false;
-                                                    - var pro4 = false;
-                                                    - if(!viden[course.course_id]) {zadnji = true; viden[course.course_id]=true;};
-                                                    - var cls = !zadnji? "skrij" : "";
-                                                    tr(class=cls)
-                                                        td= index + 1
-                                                        td= course.course_id
-                                                        td= course.course_name
+                                                th Št polaganj
+                                            - var cnt = 0;
+                                            each course, course_index in courses
+                                                each exam,index in course.exams
+                                                    // if the exam is not the last exam in the list it means it is not the last taking so it
+                                                    // can be optionally hidden
+                                                    -let optionalHideClass = index > 0? "optionalHide" : "";
+                                                    tr(class=optionalHideClass)
+                                                        td(class="numbersOnShow")= ++cnt
+                                                        td(class="numbersOnHide")= course_index+1
+                                                        // hide course id and course name if there are more than one exam on the same course
+                                                        if index == 0
+                                                            td= course.course_id
+                                                            td= course.course_name
+                                                        else 
+                                                            td
+                                                            td
                                                         td= course.course_credits
-                                                        //if course.profs_names.length == 0
-                                                        td= course.prof_surname + " " + course.prof_name
-                                                        //else
-                                                        //    td(style="white-space:pre")= course.profs_names
-                                                        if course.exam_date
-                                                            - var d = new Date(course.exam_date)
+                                                        if !course.profs_names || course.profs_names.length == 0
+                                                            td= course.prof_fullname
+                                                        else
+                                                            td(style="white-space:pre")= course.prof_fullname
+                                                        
+                                                        if exam.date
+                                                            - var d = new Date(exam.date)
                                                             td= d.getDate()  + "." + (d.getMonth()+1) + "." + d.getFullYear()
                                                         else
                                                             td
-                                                        if !course.exam_valid && course.exam_date
+                                                        if !exam.valid && exam.date
                                                             td VP
                                                             td 
+                                                            td
                                                         else 
-                                                            td= course.exam_grade
-                                                            td= course.taking
-                                                            td= course.taking_this_year
+                                                            td= exam.grade
+                                                            td= exam.taking
+                                                            td= exam.taking_this_year
                                         br
                                         br
                                 
