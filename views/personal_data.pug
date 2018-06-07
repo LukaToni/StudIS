@@ -35,23 +35,23 @@ html(lang='en')
                             .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
                                 a.dropdown-item(href='#') Uredi podatke
                                 if(type == 'professor' || type == 'clerk')
-                                    a.dropdown-item(href='student_import') Uvozi študente
+                                    a.dropdown-item(href='/student_import') Uvozi študente
                                 if(type == 'professor' || type == 'clerk')
-                                    a.dropdown-item(href='tokens') Žetoni
-                                    a.dropdown-item(href='course_enrols') Preglej vpise v predmet
+                                    a.dropdown-item(href='/tokens') Žetoni
+                                    a.dropdown-item(href='/course_enrols') Preglej vpise v predmet
                                 if(type == 'clerk')
-                                    a.dropdown-item(href='verify_token') Potrdi vpise
+                                    a.dropdown-item(href='/verify_token') Potrdi vpise
                                 if(type == 'professor' || type == 'clerk')
-                                    a.dropdown-item(href='edit_exams') Izpitni roki
+                                    a.dropdown-item(href='/edit_exams') Izpitni roki
                                 if(type == 'student')
-                                    a.dropdown-item(href='exam_enrol') Izpitni roki
+                                    a.dropdown-item(href='/exam_enrol') Izpitni roki
                                 if(type == 'professor' || type == 'clerk')
-                                    a.dropdown-item(href='count_course_enrols') Preštej vpise v predmet    
+                                    a.dropdown-item(href='/count_course_enrols') Preštej vpise v predmet    
                                 if(type == 'professor' || type == 'clerk')
-                                    a.dropdown-item(href='exam_list') Pokaži vpisane na izpit
+                                    a.dropdown-item(href='/exam_list') Pokaži vpisane na izpit
                                 if(type == 'professor' || type == 'clerk')
-                                    a.dropdown-item(href='grade_exam') Vpiši ocene
-                                a.dropdown-item(href='kartotecni_list') Kartotecni List
+                                    a.dropdown-item(href='/grade_exam') Vpiši ocene
+                                a.dropdown-item(href='/kartotecni_list') Kartotecni List
                                 a.dropdown-item(href='#') Poveži digitalno potrdilo
                                 // <a class="dropdown-item" href="#">English</a>
                                 a.dropdown-item(href='/logout') Odjava
@@ -131,6 +131,25 @@ html(lang='en')
                                               label.col-sm-2.col-form-label(for="staticCounty") Občina
                                               .col-sm-10
                                                   input#staticCounty.form-control(type="text" readonly="" value=student.county)
+                                      if(student.street_post != "" && student.street_post)
+                                        h2 Naslova za prejemanje pošte
+                                        form
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticStreetPost") Ulica
+                                                .col-sm-10
+                                                    input#staticStreetPost.form-control(type="text" readonly="" value=student.street_post)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticPostPost") Pošta
+                                                .col-sm-10
+                                                    input#staticPostPost.form-control(type="text" readonly="" value=student.post_post)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticCountyPost") Občina
+                                                .col-sm-10
+                                                    input#staticCountyPost.form-control(type="text" readonly="" value=student.county_post)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticCountryPost") Država
+                                                .col-sm-10
+                                                    input#staticCountryPost.form-control(type="text" readonly="" value=student.country_post)
                     .col.text-center
                         if student
                           if student.name

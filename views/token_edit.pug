@@ -50,7 +50,7 @@ html(lang='en')
                                 label(for='registration_number') Vpisna Številka
                                 input#registration_number.form-control(disabled, name='registration_number' value=token.registration_number)
                             legend Parametri žetona
-                            - var disabled = token.used == 1;
+                            - var disabled = token.used == 1 && token.verified == 0;
                             .form-group
                                 label Leto
                                 select.form-control(name='year', disabled=disabled)
