@@ -1660,7 +1660,7 @@ table.MsoTableGrid
  <tr style='mso-yfti-irow:35'>
   <td width=189 colspan=6 valign=top style='width:141.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>prvi vpis v letnik/ dodatno leto</p>
+  normal'>$enrol_type</p>
   </td>
   <td width=107 colspan=4 valign=top style='width:80.25pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -1668,7 +1668,7 @@ table.MsoTableGrid
   </td>
   <td width=132 colspan=4 valign=top style='width:99.2pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>3.</p>
+  normal'>$year</p>
   </td>
   <td width=54 colspan=2 valign=top style='width:40.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -1676,7 +1676,7 @@ table.MsoTableGrid
   </td>
   <td width=119 colspan=4 valign=top style='width:89.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>redni, e-studij</p>
+  normal'>$study_type</p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:36'>
@@ -1714,7 +1714,7 @@ table.MsoTableGrid
  <tr style='mso-yfti-irow:37'>
   <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>2011/2012</p>
+  normal'>$first_enrol</p>
   </td>
   <td width=38 valign=top style='width:1.0cm;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2182,27 +2182,34 @@ table.MsoTableGrid
  <tr style='mso-yfti-irow:58'>
   <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Peter Komac</p>
+  normal'>$predmet-lastnik</p>
   </td>
-  <td width=145 colspan=5 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <td width=145 colspan=12 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Programiranje 1</p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
+  normal'>$predmet-ime</p>
   </td>
   <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
+  normal'>$predmet-kt</p>
+  </td>
+  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ </tr>
+ <tr style='mso-yfti-irow:58'>
+  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-lastnik</p>
+  </td>
+  <td width=145 colspan=12 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-ime</p>
+  </td>
+  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-kt</p>
   </td>
   <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2212,23 +2219,15 @@ table.MsoTableGrid
  <tr style='mso-yfti-irow:59'>
   <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Ana Suhadolnik</p>
+  normal'>$predmet-lastnik</p>
   </td>
-  <td width=202 colspan=7 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <td width=202 colspan=12 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Osnove matematicne analize</p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
+  normal'>$predmet-ime</p>
   </td>
   <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
+  normal'>$predmet-kt</p>
   </td>
   <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2238,27 +2237,15 @@ table.MsoTableGrid
  <tr style='mso-yfti-irow:60'>
   <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Vlado Peterlin</p>
+  normal'>$predmet-lastnik</p>
   </td>
-  <td width=145 colspan=5 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <td width=145 colspan=12 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Diskretne strukture</p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
+  normal'>$predmet-ime</p>
   </td>
   <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
+  normal'>$predmet-kt</p>
   </td>
   <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2268,11 +2255,125 @@ table.MsoTableGrid
  <tr style='mso-yfti-irow:61'>
   <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Dusan Gliha</p>
+  normal'>$predmet-lastnik</p>
+  </td>
+  <td width=202 colspan=12 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-ime</p>
+  </td>
+  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-kt</p>
+  </td>
+  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:61'>
+  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-lastnik</p>
+  </td>
+  <td width=202 colspan=12 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-ime</p>
+  </td>
+  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-kt</p>
+  </td>
+  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:61'>
+  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-lastnik</p>
+  </td>
+  <td width=202 colspan=12 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-ime</p>
+  </td>
+  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-kt</p>
+  </td>
+  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:61'>
+  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-lastnik</p>
+  </td>
+  <td width=202 colspan=12 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-ime</p>
+  </td>
+  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-kt</p>
+  </td>
+  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:61'>
+  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-lastnik</p>
+  </td>
+  <td width=202 colspan=12 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-ime</p>
+  </td>
+  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-kt</p>
+  </td>
+  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:62'>
+  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-lastnik</p>
+  </td>
+  <td width=145 colspan=9 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-ime</p>
+  </td>
+  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+  <td width=79 colspan=2 valign=top style='width:58.95pt;border:none;
+  border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>$predmet-kt</p>
+  </td>
+  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'><o:p>&nbsp;</o:p></p>
+  </td>
+ </tr>
+ <tr style='mso-yfti-irow:61'>
+  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+  normal'>&nbsp;</p>
   </td>
   <td width=202 colspan=7 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Osnove digitalnih vezij</p>
+  normal'>&nbsp;</p>
   </td>
   <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2284,39 +2385,7 @@ table.MsoTableGrid
   </td>
   <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:62'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Janez Kosorok</p>
-  </td>
-  <td width=145 colspan=5 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Fizika</p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;border:none;
-  border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
+  normal'>$kt-sum</p>
   </td>
   <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2355,7 +2424,7 @@ table.MsoTableGrid
   <td width=79 colspan=2 valign=top style='width:58.95pt;border:none;
   mso-border-top-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>30</p>
+  normal'>&nbsp;</p>
   </td>
   <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2411,7 +2480,7 @@ table.MsoTableGrid
   </td>
   <td width=277 colspan=9 valign=top style='width:207.8pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Veljavnost predmetnika potrjuje Vlado Peterlin</p>
+  normal'>Veljavnost predmetnika potrjuje Gašper Fijavž</p>
   </td>
   <td width=73 colspan=3 valign=top style='width:54.45pt;border:none;
   border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
@@ -2489,391 +2558,6 @@ table.MsoTableGrid
   normal'><o:p>&nbsp;</o:p></p>
   </td>
  </tr>
- <tr style='mso-yfti-irow:68'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:8.0pt;color:#7F7F7F;mso-themecolor:text1;
-  mso-themetint:128'>Studijski program<o:p></o:p></span></p>
-  </td>
-  <td width=38 valign=top style='width:1.0cm;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=107 colspan=4 valign=top style='width:80.25pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:69'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><b style='mso-bidi-font-weight:normal'>Teologija<o:p></o:p></b></p>
-  </td>
-  <td width=38 valign=top style='width:1.0cm;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=107 colspan=4 valign=top style='width:80.25pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:70'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:8.0pt;color:#7F7F7F;mso-themecolor:text1;
-  mso-themetint:128'>Ucitelj<o:p></o:p></span></p>
-  </td>
-  <td width=145 colspan=5 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:8.0pt;color:#7F7F7F;mso-themecolor:text1;
-  mso-themetint:128'>Ucna enota<o:p></o:p></span></p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:8.0pt;color:#7F7F7F;mso-themecolor:text1;
-  mso-themetint:128'><o:p>&nbsp;</o:p></span></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:8.0pt;color:#7F7F7F;mso-themecolor:text1;
-  mso-themetint:128'><o:p>&nbsp;</o:p></span></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:8.0pt;color:#7F7F7F;mso-themecolor:text1;
-  mso-themetint:128'><o:p>&nbsp;</o:p></span></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:8.0pt;color:#7F7F7F;mso-themecolor:text1;
-  mso-themetint:128'>Stevilo KT<o:p></o:p></span></p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:71'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Vili Oblak</p>
-  </td>
-  <td width=145 colspan=5 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Programiranje 2</p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:72'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Branko Medved</p>
-  </td>
-  <td width=145 colspan=5 valign=top style='width:108.6pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Linearna algebra</p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:73'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Tomaz Senica</p>
-  </td>
-  <td width=202 colspan=7 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Osnove podatkovnih baz</p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:74'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Mojca Meglic</p>
-  </td>
-  <td width=202 colspan=7 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Racunalniske komunikacije</p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:75'>
-  <td width=151 colspan=5 valign=top style='width:113.15pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Andrej Cop</p>
-  </td>
-  <td width=202 colspan=7 valign=top style='width:151.3pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Komunikacija clovek racunalnik</p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;border:none;
-  border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>6</p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:76'>
-  <td width=66 valign=top style='width:49.4pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=85 colspan=4 valign=top style='width:63.75pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=38 valign=top style='width:1.0cm;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=107 colspan=4 valign=top style='width:80.25pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;border:none;
-  mso-border-top-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>30</p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:77'>
-  <td width=66 valign=top style='width:49.4pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=85 colspan=4 valign=top style='width:63.75pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=38 valign=top style='width:1.0cm;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=107 colspan=4 valign=top style='width:80.25pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:78'>
-  <td width=66 valign=top style='width:49.4pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=85 colspan=4 valign=top style='width:63.75pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=277 colspan=9 valign=top style='width:207.8pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Veljavnost predmetnika potrjuje Vlado Peterlin</p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;border:none;
-  border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;border:none;
-  border-bottom:solid windowtext 1.0pt;mso-border-bottom-alt:solid windowtext .5pt;
-  padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;border:none;border-bottom:solid windowtext 1.0pt;
-  mso-border-bottom-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
- <tr style='mso-yfti-irow:79'>
-  <td width=66 valign=top style='width:49.4pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=85 colspan=4 valign=top style='width:63.75pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=38 valign=top style='width:1.0cm;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=107 colspan=4 valign=top style='width:80.25pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=173 colspan=6 rowspan=2 valign=top style='width:129.9pt;border:
-  none;mso-border-top-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal align=right style='margin-bottom:0cm;margin-bottom:.0001pt;
-  text-align:right;line-height:normal'><span style='font-size:8.0pt'>podpis
-  mentorja/ koordinatorja / skrbnika podrocja</span></p>
-  </td>
- </tr>
  <tr style='mso-yfti-irow:80'>
   <td width=66 valign=top style='width:49.4pt;padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
@@ -2900,49 +2584,11 @@ table.MsoTableGrid
   normal'><o:p>&nbsp;</o:p></p>
   </td>
  </tr>
- <tr style='mso-yfti-irow:81'>
-  <td width=66 valign=top style='width:49.4pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=85 colspan=4 valign=top style='width:63.75pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=38 valign=top style='width:1.0cm;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=107 colspan=4 valign=top style='width:80.25pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=57 colspan=2 valign=top style='width:42.7pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=75 colspan=2 valign=top style='width:56.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>Pregledal</p>
-  </td>
-  <td width=73 colspan=3 valign=top style='width:54.45pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=79 colspan=2 valign=top style='width:58.95pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
-  <td width=22 valign=top style='width:16.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><o:p>&nbsp;</o:p></p>
-  </td>
- </tr>
  <tr style='mso-yfti-irow:82'>
   <td width=601 colspan=20 valign=top style='width:450.85pt;background:#FF9F9F;
   padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'>PRILOGA 2: PRDHODNO DOSEZENA IZOBRAZBA</p>
+  normal'>PRILOGA 2: PREDHODNO DOSEZENA IZOBRAZBA</p>
   </td>
  </tr>
  <tr style='mso-yfti-irow:83'>

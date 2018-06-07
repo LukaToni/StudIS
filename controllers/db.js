@@ -457,12 +457,44 @@ module.exports.setEnrol = function(student,data){
 module.exports.getVpisniPdfData = function(enrolId){
   
   return new Promise((resolve, reject) =>{    
-    let query = 'select sp.evs_code as study_program_evs, s.emso as student_emso, sp.name as enrol_study_program, s.email as student_email, se.study_year as enrol_year, s.registration_number as student_vpisna, s."name" as student_name, s.surname as student_surname from student_enrols as se '+
-                'inner join student as s '+
-                  'on s.registration_number = se.student_registration_number '+
-                'inner join study_programme sp '+
-                  'on se.study_programme = sp.evs_code '+
-                'where se."key" = $1 ';
+    let query = `
+    select
+      sp.evs_code as study_program_evs,
+      s.emso as student_emso,
+      sp.name as enrol_study_program,
+      s.email as student_email,
+      se.study_year as enrol_year,
+      s.registration_number as student_vpisna,
+      s."name" as student_name,
+      s.surname as student_surname, 
+      c."name" as course_name, 
+      c.numberid as course_id, 
+      c.credits as course_credits, 
+      p."name" as course_owner_name, 
+      p.surname as course_owner_surname ,
+      se.year as year,
+      et.name as enrol_type,
+      st.name as study_type,
+      (select study_year from student_enrols se2 where se2.student_registration_number = (select se1.student_registration_number from student_enrols se1 where "key" = $1) order by study_year asc limit 1) as first_enrol
+    from student_enrols as se
+    inner join student as s
+      on s.registration_number = se.student_registration_number
+    inner join study_programme sp
+      on se.study_programme = sp.evs_code 
+    inner join course_enrol ce
+      on s.registration_number = ce.student_id
+    inner join courses c
+      on ce.course_id = c.numberid
+    inner join course_owner co
+      on co.course_id = c.numberid
+    inner join professor p
+      on p."key" = co.professor_id
+    inner join enrol_type et
+      on se.enrol_type = et.code
+    inner join study_type st
+      on se.study_type = st.key
+    where se."key" = $1
+    `
     let params = [enrolId];
     
     client.query(query, params, (err, res) =>{
