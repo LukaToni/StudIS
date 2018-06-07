@@ -6,8 +6,10 @@ let db = require('../controllers/db');
 
 /* GET personal data. */
 router.get('/', auth.authenticate, function(req, res, next) {
-  db.getUser({email: req.session.email}, (user)=>{
+  db.getUser({email: req.session.email}, (err, user)=>{
+    console.log(user);
     if(user){
+      console.log(user.type);
       if(user.type == 'student'){
         db.getStudentById(user.student_id)
           .then(student => {
