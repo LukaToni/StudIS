@@ -1116,9 +1116,17 @@ module.exports.undoEnrol = function(exam_id, user_id) {
 
   return new Promise((resolve, reject) => {
   
+    /*
     let query = 'update exam_enrols ee set valid = false, cancelled = now(), cancelled_by = $1 ' +
     'where ee.exam_id = $2 ' +
     'and ee.valid = true ';
+    */
+    
+    let query = `
+    delte from exam_enrols
+    where ee.exam_id = $2 
+    and ee.valid = true 
+    `;
   
     let params = [user_id,  exam_id];
   
