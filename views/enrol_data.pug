@@ -105,7 +105,7 @@ html(lang='en')
                                             .col-sm-10
                                                 select#staticPost.form-control(name='post')
                                                     each p in post
-                                                        option(value=p.number name='post' selected=p.number==student.post_office_number)=p.name
+                                                        option(value=p.number selected=p.number==student.post_office_number)=p.name
                                                 //input#staticPost.form-control(type="text"  value=student.post_office_number)
                                         .form-group.row#staticCounty
                                             label.col-sm-2.col-form-label(for="staticCounty") Občina

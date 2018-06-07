@@ -63,11 +63,13 @@ html(lang='en')
                                         td
                                         td
                                         td
-                                            a(href='potrdilo_vpisa?tokenId='+sht.key)
-                                                button.btn.btn-danger.btn-sm(type='button') Potrdilo o vpisu
+                                            if(sht.verified == 1)
+                                                a(href='potrdilo_vpisa?tokenId='+sht.key)
+                                                    button.btn.btn-danger.btn-sm(type='button') Potrdilo o vpisu
                                         td
-                                            a(href='verify?tokenId='+sht.key)
-                                                button.btn.btn-info.btn-sm(type='button') Potrdi vpis
+                                            if(sht.verified == 0)
+                                                a(href='verify?tokenId='+sht.key)
+                                                    button.btn.btn-info.btn-sm(type='button') Potrdi vpis
                                             
 
                                             

@@ -284,7 +284,7 @@ module.exports.getStudentsWithUsedToken = function(){
   return new Promise((resolve, reject)=>{
     let query = `SELECT token.key as key, token.used as used, token.verified as verified, student.registration_number as registration_number, student.name as name, student.surname as surname
     FROM public."token" as token, public."student" as student
-    WHERE student.token = token.key AND token.used = '1' AND token.verified = '0'
+    WHERE student.token = token.key AND token.used = '1'
     ORDER BY student.surname, student.name`;
 
     client.query(query, (err, res)=>{
@@ -347,7 +347,7 @@ module.exports.updateStudentAll = function(data){
       birth = data.emso[0] + data.emso[1] + "." + data.emso[2] + data.emso[3] + ".1" + data.emso[4] + data.emso[5] + data.emso[6]; 
     else
       birth = data.emso[0] + data.emso[1] + "." + data.emso[2] + data.emso[3] + ".2" + data.emso[4] + data.emso[5] + data.emso[6];
-    let params = [data.name, data.surname, data.emso, birth, data.telephone_number, data.country, data.county, 3000, data.street, data.registration_number, data.street_post, data.country_post, data.county_post, data.post_post];
+    let params = [data.name, data.surname, data.emso, birth, data.telephone_number, data.country, data.county, data.post, data.street, data.registration_number, data.street_post, data.country_post, data.county_post, data.post_post];
     
     client.query(query,params, (err,res)=>{
       if(err) return reject(err);
