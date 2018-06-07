@@ -51,7 +51,7 @@ app.use('/vpisni_to_pdf', vpisniPdfRouter);
 app.use('/exam_enrol', examEnrolRouter)
 app.use('/edit_exams', editExamsRouter);
 app.use('/student_import', studentImportRouter);
-//app.use('/student_enrols', studentEnrolsRouter);
+app.use('/course_enrols', studentEnrolsRouter);
 app.use('/count_course_enrols', countCourseEnrols);
 app.use('/grade_exam', require('./routes/grade_exam'));
 app.use('/kartotecni_list', require('./routes/kartotecni_list'))
