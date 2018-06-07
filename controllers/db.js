@@ -900,11 +900,15 @@ function currentYear() {
 
 module.exports.getEnroledCourses = function(studentId) {
   return new Promise((resolve, reject) => {
-    let query = `Select
-                  student_id,
-                  taking,
-                  exam_grade,
-                  grade_total,
+    let query = `SELECT
+                  ce.student_id,
+                  en.taking,
+                  en.taking_this_year,
+                  en.exam_grade,
+                  en.grade_total,
+                  en.date as exam_date,
+                  en.id as exam_id,
+                  en.valid as exam_valid,
                   s.name,
                   s.surname,
                   se.study_year,
@@ -914,37 +918,36 @@ module.exports.getEnroledCourses = function(studentId) {
                   c.credits as course_credits,
                   et.name as enrol_type,
                   st.name as study_type,
-                  p.name as prof_name,
-                  p.surname as prof_surname,
+                  p.surname ||' '|| p.name as prof_fullname,
                   p.key as prof_id,
-                  e.date as exam_date,
-                  ee.id as exam_id,
-                  ee.valid as exam_valid,
                   sp.name as study_programme_name
-                from exam_enrols ee
-                  INNER JOIN student s ON
-                    ee.student_id = s.registration_number
-                  INNER JOIN student_enrols se ON
-                    s.registration_number = se.student_registration_number
-                  INNER JOIN exams e ON
-                    e.id = ee.exam_id
-                  INNER JOIN courses c ON
-                    e.course_id = c.numberid
-                  INNER JOIN enrol_type et ON
+                FROM student_enrols as se
+                  INNER JOIN course_enrol ce ON ce.student_id = se.student_registration_number
+                  LEFT JOIN (SELECT e.id, student_id, e.course_id, ee.taking_this_year, ee.taking, ee.exam_grade, ee.grade_total, e.date, ee.valid
+                      from exam_enrols as ee
+                      INNER JOIN exams e ON ee.exam_id = e.id
+                      WHERE ee.student_id = $1
+                    ) as en
+                    ON en.student_id = ce.student_id
+                    AND ce.course_id = en.course_id
+                  LEFT JOIN student as s
+                    ON se.student_registration_number = s.registration_number
+                  LEFT JOIN courses c ON
+                    ce.course_id = c.numberid
+                  LEFT JOIN enrol_type et ON
                     se.enrol_type = et.code
-                  INNER JOIN study_type st ON
+                  LEFT JOIN study_type st ON
                     se.study_type = st.key
-                  INNER JOIN operator o ON
+                  LEFT JOIN operator o ON
                     c.numberid = o.course
-                  INNER JOIN professor p ON
+                  LEFT JOIN professor p ON
                     o.professor = p.key
-                  INNER JOIN study_programme sp ON
-                    c.programme = sp.evs_code
-                WHERE s.registration_number = $1
-                ORDER BY course_id, taking
+                  LEFT JOIN study_programme sp ON
+                    se.study_programme = sp.evs_code
+                  WHERE se.student_registration_number = $2
                 `;
                 
-    let params = [studentId];
+    let params = [studentId, studentId];
     console.log("Searvhing for student with id:", params);
     
     client.query(query, params, (err, res) =>{
@@ -954,64 +957,6 @@ module.exports.getEnroledCourses = function(studentId) {
   });
   
 }
-
-module.exports.getNotEnroledCourses = function(studentId) {
-  return new Promise((resolve, reject) => {
-    let query = `SELECT
-  c.numberid as course_id,
-  ce.student_id,
-  taking,
-  exam_grade,
-  grade_total,
-  s.name,
-  s.surname,
-  se.study_year,
-  se.year,
-  c.name as course_name,
-  c.credits as course_credits,
-  et.name as enrol_type,
-  st.name as study_type,
-  p.name as prof_name,
-  p.surname as prof_surname,
-  p.key as prof_id,
-  ee.id as exam_id,
-  sp.name as study_programme_name
-FROM course_enrol ce
-  INNER JOIN student s ON
-                         ce.student_id = s.registration_number
-  INNER JOIN exams e ON
-                       ce.course_id = e.course_id
-  INNER JOIN courses c ON
-                         e.course_id = c.numberid
-  LEFT JOIN exam_enrols ee ON
-                             ee.exam_id = e.id
-  INNER JOIN student_enrols se ON
-                                 ce.student_id = se.student_registration_number
-  INNER JOIN enrol_type et ON
-                             se.enrol_type = et.code
-  INNER JOIN study_type st ON
-                             se.study_type = st.key
-  INNER JOIN operator o ON
-                          c.numberid = o.course
-  INNER JOIN professor p ON
-                           o.professor = p.key
-  INNER JOIN study_programme sp ON
-                                  c.programme = sp.evs_code
-WHERE ce.student_id = $1
-      AND ee.exam_id IS NULL
-                `;
-                
-    let params = [studentId];
-    console.log("Searvhing for student with id:", params);
-    
-    client.query(query, params, (err, res) =>{
-      if(err) return reject(err);
-      return resolve(res.rows);
-    });
-  });
-  
-}
-
 
 module.exports.searchForStudents = function(searchQuery) {
   return new Promise((resolve, reject) => {

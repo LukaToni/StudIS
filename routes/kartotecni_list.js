@@ -6,18 +6,49 @@ var auth = require('../controllers/authentication');
 var db = require('../controllers/db');
 
 
+function getExamData(course) {
+  return {
+    "taking": course.taking,
+    "taking_this_year": course.taking_this_year,
+    "grade": course.exam_grade,
+    "date": course.exam_date,
+    "id": course.exam_id,
+    "valid": course.exam_valid,
+    "prof_fullName": course.prof_fullName,
+    "prof_id": course.prof_id
+  }
+  
+}
+
 function groupCourses(courses) {
- 
   let c = {};
   for(let i=0; i<courses.length; i++) {
     let course = courses[i];
     course.profs = {};
     course.profs_names = "";
+    let id = course.course_id + '' +  course.study_year; 
     
-    if(!c[course.course_id]) {
+    if(!c[id]) {
       // add course to list if the corse is uniqe 
-      c[course.course_id] = course;
-    } else if(c[course.course_id].taking <= course.taking) {
+      c[id] = course;
+      c[id].exams = [];
+    } 
+    
+    c[id].exams.push(getExamData(course));
+  }
+  
+  // wirte courses back to array
+  let out = [];
+  for(let c_key in c) {
+    c[c_key].exams = sortExams(c[c_key].exams)
+    out.push(c[c_key]);
+  }
+  
+  return out;
+}
+
+/*
+if(c[course.course_id].taking <= course.taking) {
       // if the saved course has lower taking we need to replace it with this new one
       // since we are only interested in the score of the last taking
       
@@ -40,34 +71,30 @@ function groupCourses(courses) {
       // restore the profs and profs_names that were overwritten one line above
       c[course.course_id].profs = profs;
       c[course.course_id].profs_names = profs_names;
-    } 
-    
-
-  }
-  
-  // wirte courses back to array
-  let out = [];
-  for(let c_key in c) {
-    out.push(c[c_key]);
-  }
-  
-  return out;
-}
 
 
+*/
 function sortCourses(courses) {
   return courses.sort(
     function compare(a,b) {
       let a_c = Number(a.course_id);
       let b_c = Number(b.course_id);
-      
-      if (a_c < b_c)
-        return -1;
-      if (a_c > b_c)
-        return 1;
-      return 0;
+
+      return a_c - b_c;
     }
   );
+}
+
+function sortExams(exams) {
+  return exams.sort(
+    function compare(a,b) {
+      let a_c = Number(a.taking);
+      let b_c = Number(b.taking);
+      
+      return b_c - a_c;
+    }
+  );
+  
 }
 
 function splitByStudyYear(courses) {
@@ -106,27 +133,20 @@ router.get('/', auth.authenticate, function(req, res, next) {
   
   renderObj.courses = [];
   db.getEnroledCourses(renderObj.studentId).then((courses) => {
-    db.getNotEnroledCourses(renderObj.studentId).then((not_courses) => {
-      if(not_courses) {
-        renderObj.courses = renderObj.courses.concat(not_courses);
-      }
-      
-      if(courses) {
-        renderObj.courses = renderObj.courses.concat(courses);
-      } 
-      
-      console.log("Currently we have", renderObj.courses.length);
-      
-      renderObj.courses = groupCourses(renderObj.courses);
-      renderObj.coursesSplit = splitByStudyYear(renderObj.courses);
-      console.log("Currently we have", renderObj.courses.length);
-      
-      if(!not_courses || !courses) {
-        renderObj.message = 'Napaka na srežniku!';
-      }
-      
-      return res.render('kartotecni_list', renderObj);
-    });
+    if(courses) {
+      renderObj.courses = renderObj.courses.concat(courses);
+    } else {
+      renderObj.message = 'Napaka na strežniku. Vrnjenih ni bilo nobenih predmetov.'
+    } 
+    
+    console.log("Currently we have", renderObj.courses.length);
+    
+    renderObj.courses = groupCourses(renderObj.courses);
+    renderObj.coursesSplit = splitByStudyYear(renderObj.courses);
+    console.log("Currently we have", renderObj.courses.length);
+
+    return res.render('kartotecni_list', renderObj);
+    
   },
   (err) => {
     console.log(err);
