@@ -16,19 +16,20 @@ function doImport(req, res) {
     var students = [];
     
     while(lines.length > 0) {
-      var studentData = lines[0].split(' ');
+      var studentData = lines[0].split('\t');
+      console.log(studentData);
       
-      if(studentData.length != 4) {
+      if(studentData.length != 3) {
         return res.render('student_import', { message: 'Format datoteke ni skladen z zahtevami.' });
       }
       
-      var existLines = studentData[0] && studentData[1] && studentData[2] && studentData[3];
+      var existLines = studentData[0] && studentData[1] && studentData[2];
       var correctFormat =
         studentData[0].length < 31 &&
         studentData[1].length < 31 && 
-        studentData[2].length < 8 && 
-        studentData[3].length < 61 && validateEmail(studentData[3]);
+        studentData[2].length < 61 && validateEmail(studentData[2]);
         
+      console.log(existLines + ' ' + correctFormat + ' ' + validateEmail(studentData[2]));
       if(!existLines || !correctFormat) {
         return res.render('student_import', { message: 'Format datoteke ni skladen z zahtevami.' });
       }
@@ -36,8 +37,7 @@ function doImport(req, res) {
       var student = {
         name: studentData[0],
         lastName: studentData[1],
-        program: studentData[2],
-        email: studentData[3]
+        email: studentData[2]
       }
       students.push(student);
       lines.shift();
@@ -64,7 +64,6 @@ function doImport(req, res) {
 }
 
 function validateEmail(email) {
-    // Ojoj kaj je ta groza XD
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }

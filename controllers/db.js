@@ -541,7 +541,8 @@ function doImport(students, index, endCallback) {
           students[index].registrationNumber = registrationNumber;
           
           insertUserQuery = 'INSERT INTO public."user"(password, type, email, student_id) VALUES ($1, $2, $3, $4)';
-          params = [bcrypt.hashSync('student', saltRounds), 'student', student.email, registrationNumber];
+          salt = bcrypt.genSaltSync(saltRounds);
+          params = [bcrypt.hashSync('student', salt), 'student', student.email, registrationNumber];
           
           client.query(insertUserQuery, params, (err) => {
             if(err) {
