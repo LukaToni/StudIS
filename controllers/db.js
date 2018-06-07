@@ -1123,7 +1123,7 @@ module.exports.undoEnrol = function(exam_id, user_id) {
     */
     
     let query = `
-    delte from exam_enrols
+    delete from exam_enrols
     where ee.exam_id = $2 
     and ee.valid = true 
     `;
