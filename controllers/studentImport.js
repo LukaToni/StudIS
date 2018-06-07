@@ -16,6 +16,10 @@ function doImport(req, res) {
     var students = [];
     
     while(lines.length > 0) {
+      if(lines[0].length < 1) {
+        lines.shift();
+        continue;
+      }
       var studentData = lines[0].split('\t');
       console.log(studentData);
       
