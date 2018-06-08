@@ -1002,9 +1002,16 @@ module.exports.getExamsForStudent = function(student_id) {
  '         from (  '  + 
  '             select *  '  + 
  '             from exam_enrols ee  '  + 
+             '  inner join exams e1 '+
+              '  on e1.id = ee.exam_id '+
+              ' inner join courses c1 '+
+             '   on c1.numberid = e1.course_id '+
+              ' inner join course_enrol ce1 '+
+              '  on ce1.course_id = c.numberid '+
  '             where 1=1  '  + 
- '             and student_id = $1  '  + 
- '             and e.course_id = ce.course_id  '  + 
+ '             and ee.student_id = $1  '  + 
+               'and ce1.student_id = $1 ' +
+ '             and e1.course_id = ce1.course_id  '  + 
  '             and ee.valid = true  '  + 
  '             and ee.exam_grade is not null and ee.exam_grade > 5  '  + 
  '         ) as foo  '  + 
