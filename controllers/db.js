@@ -1062,6 +1062,7 @@ module.exports.getExamsForStudent = function(student_id) {
  '         on e.course_id = c.numberid  '  + 
  '       inner join course_enrol ce  '  + 
  '         on e.course_id = ce.course_id  '  + 
+           'and ce.enrol_year = 2018 ' +
  '       where 1=1  '  + 
  "       and e.date > to_date('09/2017', 'mm/yyyy') and e.date < to_date('09/2018', 'mm/yyyy')  "  + 
  '       and ce.active = true  '  + 
