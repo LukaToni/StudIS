@@ -1097,7 +1097,27 @@ module.exports.getExamsForStudent = function(student_id) {
 
 module.exports.doEnrol = function(exam_id, student_id) {
   return new Promise((resolve, reject) => {
-    let query = "insert into exam_enrols (valid, student_id, taking, exam_id) values (true, $1, 1 + (select count(*) from exam_enrols ee inner join exams e on ee.exam_id = e.id where ee.valid = true and ee.student_id = $2) ,$3)";
+    let query = `
+    insert into exam_enrols (valid, student_id, taking, exam_id, taking_this_year) values (true, $1, 
+     (1 + (
+     	select count(*) from exam_enrols ee
+     	inner join exams e
+     		on ee.exam_id = e.id
+ 		where 1=1
+ 			and ee.valid = true
+ 			and ee.student_id = $2
+ 			and course_id = (select course_id from exam_enrols ee1 inner join exams e1 on ee.exam_id = e.id where e.id = $3 )
+      ))
+     ,$3,
+     1 + (
+     	select count(*) from exam_enrols ee
+     	inner join exams e
+     		on ee.exam_id = e.id
+ 		where 1=1
+ 			and ee.valid = true
+ 			and ee.student_id = $2
+ 			and course_id = (select course_id from exam_enrols ee1 inner join exams e1 on ee.exam_id = e.id where e.id = $3 )
+      ))`;
   
     let params = [student_id, student_id,  exam_id];
     
