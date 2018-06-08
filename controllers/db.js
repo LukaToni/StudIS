@@ -631,7 +631,7 @@ function getCourseEnrols(courseNumberId) {
                   'ON st.key = se.study_type ' +
                 'WHERE ce.enrol_year = se.study_year ' +
                   'AND c.numberid = $1 ' +
-                'ORDER BY s.surname';
+                'ORDER BY ce.enrol_year desc,  s.surname';
     let params = [courseNumberId];
     
     client.query(query, params, (err, res) =>{
