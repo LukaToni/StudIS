@@ -59,6 +59,8 @@ typings/
 
 # next.js build output
 .next
+uploads/
+.idea/
 
 
 
@@ -120,3 +122,5 @@ fabric.properties
 
 dataSources
 .ideaDataSources
+
+*.json

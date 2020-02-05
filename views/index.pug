@@ -1,5 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  .main-form
+    h2= title
+    p Welcome to the studis test page.
+    .fields-form
+      ul
+        li
+          a(href="/login") login
+        li
+          a(href="/logout") logout
+        li
+          a(href="/personal") personal
+        li
+          a(href="/student_import") student import
+        li
+          a(href="/list_token") list token

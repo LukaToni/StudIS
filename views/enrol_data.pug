@@ -1,0 +1,184 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(http-equiv='x-ua-compatible', content='ie=edge')
+        title StudIS
+        // Font Awesome
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        // Bootstrap core CSS
+        link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+        // Material Design Bootstrap
+        link(href='../stylesheets/mdb.min.css', rel='stylesheet')
+        // Your custom styles (optional)
+        link(href='../stylesheets/style.css', rel='stylesheet')
+        // Font awesome
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(href='../stylesheets/personal.css', rel='stylesheet')
+    body
+        // Main Navigation
+        header
+            nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.red.scrolling-navbar
+                a.navbar-brand(href='')
+                    strong StudIS
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarSupportedContent.collapse.navbar-collapse
+                    ul.nav.navbar-nav.nav-flex-icons.ml-auto
+                        li.nav-item.dropdown
+                            a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                                if(type == 'student')
+                                    i.fa.fa-user=" "+student.name+" "+student.surname+" ("+student.registration_number+")"
+                                else
+                                    i.fa.fa-user=" "+email
+                            .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
+                                a.dropdown-item(href='#') Uredi podatke
+                                a.dropdown-item(href='#') Poveži digitalno potrdilo
+                                // <a class="dropdown-item" href="#">English</a>
+                                a.dropdown-item(href='/logout') Odjava
+        // Main Navigation
+        .wrapper
+            .container
+                .row.mt-5.pt-5
+                    .container
+                        if type == 'professor' || type == 'clerk'
+                                .input-group
+                                    input.form-control(type="text" placeholder="Search for..." aria-label="Search for...")#searchField
+                                    span.input-group-btn
+                                        button.btn.btn-secondary(type="button")#searchButton Go!
+                                    .search-panel(style="display:none")#searchPanel
+                                        .close-button#closeSearchButton='x'
+                                        button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2csv('students');") Export CSV
+                                        button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2pdf('students');") Export PDF
+                                        // Table
+                                        table#tableSearch.table.table-sm
+                                            // Table head
+                                            thead
+                                                tr
+                                                    th Ime
+                                                    th Priimek
+                                                    th Vpisna števlka
+                                            tbody#searchTable
+                                                tr.table-item
+                                                    td Mark
+                                                    td Otto
+                                                    td @mdo
+
+                        if(student.name)
+                            .alert.alert-primary#emso-info(role='alert' style="display:none") EMŠO ni pravilna.
+                            form(method="post" action='/enrol').form-horizontal
+                                fieldset
+                                    h2 Osebni podatki študenta
+                                    div
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticRegNumber") Vpisna številka
+                                            .col-sm-10
+                                                input#staticRegNumber.form-control(type="text" name='registration_number' readonly="" value=student.registration_number)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticSurname") Priimek
+                                            .col-sm-10
+                                                input#staticSurname.form-control(type="text"  value=student.surname name='surname')
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticName") Ime
+                                            .col-sm-10
+                                                input#staticName.form-control(type="text"  value=student.name name='name') 
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticEMSO") EMŠO
+                                            .col-sm-10
+                                                input#staticEMSO.form-control(type="text"  value=student.emso name='emso') 
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticEmail") Email
+                                            .col-sm-10
+                                                input#staticEmail.form-control(type="text"  readonly="" value=student.email name='email')
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticPhone") Telefonska številka
+                                            .col-sm-10
+                                                input#staticPhone.form-control(type="text"  value=student.telephone_number name='telephone_number')
+                                        h2 Naslov stalnega bivališča
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticStreet") Ulica
+                                            .col-sm-10
+                                                input#staticStreet.form-control(type="text" name='street' value=student.street)
+                                        .form-group.row#staticPost
+                                            label.col-sm-2.col-form-label(for="staticPost") Pošta
+                                            .col-sm-10
+                                                select#staticPost.form-control(name='post')
+                                                    each p in post
+                                                        option(value=p.number selected=p.number==student.post_office_number)=p.name
+                                                //input#staticPost.form-control(type="text"  value=student.post_office_number)
+                                        .form-group.row#staticCounty
+                                            label.col-sm-2.col-form-label(for="staticCounty") Občina
+                                            .col-sm-10
+                                                select.form-control(name='county')
+                                                    each c in county
+                                                        option(value=c.name name='county' selected=c.name==student.county)=c.name
+                                                //input#staticCounty.form-control(type="text"  value=student.county)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticCountry") Država
+                                            .col-sm-10
+                                                select#staticCountry.form-control(name='country')
+                                                    each c in country
+                                                        option(value=c.name_slo selected=c.name_slo==student.country name='country')=c.name_slo
+                                                //input#staticCountry.form-control(type="text"  value=student.country)
+                                        h2 Naslov za prejemanje pošte
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticStreetPost") Ulica
+                                            .col-sm-10
+                                                input#staticStreetPost.form-control(type="text" name='street_post' value=student.street_post)
+                                        .form-group.row#staticPostPost
+                                            label.col-sm-2.col-form-label(for="staticPostPost") Pošta
+                                            .col-sm-10
+                                                select.form-control(name='post_post')
+                                                    each p in post
+                                                        option(value=p.number name='post_post' selected=p.number==student.post_post)=p.name
+                                                //input#staticPost.form-control(type="text"  value=student.post_office_number)
+                                        .form-group.row#staticCountyPost
+                                            label.col-sm-2.col-form-label(for="staticCountyPost") Občina
+                                            .col-sm-10
+                                                select.form-control(name='county_post')
+                                                    each c in county
+                                                        option(value=c.name name='county_post' selected=c.name==student.county_post)=c.name
+                                                //input#staticCounty.form-control(type="text"  value=student.county)
+                                        .form-group.row
+                                            label.col-sm-2.col-form-label(for="staticCountryPost") Država
+                                            .col-sm-10
+                                                select#staticCountryPost.form-control(name='country_post')
+                                                    each c in country
+                                                        option(value=c.name_slo selected=c.name_slo==student.country_post name='country_post')=c.name_slo
+                                                //input#staticCountry.form-control(type="text"  value=student.country)
+                                    h2 Podatki o vpisu
+                                        div
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticStudyProgramme") Študijski program
+                                                .col-sm-10
+                                                    input#staticStudyProgramme.form-control(type="text"  readonly="" value=token.study_programme)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticYear") Letnik
+                                                .col-sm-10
+                                                    input#staticYear.form-control(type="text" readonly="" value=token.year)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticEnrolType") Vrsta vpisa
+                                                .col-sm-10
+                                                    input#staticEnrolType.form-control(type="text" readonly="" value=token.enrol_type)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticStudyType") Način študija
+                                                .col-sm-10
+                                                    input#staticStudyType.form-control(type="text" readonly="" value=token.study_type)
+                                        button.btn-primary.btn#submitButton(type="submit") Naprej
+        // SCRIPTS
+        // JQuery
+        script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
+        // for generating export tables csv, pdf
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.min.js")
+        script(type='text/javascript', src='../js/personal/table2pdf.js')
+        script(type='text/javascript', src='../js/table2csv.js')
+        // Bootstrap tooltips
+        script(type='text/javascript', src='../js/popper.min.js')
+        // Bootstrap core JavaScript
+        script(type='text/javascript', src='../js/bootstrap.min.js')
+        // MDB core JavaScript
+        script(type='text/javascript', src='../js/mdb.min.js')
+        //search
+        script(type='text/javascript', src='../js/enrol/prepare.js')

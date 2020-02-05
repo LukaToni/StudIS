@@ -1,0 +1,52 @@
+doctype html
+html
+    head 
+        title Prijava v sistem - STUDIS FRI 
+        // Meta Tags
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        meta(name='keywords', content='Študijski informacijski sistem')
+        // //Meta Tags
+        // Font-Awesome-CSS
+        link(href='../stylesheets/font-awesome.css', rel='stylesheet')
+        // // Font-Awesome-CSS
+        // Required Css
+        link(href='../stylesheets/style.css', rel='stylesheet', type='text/css')
+        // // Required Css
+
+    body.login
+        // background
+        h1 StudIS
+        // Main-Content
+        .main-form
+            p= message
+            h2 Študijski informacijski sistem
+            p Prijavite se s svojim uporabniškim imenom in geslom. 
+            // main-form
+            form(method='post')
+                .fields-form
+                    span.fa.fa-user(aria-hidden='true')
+                    input(type='text', name='username', required='', placeholder='Uporabniško ime (uporabnik@domena.uni-lj.si)')
+                .fields-form
+                    span.fa.fa-key(aria-hidden='true')
+                    input(type='password', name='password', required='', placeholder='Geslo')
+                .remember-section-wthree
+                    ul
+                        li
+                            label.anim
+                                input.checkbox(type='checkbox')
+                                span  Zapomni se? 
+                        li
+                            a(href='/forgot')  Ste pozabili geslo? 
+                    .clear  
+                input(type='submit', value='Prijava')
+            // // main-form
+            // p=message
+        // // Main-Content
+        // copyright
+        .copyright
+            p FRI | STUDIS, 2018
+        // // copyright
+        // //background
+        
+        

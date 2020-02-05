@@ -1,0 +1,83 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(http-equiv='x-ua-compatible', content='ie=edge')
+        title StudIS
+        // Font Awesome
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        // Bootstrap core CSS
+        link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+        // Material Design Bootstrap
+        link(href='../stylesheets/mdb.min.css', rel='stylesheet')
+        // Your custom styles (optional)
+        link(href='../stylesheets/style.css', rel='stylesheet')
+        // Font awesome
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+    body
+        // Main Navigation
+        header
+            nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.red.scrolling-navbar
+                a.navbar-brand(href='')
+                    strong StudIS
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarSupportedContent.collapse.navbar-collapse
+                    ul.nav.navbar-nav.nav-flex-icons.ml-auto
+                        li.nav-item.dropdown
+                            a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                                i.fa.fa-user
+                                |  Luka Toni (63120258)
+                            .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
+                                a.dropdown-item(href='#') Uredi podatke
+                                a.dropdown-item(href='#') Poveži digitalno potrdilo
+                                // <a class="dropdown-item" href="#">English</a>
+                                a.dropdown-item(href='#') Odjava
+        // Main Navigation
+        .wrapper
+            .container
+                .row.mt-5.pt-5
+                    .col.text-center
+                        .form-group.row
+                            .col-12
+                                input.form-control(type='search', placeholder='Poišči študenta po imenu, priimku, vpisni številki')
+                        .container
+                            // Table
+                            table.table.table-sm
+                                // Table head
+                                thead
+                                    tr
+                                        th #
+                                        th Ime
+                                        th Priimek
+                                        th Vpisna števlka
+                                // Table head
+                                // Table body
+                                tbody
+                                    tr
+                                        th(scope='row') 1
+                                        td Mark
+                                        td Otto
+                                        td @mdo
+                                    tr
+                                        th(scope='row') 2
+                                        td Jacob
+                                        td Thornton
+                                        td @fat
+                                    tr
+                                        th(scope='row') 3
+                                        td Jacob
+                                        td Thornton
+                                        td @fat
+                                // Table body
+                            // Table
+        // SCRIPTS
+        // JQuery
+        script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
+        // Bootstrap tooltips
+        script(type='text/javascript', src='../js/popper.min.js')
+        // Bootstrap core JavaScript
+        script(type='text/javascript', src='../js/bootstrap.min.js')
+        // MDB core JavaScript
+        script(type='text/javascript', src='../js/mdb.min.js')

@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  .main-form
+    p= message
+    form(method='post')
+        .fields-form
+            span.fa.fa-user(aria-hidden='true')
+            input(type='text', name='email', required='', placeholder='email')
+        input(type='submit', value='Zahtevaj novo geslo')

@@ -1,0 +1,202 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(http-equiv='x-ua-compatible', content='ie=edge')
+        title StudIS
+        // Font Awesome
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        // Bootstrap core CSS
+        link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+        // Material Design Bootstrap
+        link(href='../stylesheets/mdb.min.css', rel='stylesheet')
+        // Your custom styles (optional)
+        link(href='../stylesheets/style.css', rel='stylesheet')
+        // Font awesome
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(href='../stylesheets/personal.css', rel='stylesheet')
+    body
+        // Main Navigation
+        header
+            nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.red.scrolling-navbar
+                a.navbar-brand(href='')
+                    strong StudIS
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarSupportedContent.collapse.navbar-collapse
+                    ul.nav.navbar-nav.nav-flex-icons.ml-auto
+                        li.nav-item.dropdown
+                            a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                                if(type == 'student')
+                                    i.fa.fa-user=" "+student.name+" "+student.surname+" ("+student.registration_number+")"
+                                else
+                                    i.fa.fa-user=" "+email
+                            .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
+                                a.dropdown-item(href='#') Uredi podatke
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='/student_import') Uvozi študente
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='/tokens') Žetoni
+                                    a.dropdown-item(href='/course_enrols') Preglej vpise v predmet
+                                if(type == 'clerk')
+                                    a.dropdown-item(href='/verify_token') Potrdi vpise
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='/edit_exams') Izpitni roki
+                                if(type == 'student')
+                                    a.dropdown-item(href='/exam_enrol') Izpitni roki
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='/count_course_enrols') Preštej vpise v predmet    
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='/exam_list') Pokaži vpisane na izpit
+                                if(type == 'professor' || type == 'clerk')
+                                    a.dropdown-item(href='/grade_exam') Vpiši ocene
+                                a.dropdown-item(href='/kartotecni_list') Kartotecni List
+                                a.dropdown-item(href='#') Poveži digitalno potrdilo
+                                // <a class="dropdown-item" href="#">English</a>
+                                a.dropdown-item(href='/logout') Odjava
+        // Main Navigation
+        .wrapper
+            .container
+                .row.mt-5.pt-5
+                    if type == 'student'
+                        if(student.token)
+                            if(token.used == 0)
+                                .alert.alert-primary(role='alert')
+                                    | Izpoljujete pogoje za vpis.
+                                    a.alert-link(href='/enrol') Vpišite se tukaj.
+                    .container
+                        if type == 'professor' || type == 'clerk'
+                                .input-group
+                                    input.form-control(type="text" placeholder="Search for..." aria-label="Search for...")#searchField
+                                    span.input-group-btn
+                                        button.btn.btn-secondary(type="button")#searchButton Go!
+                                    .search-panel(style="display:none")#searchPanel
+                                        .close-button#closeSearchButton='x'
+                                        button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2csv('students');") Export CSV
+                                        button.btn.btn-sm.btn-default(onclick="$('#tableSearch').table2pdf('students');") Export PDF
+                                        // Table
+                                        table#tableSearch.table.table-sm
+                                            // Table head
+                                            thead
+                                                tr
+                                                    th Ime
+                                                    th Priimek
+                                                    th Vpisna števlka
+                                            tbody#searchTable
+                                                tr.table-item
+                                                    td Mark
+                                                    td Otto
+                                                    td @mdo
+
+                        if(student)
+                          if(student.name)
+                              form.form-horizontal
+                                  fieldset
+                                      h2 Osebni podatki študenta
+                                      form
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticRegNumber") Vpisna številka
+                                              .col-sm-10
+                                                  input#staticRegNumber.form-control(type="text"  readonly="" value=student.registration_number)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticSurname") Priimek
+                                              .col-sm-10
+                                                  input#staticSurname.form-control(type="text" readonly="" value=student.surname)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticName") Ime
+                                              .col-sm-10
+                                                  input#staticName.form-control(type="text" readonly="" value=student.name)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticEmail") Email
+                                              .col-sm-10
+                                                  input#staticEmail.form-control(type="text" readonly="" value=student.email)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticPhone") Telefonska številka
+                                              .col-sm-10
+                                                  input#staticPhone.form-control(type="text" readonly="" value=student.telephone_number)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticCountry") Država
+                                              .col-sm-10
+                                                  input#staticCountry.form-control(type="text" readonly="" value=student.country)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticStreet") Ulica
+                                              .col-sm-10
+                                                  input#staticStreet.form-control(type="text" readonly="" value=student.street)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticPost") Pošta
+                                              .col-sm-10
+                                                  input#staticPost.form-control(type="text" readonly="" value=student.post_office_number)
+                                          .form-group.row
+                                              label.col-sm-2.col-form-label(for="staticCounty") Občina
+                                              .col-sm-10
+                                                  input#staticCounty.form-control(type="text" readonly="" value=student.county)
+                                      if(student.street_post != "" && student.street_post)
+                                        h2 Naslova za prejemanje pošte
+                                        form
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticStreetPost") Ulica
+                                                .col-sm-10
+                                                    input#staticStreetPost.form-control(type="text" readonly="" value=student.street_post)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticPostPost") Pošta
+                                                .col-sm-10
+                                                    input#staticPostPost.form-control(type="text" readonly="" value=student.post_post)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticCountyPost") Občina
+                                                .col-sm-10
+                                                    input#staticCountyPost.form-control(type="text" readonly="" value=student.county_post)
+                                            .form-group.row
+                                                label.col-sm-2.col-form-label(for="staticCountryPost") Država
+                                                .col-sm-10
+                                                    input#staticCountryPost.form-control(type="text" readonly="" value=student.country_post)
+                    .col.text-center
+                        if student
+                          if student.name
+                              .container
+                                  if type == 'professor' || type == 'clerk'
+                                    button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2csv('students');") Export CSV
+                                    button.btn.btn-sm.btn-default(onclick="$('#tableBottom').table2pdf('students');") Export PDF
+                                  // Table
+                                  table#tableBottom.table.table-sm
+                                  // Table
+                                  table.table.table-sm
+                                      // Table head
+                                      thead
+                                          tr
+                                              th Letnik
+                                              th Študijsko leto
+                                              th Program
+                                              th Način študija
+                                              th Vrsta vpisa
+                                              if type == 'clerk'
+                                                  th Tiskanje vpisnega lista
+                                      // Table head
+                                      // Table body
+                                      tbody
+                                          each enrol in enrols
+                                              tr
+                                                  th(scope='row')=enrol.year
+                                                  td=enrol.study_year+'/'+(parseInt(enrol.study_year)+1)
+                                                  td=enrol.s_programme
+                                                  td=enrol.s_type
+                                                  td=enrol.e_type
+                                                  if type == 'clerk'
+                                                      td
+                                                          a(href='/vpisni_to_pdf/' + enrol.s_key) Natisni
+        // SCRIPTS
+        // JQuery
+        script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
+        // for generating export tables csv, pdf
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.min.js")
+        script(type='text/javascript', src='../js/personal/table2pdf.js')
+        script(type='text/javascript', src='../js/table2csv.js')
+        // Bootstrap tooltips
+        script(type='text/javascript', src='../js/popper.min.js')
+        // Bootstrap core JavaScript
+        script(type='text/javascript', src='../js/bootstrap.min.js')
+        // MDB core JavaScript
+        script(type='text/javascript', src='../js/mdb.min.js')
+        //search
+        script(type='text/javascript', src='../js/personal/search.js')

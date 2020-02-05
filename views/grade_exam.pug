@@ -1,0 +1,138 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(http-equiv='x-ua-compatible', content='ie=edge')
+        title StudIS
+        // Font Awesome
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        // Bootstrap core CSS
+        link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+        // Material Design Bootstrap
+        link(href='../stylesheets/mdb.min.css', rel='stylesheet')
+        // Your custom styles (optional)
+        //link(href='../stylesheets/style.css', rel='stylesheet')
+        // Font awesome
+        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css')
+        link(href='../stylesheets/personal.css', rel='stylesheet')
+    body
+        // Main Navigation
+        header
+            nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.red.scrolling-navbar
+                a.navbar-brand(href='')
+                    strong StudIS
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarSupportedContent.collapse.navbar-collapse
+                    ul.nav.navbar-nav.nav-flex-icons.ml-auto
+                        li.nav-item.dropdown
+                            a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                                i.fa.fa-user=" "+email
+                            .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdownMenuLink')
+                                a.dropdown-item(href='/personal') Pojdi nazaj
+                                a.dropdown-item(href='/logout') Odjava
+        .wrapper
+            .container
+                .row.mt-5.pt-5
+                    .col
+                        h2 Oceni študente vpisane na izpitni rok
+                        p= message
+                        //p= "Exams: " + JSON.stringify(exams)
+                        //p= JSON.stringify(students)
+                        
+                        - let selectedExam
+                        
+                        if exams
+                            form.form-inline.text-center(method='post')
+                                select.form-control.form-control-sm(name = 'selectedExamId')
+                                    option Izpitni Rok
+                                    for exam in exams
+                                        - let selected = exam.exam_id == selectedExamId;
+                                        - let date = exam.formatted_date.date + " " + exam.formatted_date.time;
+                                        - let examName = exam.course_name + " dne " + date;
+                                        - if(selected) selectedExam = exam;
+                                        option(value=exam.exam_id selected=selected)=examName
+                                button.btn.btn-primary.btn-sm(type='submit') Prikazi
+                        if students
+                            if selectedExamName
+                                h3#header= "Študentje izpitnega roka " + selectedExam.course_name
+                            br
+                            br
+                            div#exportPdfData
+                                h3 Meta Podatki
+                                table(style="text-align:left;")
+                                    tr
+                                        th Šifra predmeta: 
+                                        td= selectedExam.course_id
+                                    tr
+                                        th Ime Predmeta: 
+                                        td= selectedExam.course_name
+                                    tr
+                                        th Izpraševalci: 
+                                        td= selectedExam.prof_name + " " + selectedExam.prof_surname
+                                    tr
+                                        th Datum: 
+                                        td= selectedExam.formatted_date.date + " ob " + selectedExam.formatted_date.time
+                                    tr
+                                        th Prostor: 
+                                        td= selectedExam.exam_room
+                                br        
+                                h3 Študentje
+                                form(action="/grade_exam/store" method="post")
+                                    table(style='width:100%').table.table-sm.text-center#studentTable
+                                        thead
+                                            tr
+                                                th #
+                                                th Vpisna
+                                                th Ime
+                                                th Priimek
+                                                th Leto
+                                                th Polaganje
+                                                th Točke izpita
+                                                th Končna ocena
+                                                th Vrni prijavo
+        
+                                        tbody(style="text-transform:capitalize;")
+                                            each student, index in students
+                                                tr
+                                                    td=index+1
+                                                    //td= JSON.stringify(student)
+                                                    td=student.student_id
+                                                    td=student.student_name
+                                                    td=student.student_surname
+                                                    //TODO: TODO tole je treba zamenat 
+                                                    th 2017/18 
+                                                    th=student.taking
+                                                    - var sty =! student.valid ? "display:none;" : ""
+                                                    th
+                                                        div(class=index+"total", style=sty)
+                                                            input.form-control(type="number" min="0" max="100" step="1" name=student.id+'_gradeTotal'  value=student.grade_total style="text-align:center")
+                                                    th
+                                                        div(class=index+"total", style=sty)
+                                                            input.form-control(type="number" min="5" max="10" step="1" name=student.id+'_examGrade'  value=student.exam_grade style="text-align:center")
+                                                    th
+                                                        .form-check
+                                                            label.form-check-label
+                                                                input.form-check-input(onchange="$('."+ index + "total').toggle()" type='checkbox', id=index+"check", name=student.id+'_valid', checked=!+student.valid)
+                                                                | VP
+                                    
+                                        button.btn-primary.btn#submitButton(type="submit") Shrani ocene
+        // SCRIPTS
+        // JQuery
+        script(type='text/javascript', src='../js/jquery-3.2.1.min.js')
+        // for generating export tables csv, pdf
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.0/jspdf.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.4/jspdf.plugin.autotable.min.js")
+        script(type='text/javascript', src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js")
+        script(type='text/javascript', src='../js/personal/html2pdf.js')
+        script(type='text/javascript', src='../js/personal/table2pdf.js')
+        script(type='text/javascript', src='../js/table2csv.js')
+        // Bootstrap tooltips
+        script(type='text/javascript', src='../js/popper.min.js')
+        // Bootstrap core JavaScript
+        script(type='text/javascript', src='../js/bootstrap.min.js')
+        // MDB core JavaScript
+        script(type='text/javascript', src='../js/mdb.min.js')
+        //search
+        script(type='text/javascript', src='../js/personal/search.js')

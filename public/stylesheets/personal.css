@@ -1,0 +1,47 @@
+.search-panel{
+    position: absolute;
+    border: 1px solid rgba(0,0,0,0.20);
+    background-color: white;
+    border-radius: 4px;
+    width: 100%;
+    top:55px;
+    z-index: 66;
+    -webkit-box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.55);
+-moz-box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.55);
+box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.55);
+    padding: 10px;
+}
+.close-button{
+    position: absolute;
+    right:5px;
+    top:5px;
+    font-weight: 600; 
+    width:40px;
+    text-align: center;  
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 5px;
+    cursor: pointer;
+}
+.close-button:hover{
+    background-color: rgba(0,0,0,0.20);
+}
+
+.table-item{
+    cursor: pointer;
+}
+.table-item:hover{
+    background-color: rgba(0,0,0,0.10);
+}
+
+.type-two{
+    background-color: #f44336;
+}
+
+.type-zero{
+    cursor: not-allowed;
+}
+
+#available-courses{
+    max-height: 500px;
+    overflow-y: scroll;
+}
